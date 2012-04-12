@@ -96,6 +96,7 @@
     <Reference Include="Microsoft.Surface.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engine\BingoTile.cs" />
     <Compile Include="Helper\EnumSettings.cs" />
     <Compile Include="Layout\BackgroundItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

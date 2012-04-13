@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Media;
 
 using ECE_700_BoardGame.Layout;
 using ECE_700_BoardGame.Helper;
+using ECE_700_BoardGame.Engine;
 using System.Diagnostics;
 
 namespace ECE_700_BoardGame
@@ -100,32 +101,35 @@ namespace ECE_700_BoardGame
 
         #region GameFields
 
-        ContentManager content;
+            ContentManager content;
 
-        private const int DIVIDER_THICKNESS = 20;
+            private const int DIVIDER_THICKNESS = 20;
 
-        //PlayerOne = TopLeft, Players Numbered Clockwise
+            //PlayerOne = TopLeft, Players Numbered Clockwise
 
-        //Backgrounds All content sits on top of
-        BackgroundItem PlayerOneBackground;
-        BackgroundItem PlayerTwoBackground;
-        BackgroundItem PlayerThreeBackground;
-        BackgroundItem PlayerFourBackground;
+            //Backgrounds All content sits on top of
+            BackgroundItem PlayerOneBackground;
+            BackgroundItem PlayerTwoBackground;
+            BackgroundItem PlayerThreeBackground;
+            BackgroundItem PlayerFourBackground;
             List<BackgroundItem> MainBacking;
 
-        //Bingo Grids That tiles sit amongst
-        BackgroundItem BingoGridOne;
-        BackgroundItem BingoGridTwo;
-        BackgroundItem BingoGridThree;
-        BackgroundItem BingoGridFour;
+            //Bingo Grids That tiles sit amongst
+            BackgroundItem BingoGridOne;
+            BackgroundItem BingoGridTwo;
+            BackgroundItem BingoGridThree;
+            BackgroundItem BingoGridFour;
             List<BackgroundItem> BingoBoards;
 
-        //Dividers Between Players 
-        BackgroundItem P1P4_Divider;
-        BackgroundItem P2P3_Divider;
-        BackgroundItem P1P2_Divider;
-        BackgroundItem P3P4_Divider;
+            //Dividers Between Players 
+            BackgroundItem P1P4_Divider;
+            BackgroundItem P2P3_Divider;
+            BackgroundItem P1P2_Divider;
+            BackgroundItem P3P4_Divider;
             List<BackgroundItem> Dividers;
+
+            //Question tile in centre
+            ECE_700_BoardGame.Engine.QuestionButton Question;
 
         #endregion
 
@@ -177,7 +181,10 @@ namespace ECE_700_BoardGame
             base.Initialize();
 
             #endregion
+
+            touchTarget.TouchTapGesture += Question.OnTouchTapGesture;
         }
+
 
         /// <summary>
         /// LoadContent will be called once per app and is the place to load
@@ -292,6 +299,14 @@ namespace ECE_700_BoardGame
             Dividers.Add(P3P4_Divider);
 
             #endregion
+
+            #region Question Tile
+            Texture2D questionTex = Content.Load<Texture2D>("Question");
+            Rectangle questionPos = new Rectangle(screenWidth / 2-questionTex.Width/2, screenHeight/2-questionTex.Height/2, questionTex.Width, questionTex.Height);
+            Question = new QuestionButton(this, questionTex, questionPos, "Any");
+
+            #endregion
+
         }
 
         /// <summary>
@@ -360,6 +375,8 @@ namespace ECE_700_BoardGame
             {
                 bi.Draw(spriteBatch);
             }
+
+            Question.Draw(spriteBatch, gameTime);
 
             spriteBatch.End();
 

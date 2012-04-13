@@ -5,7 +5,3 @@ Content\TempBingoBoard.xnb
 Content\Divider.xnb
 Content\Question.xnb
 Content\shapes.xnb
-Database1.mdf
-ExerciseMaterial.sdf
-Resources\icon.png
-ECE_700_BoardGame.xml

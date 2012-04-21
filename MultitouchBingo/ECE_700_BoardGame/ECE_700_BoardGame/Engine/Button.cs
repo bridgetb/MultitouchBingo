@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Surface;
 using Microsoft.Surface.Core;
+using System.Diagnostics;
 
 
 namespace ECE_700_BoardGame.Engine
@@ -57,12 +58,13 @@ namespace ECE_700_BoardGame.Engine
 
         protected bool IsPressed(TouchPoint point)
         {
-            if (point.CenterX >= this.position.X && point.CenterX <= this.position.X + this.texture.Width)
-            {
-                if (point.CenterY >= this.position.Y && point.CenterY <= this.position.Y + this.texture.Height)
-                {
-                    return true;
-                }
+#if DEBUG
+            Debug.WriteLine(point.X.ToString(), "Touch point X");
+            Debug.WriteLine(point.Y.ToString(), "Touch point Y");
+            Debug.WriteLine(position.Contains((int)point.X, (int)point.Y).ToString(), "Is Within Item Hit Detection");
+#endif
+            if( position.Contains((int)point.X, (int)point.Y) ){
+                return true;
             }
             return false;
         }

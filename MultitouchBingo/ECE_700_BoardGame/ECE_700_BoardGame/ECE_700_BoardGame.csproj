@@ -98,6 +98,7 @@
     <Reference Include="Microsoft.Surface.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engine\Animation.cs" />
     <Compile Include="Engine\BingoTile.cs" />
     <Compile Include="Engine\Button.cs" />
     <Compile Include="Engine\QuestionButton.cs" />

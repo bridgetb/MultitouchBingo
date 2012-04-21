@@ -131,6 +131,12 @@ namespace ECE_700_BoardGame
             //Question tile in centre
             ECE_700_BoardGame.Engine.QuestionButton Question;
 
+            //Player answer tiles
+            List<BingoTile> PlayerOneTiles;
+            List<BingoTile> PlayerTwoTiles;
+            List<BingoTile> PlayerThreeTiles;
+            List<BingoTile> PlayerFourTiles;
+
         #endregion
 
         #region Overridden Game Methods
@@ -148,6 +154,11 @@ namespace ECE_700_BoardGame
             MainBacking = new List<BackgroundItem>();
             BingoBoards = new List<BackgroundItem>();
             Dividers    = new List<BackgroundItem>();
+
+            PlayerOneTiles  = new List<BingoTile>();
+            PlayerTwoTiles  = new List<BingoTile>();
+            PlayerThreeTiles= new List<BingoTile>();
+            PlayerFourTiles = new List<BingoTile>();
             
             #endregion
 
@@ -182,7 +193,11 @@ namespace ECE_700_BoardGame
 
             #endregion
 
+            #region Event Handlers
+
             touchTarget.TouchTapGesture += Question.OnTouchTapGesture;
+
+            #endregion
         }
 
 
@@ -307,6 +322,61 @@ namespace ECE_700_BoardGame
 
             #endregion
 
+            #region Answer Tiles
+
+            
+            //int i = 0;
+            //Rectangle posRectAns = new Rectangle(0, 0, 15, 15);     //Initialize to top right tile position for each player
+            //Texture2D daubTex = content.Load<Texture2D>("daub");
+            //Texture2D errorTileTex = content.Load<Texture2D>("error");
+
+            ////TODO: Requires query to retrieve sets of 25 tiles with their question paths and id's 
+
+            //foreach (string tileAnswer in TileAnswers)
+            //{
+            //    Texture2D tileAnsTex = Content.Load<Texture2D>(tileAnswer);
+            //    int ansID = TileAnswers[i];
+                
+            //    //Shift Tile Position
+            //    if ((i % 5) == 0)
+            //    {
+            //        posRectAns.X -= 6 * 20;
+            //        posRectAns.Y += 20;
+            //    }
+            //    posRectAns.X += 20;
+
+            //    BingoTile bt = new BingoTile(this, tileAnsTex, daubTex, errorTileTex, posRectAns);
+            //    PlayerOneTiles.Add(bt);
+
+            //    i++;
+            //}
+
+            //TODO: Following set is for testing whilst database query not performed yet
+            Rectangle posRectAns = new Rectangle((screenWidth/4)-(boardWidth/2)+posBoard.Width-45, (screenHeight/5)-(boardWidth/2)-40, 15, 15);     //Initialize to top right tile position for each player
+            Texture2D daubTex = Content.Load<Texture2D>("daub");
+            Texture2D errorTileTex = Content.Load<Texture2D>("error");
+
+            for(int i = 0; i < 25; i++)
+            {
+                Texture2D tileAnsTex = Content.Load<Texture2D>("tileAns");
+                int ansID = 13;
+
+                //Shift Tile Position
+                if ((i % 5) == 0)
+                {
+                    posRectAns.X -= 5 * 60;
+                    posRectAns.Y += 60;
+                }
+                posRectAns.X += 60;
+
+                BingoTile bt = new BingoTile(this, tileAnsTex, daubTex, errorTileTex, posRectAns);
+                bt.Initialize(13);
+                bt.Update(13);
+                touchTarget.TouchTapGesture += bt.OnTouchTapGesture;
+                PlayerOneTiles.Add(bt);
+            }
+
+            #endregion
         }
 
         /// <summary>
@@ -359,8 +429,6 @@ namespace ECE_700_BoardGame
 
             spriteBatch.Begin();
 
-            Vector2 tempVec = new Vector2(100, 100);
-
             foreach (BackgroundItem bi in MainBacking)
             {
                 bi.Draw(spriteBatch);
@@ -377,6 +445,11 @@ namespace ECE_700_BoardGame
             }
 
             Question.Draw(spriteBatch, gameTime);
+
+            foreach (BingoTile bt in PlayerOneTiles)
+            {
+                bt.Draw(spriteBatch);
+            }
 
             spriteBatch.End();
 

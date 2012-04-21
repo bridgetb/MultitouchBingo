@@ -5,6 +5,9 @@ Content\TempBingoBoard.xnb
 Content\Divider.xnb
 Content\Question.xnb
 Content\shapes.xnb
+Content\daub.xnb
+Content\error.xnb
+Content\tileAns.xnb
 Database1.mdf
 ExerciseMaterial.sdf
 Resources\icon.png

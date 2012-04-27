@@ -106,6 +106,7 @@ namespace ECE_700_BoardGame
             private const int DIVIDER_THICKNESS = 20;
 
             //PlayerOne = TopLeft, Players Numbered Clockwise
+            private const int PLAYER_COUNT = 4;
 
             //Backgrounds All content sits on top of
             BackgroundItem PlayerOneBackground;
@@ -132,10 +133,18 @@ namespace ECE_700_BoardGame
             ECE_700_BoardGame.Engine.QuestionButton Question;
 
             //Player answer tiles
-            List<BingoTile> PlayerOneTiles;
-            List<BingoTile> PlayerTwoTiles;
-            List<BingoTile> PlayerThreeTiles;
-            List<BingoTile> PlayerFourTiles;
+            List<BingoTile>[] PlayerTiles;
+            //List<BingoTile> PlayerOneTiles;
+            //List<BingoTile> PlayerTwoTiles;
+            //List<BingoTile> PlayerThreeTiles;
+            //List<BingoTile> PlayerFourTiles;
+
+            Player[] PlayerData;     
+
+            Player PlayerOneData;
+            Player PlayerTwoData;
+            Player PlayerThreeData;
+            Player PlayerFourData;
 
         #endregion
 
@@ -155,10 +164,16 @@ namespace ECE_700_BoardGame
             BingoBoards = new List<BackgroundItem>();
             Dividers    = new List<BackgroundItem>();
 
-            PlayerOneTiles  = new List<BingoTile>();
-            PlayerTwoTiles  = new List<BingoTile>();
-            PlayerThreeTiles= new List<BingoTile>();
-            PlayerFourTiles = new List<BingoTile>();
+            PlayerTiles = new List<BingoTile>[PLAYER_COUNT];
+            PlayerData = new Player[PLAYER_COUNT];
+
+            for(int i=0; i<PLAYER_COUNT; i++){
+                PlayerTiles[i] = new List<BingoTile>();
+            }
+            //PlayerOneTiles  = new List<BingoTile>();
+            //PlayerTwoTiles  = new List<BingoTile>();
+            //PlayerThreeTiles= new List<BingoTile>();
+            //PlayerFourTiles = new List<BingoTile>();
             
             #endregion
 
@@ -373,8 +388,14 @@ namespace ECE_700_BoardGame
                 bt.Initialize(13);
                 bt.Update(13);
                 touchTarget.TouchTapGesture += bt.OnTouchTapGesture;
-                PlayerOneTiles.Add(bt);
+                PlayerTiles[1].Add(bt);
             }
+
+            #endregion
+
+            #region Player Data
+
+            PlayerData[1] = new Player(PlayerTiles[1], 1);
 
             #endregion
         }
@@ -446,7 +467,8 @@ namespace ECE_700_BoardGame
 
             Question.Draw(spriteBatch, gameTime);
 
-            foreach (BingoTile bt in PlayerOneTiles)
+            //TODO: Temporary hardcoded to 1 whilst testing player 1
+            foreach (BingoTile bt in PlayerTiles[1])
             {
                 bt.Draw(spriteBatch);
             }

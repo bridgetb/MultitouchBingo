@@ -58,7 +58,7 @@ namespace ECE_700_BoardGame.Engine
                 previousAnsCorrect = true;
 
                 //TODO check if won
-                if (false)
+                if (Bingo())
                 {
                     HasWon = true;
 
@@ -82,6 +82,19 @@ namespace ECE_700_BoardGame.Engine
 
         }
 
+        //TODO: Check correctly for all winning conditions for the game
+        bool Bingo()
+        {
+            for (int i = 0; i < AnsweredTiles.Length; i++)
+            {
+                if (!AnsweredTiles[i])
+                {
+                    return false;
+                }
+            }
+            
+            return true;
+        }
 
         /// <summary>
         /// Rendering of the Player scoring data that are placed in each players section

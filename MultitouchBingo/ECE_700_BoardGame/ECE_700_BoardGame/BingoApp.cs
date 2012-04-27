@@ -436,9 +436,12 @@ namespace ECE_700_BoardGame
                         Debug.WriteLine(mouseState.Y.ToString(), "Mouse Y Position");
 #endif
 
-                        foreach (BingoTile bt in PlayerOneTiles)
+                        int tileNum = 0;
+                        foreach (BingoTile bt in PlayerTiles[1])
                         {
                             bt.ClickEvent(mouseState);
+                            PlayerData[1].tileAnswered(bt.Answered, tileNum);
+                            tileNum++;
                         }
 
                         Question.OnClickGesture(mouseState);

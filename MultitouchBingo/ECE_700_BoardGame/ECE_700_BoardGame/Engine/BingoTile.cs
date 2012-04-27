@@ -21,8 +21,9 @@ namespace ECE_700_BoardGame.Engine
     {
         #region Fields
 
-        bool Answered;
-        bool AttemptAnswer;
+        public bool Answered;
+
+        public bool AttemptAnswer;
         
         int AnswerID;
         int QuestionID;

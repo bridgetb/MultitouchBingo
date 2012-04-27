@@ -237,7 +237,7 @@ namespace ECE_700_BoardGame
 
             #region Position Main Background Tiles
 
-            Texture2D backTex = Content.Load<Texture2D>("JungleConcept");
+            Texture2D backTex = Content.Load<Texture2D>("MountainBackground");
             Vector2 originBack = new Vector2(backTex.Width/2, backTex.Height/2);
             Rectangle posRect = new Rectangle(0 + screenWidth / 4, 0 + screenHeight / 4, screenWidth / 2, screenHeight / 2);
 
@@ -567,6 +567,7 @@ namespace ECE_700_BoardGame
 
             // Set large objects to null to facilitate garbage collection.
 
+            Question.disconnectDB();
             base.Dispose(disposing);
         }
 

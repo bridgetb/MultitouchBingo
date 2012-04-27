@@ -25,7 +25,7 @@ namespace ECE_700_BoardGame
             // Apply Surface globalization settings
             GlobalizationSettings.ApplyToCurrentThread();
 
-            using (App1 app = new App1())
+            using (BingoApp app = new BingoApp())
             {
                 app.Run();
             }

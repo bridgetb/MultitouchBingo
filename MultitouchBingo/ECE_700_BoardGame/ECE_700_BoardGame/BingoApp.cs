@@ -22,7 +22,7 @@ namespace ECE_700_BoardGame
     /// <summary>
     /// This is the main type for your application.
     /// </summary>
-    public class App1 : Microsoft.Xna.Framework.Game
+    public class BingoApp : Microsoft.Xna.Framework.Game
     {
         #region TemplatedFields
 
@@ -49,7 +49,7 @@ namespace ECE_700_BoardGame
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public App1()
+        public BingoApp()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -102,6 +102,8 @@ namespace ECE_700_BoardGame
         #region GameFields
 
             ContentManager content;
+            MouseState mouseState;
+            MouseState mousePrevState;
 
             private const int DIVIDER_THICKNESS = 20;
 
@@ -196,6 +198,7 @@ namespace ECE_700_BoardGame
             #region Event Handlers
 
             touchTarget.TouchTapGesture += Question.OnTouchTapGesture;
+            mouseState = mousePrevState = Mouse.GetState();
 
             #endregion
         }
@@ -388,6 +391,7 @@ namespace ECE_700_BoardGame
             // TODO: Unload any non ContentManager content here
         }
 
+
         /// <summary>
         /// Allows the app to run logic such as updating the world,
         /// checking for collisions, gathering input and playing audio.
@@ -402,6 +406,23 @@ namespace ECE_700_BoardGame
                     // TODO: Process touches, 
                     // use the following code to get the state of all current touch points.
                     // ReadOnlyTouchPointCollection touches = touchTarget.GetState();
+                    mouseState = Mouse.GetState();
+
+                    if (mouseState != mousePrevState)
+                    {
+#if DEBUG
+                        Debug.WriteLine(mouseState.X.ToString(), "Mouse X Position");
+                        Debug.WriteLine(mouseState.Y.ToString(), "Mouse Y Position");
+#endif
+
+                        foreach (BingoTile bt in PlayerOneTiles)
+                        {
+                            bt.ClickEvent(mouseState);
+                        }
+
+                        Question.OnClickGesture(mouseState);
+                    }
+                    mousePrevState = mouseState;
                 }
 
                 // TODO: Add your update logic here

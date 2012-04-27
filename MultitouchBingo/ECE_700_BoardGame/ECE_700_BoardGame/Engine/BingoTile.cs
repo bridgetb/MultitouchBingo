@@ -75,6 +75,22 @@ namespace ECE_700_BoardGame.Engine
             }
         }
 
+        public void ClickEvent(MouseState mouseState)
+        {
+            //Debug.WriteLine("ENTERS CLICKEVENT");
+            if (IsPressed(mouseState) && !this.Answered)
+            {
+                if (IsCorrectAnswer())
+                {
+                    this.Answered = true;
+                }
+                else
+                {
+                    this.AttemptAnswer = true;
+                }
+            }
+        }
+
 
         /// <summary>
         /// Allows the game component to update itself.

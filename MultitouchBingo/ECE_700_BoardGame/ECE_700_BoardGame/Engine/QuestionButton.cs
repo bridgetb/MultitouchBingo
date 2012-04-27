@@ -56,6 +56,14 @@ namespace ECE_700_BoardGame.Engine
             }
         }
 
+        public void OnClickGesture(MouseState mouseState)
+        {
+            if (IsPressed(mouseState))
+            {
+                RandomiseQuestion();
+            }
+        }
+
         /// <summary>
         /// Chooses a random question based on the current topic.
         /// </summary>

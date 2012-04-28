@@ -76,6 +76,21 @@ namespace ECE_700_BoardGame.Engine
             }
         }
 
+        public void OnTouchTapGesture(TouchPoint touch)
+        {
+            if (IsPressed(touch) && !this.Answered)
+            {
+                if (IsCorrectAnswer())
+                {
+                    this.Answered = true;
+                }
+                else
+                {
+                    this.AttemptAnswer = true;
+                }
+            }
+        }
+
         public void ClickEvent(MouseState mouseState)
         {
             //Debug.WriteLine("ENTERS CLICKEVENT");
@@ -143,8 +158,8 @@ namespace ECE_700_BoardGame.Engine
             else
             {
                 AttemptAnswer = false;
-                spriteBatch.Draw(ErrorSprite, position, Color.White);
                 base.Draw(spriteBatch);
+                spriteBatch.Draw(ErrorSprite, position, Color.White);
             }
         }
     }

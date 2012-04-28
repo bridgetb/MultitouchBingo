@@ -43,25 +43,39 @@ namespace ECE_700_BoardGame.Engine
         }
 
 
-        /// <summary>
-        /// This is called when the touch target receives a tap.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="args"></param>
-        public void OnTouchTapGesture(object sender, TouchEventArgs args)
+        ///// <summary>
+        ///// This is called when the touch target receives a tap.
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="args"></param>
+        //public bool OnTouchTapGesture(object sender, TouchEventArgs args)
+        //{
+        //    if (IsPressed(args.TouchPoint))
+        //    {
+        //        RandomiseQuestion();
+        //        return true;
+        //    }
+        //    return false;
+        //}
+
+        public bool OnTouchTapGesture(TouchPoint touch)
         {
-            if (IsPressed(args.TouchPoint))
+            if (IsPressed(touch))
             {
                 RandomiseQuestion();
+                return true;
             }
+            return false;
         }
 
-        public void OnClickGesture(MouseState mouseState)
+        public bool OnClickGesture(MouseState mouseState)
         {
             if (IsPressed(mouseState))
             {
                 RandomiseQuestion();
+                return true;
             }
+            return false;
         }
 
         /// <summary>
@@ -201,6 +215,11 @@ namespace ECE_700_BoardGame.Engine
             }
         }
         #endregion
+
+        public int getID()
+        {
+            return questionID;
+        }
 
         public void Draw(SpriteBatch batch, GameTime gameTime)
         {

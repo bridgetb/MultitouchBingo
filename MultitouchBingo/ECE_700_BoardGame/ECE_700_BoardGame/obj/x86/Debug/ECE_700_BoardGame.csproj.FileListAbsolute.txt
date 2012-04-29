@@ -1,20 +1,3 @@
-C:\work\bridget\Uni\2012\SOFTENG700\MultitouchBingo\MultitouchBingo\ECE_700_BoardGame\ECE_700_BoardGame\bin\x86\Debug\Resources\icon.png
-C:\work\bridget\Uni\2012\SOFTENG700\MultitouchBingo\MultitouchBingo\ECE_700_BoardGame\ECE_700_BoardGame\bin\x86\Debug\ECE_700_BoardGame.xml
-C:\work\bridget\Uni\2012\SOFTENG700\MultitouchBingo\MultitouchBingo\ECE_700_BoardGame\ECE_700_BoardGame\bin\x86\Debug\Content\JungleConcept.xnb
-C:\work\bridget\Uni\2012\SOFTENG700\MultitouchBingo\MultitouchBingo\ECE_700_BoardGame\ECE_700_BoardGame\bin\x86\Debug\Content\the_baboon_king.xnb
-C:\work\bridget\Uni\2012\SOFTENG700\MultitouchBingo\MultitouchBingo\ECE_700_BoardGame\ECE_700_BoardGame\bin\x86\Debug\Content\Black_Star_Punch_small.xnb
-C:\work\bridget\Uni\2012\SOFTENG700\MultitouchBingo\MultitouchBingo\ECE_700_BoardGame\ECE_700_BoardGame\bin\x86\Debug\Content\TempBingoBoard.xnb
-C:\work\bridget\Uni\2012\SOFTENG700\MultitouchBingo\MultitouchBingo\ECE_700_BoardGame\ECE_700_BoardGame\bin\x86\Debug\Content\Divider.xnb
-C:\work\bridget\Uni\2012\SOFTENG700\MultitouchBingo\MultitouchBingo\ECE_700_BoardGame\ECE_700_BoardGame\bin\x86\Debug\ECE_700_BoardGame.exe
-C:\work\bridget\Uni\2012\SOFTENG700\MultitouchBingo\MultitouchBingo\ECE_700_BoardGame\ECE_700_BoardGame\bin\x86\Debug\ECE_700_BoardGame.pdb
-C:\work\bridget\Uni\2012\SOFTENG700\MultitouchBingo\MultitouchBingo\ECE_700_BoardGame\ECE_700_BoardGame\obj\x86\Debug\ResolveAssemblyReference.cache
-C:\work\bridget\Uni\2012\SOFTENG700\MultitouchBingo\MultitouchBingo\ECE_700_BoardGame\ECE_700_BoardGame\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
-C:\work\bridget\Uni\2012\SOFTENG700\MultitouchBingo\MultitouchBingo\ECE_700_BoardGame\ECE_700_BoardGame\obj\x86\Debug\ECE_700_BoardGame.exe
-C:\work\bridget\Uni\2012\SOFTENG700\MultitouchBingo\MultitouchBingo\ECE_700_BoardGame\ECE_700_BoardGame\obj\x86\Debug\ECE_700_BoardGame.pdb
-C:\work\bridget\Uni\2012\SOFTENG700\MultitouchBingo\MultitouchBingo\ECE_700_BoardGame\ECE_700_BoardGame\bin\x86\Debug\Content\Question.xnb
-C:\work\bridget\Uni\2012\SOFTENG700\MultitouchBingo\MultitouchBingo\ECE_700_BoardGame\ECE_700_BoardGame\bin\x86\Debug\Content\shapes.xnb
-C:\work\bridget\Uni\2012\SOFTENG700\MultitouchBingo\MultitouchBingo\ECE_700_BoardGame\ECE_700_BoardGame\bin\x86\Debug\ExerciseMaterial.sdf
-C:\work\bridget\Uni\2012\SOFTENG700\MultitouchBingo\MultitouchBingo\ECE_700_BoardGame\ECE_700_BoardGame\bin\x86\Debug\Database1.mdf
 C:\Users\Jason Greenwood\Work\Uni\2012\700\ECE_700_BoardGame\MultitouchBingo\ECE_700_BoardGame\ECE_700_BoardGame\bin\x86\Debug\Resources\icon.png
 C:\Users\Jason Greenwood\Work\Uni\2012\700\ECE_700_BoardGame\MultitouchBingo\ECE_700_BoardGame\ECE_700_BoardGame\bin\x86\Debug\ECE_700_BoardGame.xml
 C:\Users\Jason Greenwood\Work\Uni\2012\700\ECE_700_BoardGame\MultitouchBingo\ECE_700_BoardGame\ECE_700_BoardGame\bin\x86\Debug\Database1.mdf

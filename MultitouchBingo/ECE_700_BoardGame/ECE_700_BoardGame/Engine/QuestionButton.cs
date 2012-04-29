@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -30,13 +31,20 @@ namespace ECE_700_BoardGame.Engine
         private string currentTopic {get; set;}
         private string currentQuestion;
         private int questionID;
+        private ArrayList completedQuestions;
+        private int maxQuestions;
 
         public QuestionButton(Game game, Texture2D tex, Rectangle pos, string topic)
             : base(game, tex, pos)
         {
             connectDB();
             questions = SelectQuestions(topic);
-            
+            completedQuestions = new ArrayList();
+
+            // Set max questions to ask
+            string result = stringQueryDB("select count(*) from Questions");
+            maxQuestions = Int32.Parse(result);
+
             // Set starting question
             currentTopic = topic;
             RandomiseQuestion();
@@ -84,8 +92,22 @@ namespace ECE_700_BoardGame.Engine
         public void RandomiseQuestion()
         {
             string topic = currentTopic;
+            // If all questions have been cycled through, repeat questions
+            if (completedQuestions.Count == maxQuestions)
+            {
+                completedQuestions.Clear();
+#if DEBUG
+                Debug.WriteLine("Repeating questions");
+#endif
+            }
+
             // Get new question from question set
             int rand = new Random().Next(questions.Rows.Count);
+            while (completedQuestions.Contains(rand))
+            {
+                rand = new Random().Next(questions.Rows.Count);
+            }
+
             object[] row = questions.Rows[rand].ItemArray;
             questionID = Int32.Parse(row[0].ToString());
             currentQuestion = row[1].ToString();
@@ -99,6 +121,7 @@ namespace ECE_700_BoardGame.Engine
                 texture = this.Game.Content.Load<Texture2D>(filename);
                 
             }
+            completedQuestions.Add(rand);
         }
 
         /// <summary>
@@ -139,20 +162,7 @@ namespace ECE_700_BoardGame.Engine
             conn.ConnectionString = @"Data Source='ExerciseMaterial.sdf'; File Mode='shared read'";
 
             conn.Open();
-            /*
-            SqlCeCommand cmd = conn.CreateCommand();
-            cmd.Connection = conn;
-            string paramName = "@Image";
-            string fileName = @"";
-
-            using (BinaryReader br = new BinaryReader(File.Open(fileName, FileMode.Open)))
-            {
-                byte[] data = br.ReadBytes((int)br.BaseStream.Length);
-                SqlCeParameter parameter = new SqlCeParameter(paramName, System.Data.SqlDbType.Image, data.Length);
-                parameter.Value = data;
-                cmd.Parameters.Add(parameter);
-            }
-            */
+            
         }
 
         public void disconnectDB()

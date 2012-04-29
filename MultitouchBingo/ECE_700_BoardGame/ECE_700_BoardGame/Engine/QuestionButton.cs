@@ -31,10 +31,10 @@ namespace ECE_700_BoardGame.Engine
         private string currentQuestion;
         private int questionID;
 
-
         public QuestionButton(Game game, Texture2D tex, Rectangle pos, string topic)
             : base(game, tex, pos)
         {
+            connectDB();
             questions = SelectQuestions(topic);
             
             // Set starting question
@@ -43,17 +43,39 @@ namespace ECE_700_BoardGame.Engine
         }
 
 
-        /// <summary>
-        /// This is called when the touch target receives a tap.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="args"></param>
-        public void OnTouchTapGesture(object sender, TouchEventArgs args)
+        ///// <summary>
+        ///// This is called when the touch target receives a tap.
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="args"></param>
+        //public bool OnTouchTapGesture(object sender, TouchEventArgs args)
+        //{
+        //    if (IsPressed(args.TouchPoint))
+        //    {
+        //        RandomiseQuestion();
+        //        return true;
+        //    }
+        //    return false;
+        //}
+
+        public bool OnTouchTapGesture(TouchPoint touch)
         {
-            if (IsPressed(args.TouchPoint))
+            if (IsPressed(touch))
             {
                 RandomiseQuestion();
+                return true;
             }
+            return false;
+        }
+
+        public bool OnClickGesture(MouseState mouseState)
+        {
+            if (IsPressed(mouseState))
+            {
+                RandomiseQuestion();
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -71,13 +93,11 @@ namespace ECE_700_BoardGame.Engine
             if (Convert.ToBoolean(row[2]))
             {
                 // Image exists
-                connectDB();
                 string filename = stringQueryDB("select Path from Images where QuestionID = " + questionID.ToString());
                 
                 // Update image to load as texture
                 texture = this.Game.Content.Load<Texture2D>(filename);
                 
-                disconnectDB();
             }
         }
 
@@ -88,7 +108,7 @@ namespace ECE_700_BoardGame.Engine
         /// <returns>DataTable with each row containing the question ID, question and a boolean to indicate whether there is an image associated with it</returns>
         private DataTable SelectQuestions(string topic)
         {
-            connectDB();
+            
             string query;
             if (topic.Equals("Any"))
             {
@@ -99,11 +119,11 @@ namespace ECE_700_BoardGame.Engine
                 query = "select QuestionID, Question, HasImage from Questions, Topics where Topics.TopicID = Questions.TopicID and Topic = '" + topic + "'";
             }
             DataTable dt = queryDBRows(query);
-            disconnectDB();
+            
             return dt;
         }
 
-        #region Database Members
+        #region Database Calls
         private SqlCeConnection conn;
 
         private void connectDB()
@@ -119,9 +139,23 @@ namespace ECE_700_BoardGame.Engine
             conn.ConnectionString = @"Data Source='ExerciseMaterial.sdf'; File Mode='shared read'";
 
             conn.Open();
+            /*
+            SqlCeCommand cmd = conn.CreateCommand();
+            cmd.Connection = conn;
+            string paramName = "@Image";
+            string fileName = @"";
+
+            using (BinaryReader br = new BinaryReader(File.Open(fileName, FileMode.Open)))
+            {
+                byte[] data = br.ReadBytes((int)br.BaseStream.Length);
+                SqlCeParameter parameter = new SqlCeParameter(paramName, System.Data.SqlDbType.Image, data.Length);
+                parameter.Value = data;
+                cmd.Parameters.Add(parameter);
+            }
+            */
         }
 
-        private void disconnectDB()
+        public void disconnectDB()
         {
             conn.Close();
         }
@@ -181,6 +215,11 @@ namespace ECE_700_BoardGame.Engine
             }
         }
         #endregion
+
+        public int getID()
+        {
+            return questionID;
+        }
 
         public void Draw(SpriteBatch batch, GameTime gameTime)
         {

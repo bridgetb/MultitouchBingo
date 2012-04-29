@@ -68,5 +68,17 @@ namespace ECE_700_BoardGame.Engine
             }
             return false;
         }
+
+        protected bool IsPressed(MouseState clickPoint)
+        {
+#if DEBUG
+            Debug.WriteLine(position.Contains((int)clickPoint.X, (int)clickPoint.Y).ToString(), "Is Within Item Hit Detection (CLICK)");
+#endif
+            if (position.Contains((int)clickPoint.X, (int)clickPoint.Y))
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

@@ -105,14 +105,12 @@
     <Compile Include="Engine\Player.cs" />
     <Compile Include="Engine\QuestionButton.cs" />
     <Compile Include="Helper\EnumSettings.cs" />
+    <Compile Include="Helper\Geometry.cs" />
     <Compile Include="Layout\BackgroundItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Database1.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="ExerciseMaterial.sdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

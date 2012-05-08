@@ -346,11 +346,11 @@ namespace ECE_700_BoardGame
 
             if (tempTopic.Equals("Any"))
             {
-                tileAnswersQuery = "select QuestionID, Question, HasImage from Questions";
+                tileAnswersQuery = "select QuestionID, Question, ImageID from Questions";
             }
             else
             {
-                tileAnswersQuery = "select QuestionID, Question, HasImage from Questions, Topics where Topics.TopicID = Questions.TopicID and Topic = '" + tempTopic + "'";
+                tileAnswersQuery = "select QuestionID, Question, ImageID from Questions, Topics where Topics.TopicID = Questions.TopicID and Topic = '" + tempTopic + "'";
             }
 
             DataTable dt = Question.queryDBRows(tileAnswersQuery);
@@ -400,7 +400,8 @@ namespace ECE_700_BoardGame
                     object[] row = dt.Rows[tileAnswer].ItemArray;
                     int answerID = Int32.Parse(row[0].ToString());
                     
-                    string filename = Question.stringQueryDB("select Path from Images where QuestionID = " + answerID.ToString());
+                    string filename = Question.stringQueryDB("select Path from Answers, Images where Answers.QuestionID = " + answerID.ToString() + 
+                        " and Answers.ImageID = Images.ImageID and Difficulty = 1");
                     Texture2D tileAnsTex = Content.Load<Texture2D>(filename);
 
                     //Shift Tile Position
@@ -429,7 +430,7 @@ namespace ECE_700_BoardGame
 
             #region Player Data
 
-            PlayerData[1] = new Player(PlayerTiles[1], 1);
+            PlayerData[1] = new Player(PlayerTiles[1], 1, GameDifficulty.Easy);
 
             #endregion
         }

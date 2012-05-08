@@ -112,15 +112,12 @@ namespace ECE_700_BoardGame.Engine
             questionID = Int32.Parse(row[0].ToString());
             currentQuestion = row[1].ToString();
 
-            if (Convert.ToBoolean(row[2]))
-            {
-                // Image exists
-                string filename = stringQueryDB("select Path from Images where QuestionID = " + questionID.ToString());
+            // Image exists
+            string filename = stringQueryDB("select Path from Questions, Images where QuestionID = " + questionID.ToString() + " and Questions.ImageID = Images.ImageID");
                 
-                // Update image to load as texture
-                texture = this.Game.Content.Load<Texture2D>(filename);
+            // Update image to load as texture
+            texture = this.Game.Content.Load<Texture2D>(filename);
                 
-            }
             completedQuestions.Add(rand);
         }
 
@@ -135,11 +132,11 @@ namespace ECE_700_BoardGame.Engine
             string query;
             if (topic.Equals("Any"))
             {
-                query = "select QuestionID, Question, HasImage from Questions";
+                query = "select QuestionID, Question, ImageID from Questions";
             }
             else
             {
-                query = "select QuestionID, Question, HasImage from Questions, Topics where Topics.TopicID = Questions.TopicID and Topic = '" + topic + "'";
+                query = "select QuestionID, Question, ImageID from Questions, Topics where Topics.TopicID = Questions.TopicID and Topic = '" + topic + "'";
             }
             DataTable dt = queryDBRows(query);
             

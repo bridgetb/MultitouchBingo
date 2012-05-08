@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.GamerServices;
 using System.Diagnostics;
 
 namespace ECE_700_BoardGame.Engine
@@ -19,13 +20,15 @@ namespace ECE_700_BoardGame.Engine
 
         int Score;
         int PlayerID;
+        GameDifficulty DifficultyLevel {get; set;}
 
         #endregion
 
-        public Player(List<BingoTile> playerTiles, int playerID){
+        public Player(List<BingoTile> playerTiles, int playerID, GameDifficulty difficulty){
             this.PlayerTiles = playerTiles;
             AnsweredTiles = new bool[playerTiles.Count];
             this.PlayerID = playerID;
+            DifficultyLevel = difficulty;
         }
 
         /// <summary>

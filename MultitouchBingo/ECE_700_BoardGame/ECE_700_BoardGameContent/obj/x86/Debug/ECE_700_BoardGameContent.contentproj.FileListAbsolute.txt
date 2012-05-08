@@ -1,5 +1,0 @@
-<<<<<<< HEAD
-C:\Users\Jason Greenwood\Work\Uni\2012\700\ECE_700_BoardGame\MultitouchBingo\ECE_700_BoardGame\ECE_700_BoardGameContent\obj\x86\Debug\ResolveAssemblyReference.cache
-=======
-C:\work\bridget\Uni\2012\SOFTENG700\MultitouchBingo\MultitouchBingo\ECE_700_BoardGame\ECE_700_BoardGameContent\obj\x86\Debug\ResolveAssemblyReference.cache
->>>>>>> origin/master

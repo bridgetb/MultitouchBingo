@@ -119,6 +119,7 @@ namespace ECE_700_BoardGame.Engine
             texture = this.Game.Content.Load<Texture2D>(filename);
                 
             completedQuestions.Add(rand);
+            this.Enabled = false;
         }
 
         /// <summary>

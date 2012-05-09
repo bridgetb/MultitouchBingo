@@ -23,26 +23,26 @@ instructions.
       2. Replace "C0" below with the value of your Tag (in hexadecimal format). Repeat this section (this element and its children) for other Tags
       3. Please remove the Launch element if you do not want to register the tag with Object Routing.
       -->
-      <!--
-      <Tag Value="0xC0">
+      
+      <Tag Value="0x01">
         <Actions>
           <Launch />
         </Actions>
       </Tag>
-      -->
+      
       <!--
       To register all Tags in a series:
       1. Please uncomment the Tag Element below.
       2. Replace "0000000000000000" below with the series of your Tag (in hexadecimal format). Repeat this section (this element and its children) for other Tags
       3. Please remove the Launch element if you do not want to register the tag with Object Routing.
       -->
-      <!--
-      <Tag Series="0x0000000000000000">
+      
+      <Tag Series="0x0000000000000001">
         <Actions>
           <Launch /> 
         </Actions>
       </Tag>
-      -->
+      
     </Tags>
   </Application>
 </ss:ApplicationInfo>

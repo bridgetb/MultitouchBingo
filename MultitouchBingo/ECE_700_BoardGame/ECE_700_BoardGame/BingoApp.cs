@@ -208,11 +208,10 @@ namespace ECE_700_BoardGame
 
             #region Event Handlers
 
-            //touchTarget.TouchTapGesture += Question.OnTouchTapGesture;
             Mouse_State = Mouse_PrevState = Mouse.GetState();
-            //Touches = TouchesPrevState = TouchTarget.GetState();
-            TouchesPrevState = TouchTarget.GetState();
-            Touches =  TouchTarget.GetState();
+            Touches = TouchesPrevState = TouchTarget.GetState();
+            //TouchesPrevState = TouchTarget.GetState();
+            //Touches =  TouchTarget.GetState();
 
             #endregion
         }

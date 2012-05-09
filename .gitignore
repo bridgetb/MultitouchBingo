@@ -1,0 +1,8 @@
+#Visual Studio files
+*.suo
+*.cachefile
+*.cache
+*.user
+*.xnb
+*.exe
+*.pdb

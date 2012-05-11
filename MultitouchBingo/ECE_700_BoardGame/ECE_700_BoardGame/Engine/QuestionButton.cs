@@ -150,14 +150,8 @@ namespace ECE_700_BoardGame.Engine
         private void connectDB()
         {
             conn = new SqlCeConnection();
-            System.Reflection.Assembly a = System.Reflection.Assembly.GetExecutingAssembly();
-            DirectoryInfo d = Directory.GetParent(a.CodeBase.ToString().Substring(8));
-            while (!d.ToString().EndsWith(@"\ECE_700_BoardGame"))
-            {
-                d = Directory.GetParent(d.ToString());
-            }
-            String dbfile = d.ToString() + @"\ExerciseMaterial.sdf";
-            conn.ConnectionString = @"Data Source='ExerciseMaterial.sdf'; File Mode='shared read'";
+
+            conn.ConnectionString = @"Data Source='|DataDirectory|\ExerciseMaterial.sdf'; File Mode='shared read'";
 
             conn.Open();
             

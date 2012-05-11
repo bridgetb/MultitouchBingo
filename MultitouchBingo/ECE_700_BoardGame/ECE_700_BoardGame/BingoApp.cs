@@ -208,11 +208,10 @@ namespace ECE_700_BoardGame
 
             #region Event Handlers
 
-            //touchTarget.TouchTapGesture += Question.OnTouchTapGesture;
             Mouse_State = Mouse_PrevState = Mouse.GetState();
-            //Touches = TouchesPrevState = TouchTarget.GetState();
-            TouchesPrevState = TouchTarget.GetState();
-            Touches =  TouchTarget.GetState();
+            Touches = TouchesPrevState = TouchTarget.GetState();
+            //TouchesPrevState = TouchTarget.GetState();
+            //Touches =  TouchTarget.GetState();
 
             #endregion
         }
@@ -462,6 +461,20 @@ namespace ECE_700_BoardGame
 
                     foreach (TouchPoint touch in Touches)
                     {
+                        TagData td = touch.Tag;
+                        if (td.Value == 1)
+                        {
+                            // Enable question changing
+                            Question.Enabled = true;
+                        }
+                        
+
+#if DEBUG
+                        if (td.Value == 1)
+                        {
+                            Debug.WriteLine(td.Value);
+                        }
+#endif
                         var result = from oldtouch in TouchesPrevState
                                      from newtouch in Touches
                                      where Helper.Geometry.Contains(newtouch.Bounds, oldtouch.X, oldtouch.Y) &&
@@ -489,7 +502,7 @@ namespace ECE_700_BoardGame
                         }
 
                         //Check for question touched
-                        if (Question.OnTouchTapGesture(touch))
+                        if (Question.Enabled && Question.OnTouchTapGesture(touch))
                         {
                             int questionID = Question.getID();
 
@@ -529,7 +542,7 @@ namespace ECE_700_BoardGame
                         }
 
                         //Check for question clicked
-                        if (Question.OnClickGesture(Mouse_State))
+                        if (Question.Enabled && Question.OnClickGesture(Mouse_State))
                         {
                             int questionID = Question.getID();
 

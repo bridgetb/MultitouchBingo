@@ -31,6 +31,9 @@ namespace ECE_700_BoardGame.Engine
         Texture2D AnsweredSprite;
         Texture2D ErrorSprite;
 
+        float TileOrient;
+        Boolean Rotated;
+
         #endregion
 
         public BingoTile(Game game, Texture2D tileSprite, Texture2D daubSprite, Texture2D errorSprite, Rectangle pos)
@@ -38,12 +41,29 @@ namespace ECE_700_BoardGame.Engine
         {
             this.Answered = false;
             this.AttemptAnswer = false;
+            this.Rotated = false;
             
             this.AnswerID = -1;
             this.QuestionID = -1;
             
             this.AnsweredSprite = daubSprite;
             this.ErrorSprite = errorSprite;
+        }
+
+        public BingoTile(Game game, Texture2D tileSprite, Texture2D daubSprite, Texture2D errorSprite, Rectangle pos, float tileOrientation)
+            : base(game, tileSprite, pos)
+        {
+            this.Answered = false;
+            this.AttemptAnswer = false;
+
+            this.AnswerID = -1;
+            this.QuestionID = -1;
+
+            this.AnsweredSprite = daubSprite;
+            this.ErrorSprite = errorSprite;
+
+            this.Rotated = true;
+            this.TileOrient = tileOrientation;
         }
 
         /// <summary>
@@ -146,20 +166,41 @@ namespace ECE_700_BoardGame.Engine
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (!Answered && !AttemptAnswer)
+            //if (!Answered && !AttemptAnswer)
+            //{
+                if (Rotated)
+                {
+                    base.Draw(spriteBatch, (float)Math.PI);
+                }
+                else
+                {
+                    base.Draw(spriteBatch);
+                }
+            //}
+            if (Answered)
             {
-                base.Draw(spriteBatch);
+                if (Rotated)
+                {
+                    spriteBatch.Draw(AnsweredSprite, position, null, Color.White, TileOrient, new Vector2(0, 0), SpriteEffects.None, 0f);
+                }
+                else
+                {
+                    //base.Draw(spriteBatch);
+                    spriteBatch.Draw(AnsweredSprite, position, Color.White);
+                }
             }
-            else if (Answered)
-            {
-                base.Draw(spriteBatch);
-                spriteBatch.Draw(AnsweredSprite, position, Color.White);
-            }
-            else
+            else if(AttemptAnswer)
             {
                 AttemptAnswer = false;
-                base.Draw(spriteBatch);
-                spriteBatch.Draw(ErrorSprite, position, Color.White);
+                if (Rotated)
+                {
+                    spriteBatch.Draw(ErrorSprite, position, null, Color.White, TileOrient, new Vector2(0, 0), SpriteEffects.None, 0f);
+                }
+                else
+                {
+                    //base.Draw(spriteBatch);
+                    spriteBatch.Draw(ErrorSprite, position, Color.White);
+                }
             }
         }
     }

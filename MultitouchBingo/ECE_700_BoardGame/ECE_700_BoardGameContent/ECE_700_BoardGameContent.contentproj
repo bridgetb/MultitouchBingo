@@ -407,6 +407,48 @@
   <ItemGroup>
     <Compile Include="fullGlassMilk.JPG">
       <Name>fullGlassMilk</Name>
+	  <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BingoEnvironment\BingoBoard.png">
+      <Name>BingoBoard</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="BingoEnvironment\Bingo_BlueBack.png">
+      <Name>Bingo_BlueBack</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="BingoEnvironment\Bingo_PlayerColours.png">
+      <Name>Bingo_PlayerColours</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="BingoEnvironment\CloudLarge.png">
+      <Name>CloudLarge</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="BingoEnvironment\CloudMedium.png">
+      <Name>CloudMedium</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="BingoEnvironment\CloudsSmall.png">
+      <Name>CloudsSmall</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="BingoEnvironment\Kite.png">
+      <Name>Kite</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="BingoEnvironment\Sun.png">
+      <Name>Sun</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -414,6 +456,13 @@
   <ItemGroup>
     <Compile Include="cupComparison.jpg">
       <Name>cupComparison</Name>
+	  <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BingoEnvironment\BingoDivider.png">
+      <Name>BingoDivider</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

@@ -56,6 +56,11 @@ namespace ECE_700_BoardGame.Engine
             spriteBatch.Draw(texture, position, Color.White);
         }
 
+        public void Draw(SpriteBatch spriteBatch, float orient)
+        {
+            spriteBatch.Draw(texture, position, null, Color.White, orient, new Vector2(0,0), SpriteEffects.None, 0f);
+        }
+
         protected bool IsPressed(TouchPoint point)
         {
 #if DEBUG

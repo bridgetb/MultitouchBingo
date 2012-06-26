@@ -110,17 +110,16 @@ namespace ECE_700_BoardGame
             ReadOnlyTouchPointCollection Touches;
             ReadOnlyTouchPointCollection TouchesPrevState;
 
-            private const int DIVIDER_THICKNESS = 20;
+            private const int DIVIDER_THICKNESS = 60;
 
             //PlayerOne = TopLeft, Players Numbered Clockwise
             private const int PLAYER_COUNT = 4;
+            private const int BOARD_TILE_WIDTH = 4;
 
-            //Backgrounds All content sits on top of
-            BackgroundItem PlayerOneBackground;
-            BackgroundItem PlayerTwoBackground;
-            BackgroundItem PlayerThreeBackground;
-            BackgroundItem PlayerFourBackground;
-            List<BackgroundItem> MainBacking;
+            //Background Elements. All content sits on top of this content
+            BackgroundItem BackgroundBase;
+            BackgroundItem PlayerColors;
+            List<ParallaxingBackground> ParallaxingBacking;
 
             //Bingo Grids That tiles sit amongst
             BackgroundItem BingoGridOne;
@@ -158,9 +157,9 @@ namespace ECE_700_BoardGame
         {
             #region Lists
 
-            MainBacking = new List<BackgroundItem>();
-            BingoBoards = new List<BackgroundItem>();
-            Dividers    = new List<BackgroundItem>();
+            BingoBoards         = new List<BackgroundItem>();
+            Dividers            = new List<BackgroundItem>();
+            ParallaxingBacking  = new List<ParallaxingBackground>();
 
             PlayerTiles = new List<BingoTile>[PLAYER_COUNT];
             PlayerData = new Player[PLAYER_COUNT];
@@ -168,10 +167,6 @@ namespace ECE_700_BoardGame
             for(int i=0; i<PLAYER_COUNT; i++){
                 PlayerTiles[i] = new List<BingoTile>();
             }
-            //PlayerOneTiles  = new List<BingoTile>();
-            //PlayerTwoTiles  = new List<BingoTile>();
-            //PlayerThreeTiles= new List<BingoTile>();
-            //PlayerFourTiles = new List<BingoTile>();
             
             #endregion
 
@@ -235,45 +230,49 @@ namespace ECE_700_BoardGame
 
             #region Position Main Background Tiles
 
-            Texture2D backTex = Content.Load<Texture2D>("MountainBackground");
+            Texture2D backTex = Content.Load<Texture2D>("BingoEnvironment/Bingo_BlueBack");
             Vector2 originBack = new Vector2(backTex.Width/2, backTex.Height/2);
-            Rectangle posRect = new Rectangle(0 + screenWidth / 4, 0 + screenHeight / 4, screenWidth / 2, screenHeight / 2);
+            Rectangle posRect = new Rectangle(screenWidth/2, screenHeight/2, screenWidth, screenHeight);
 
             //Path, RectDestination, Orientation, ContentManager
-            PlayerOneBackground = new BackgroundItem(backTex, posRect, MathHelper.Pi, originBack);
+            BackgroundBase = new BackgroundItem(backTex, posRect, 0, originBack);
 
-            posRect.X += screenWidth / 2;
-            //Added for positioning mirrored Imaged
-            posRect.X += screenWidth / 4;
-            posRect.Y += screenHeight/ 4;
+            Texture2D playerColorTex = Content.Load<Texture2D>("BingoEnvironment/Bingo_PlayerColours");
+            PlayerColors = new BackgroundItem(playerColorTex, posRect, 0, originBack);
 
-            PlayerTwoBackground = new BackgroundItem(backTex, posRect, MathHelper.Pi, originBack, EnumSettings.ItemOrientation.RIGHT);
+            #endregion
 
-            //Added for positioning mirrored Imaged
-            posRect.X -= screenWidth / 2;
-            posRect.Y -= screenHeight / 2;
+            #region ParallaxingElements
 
-            posRect.X -= screenWidth / 2;
-            posRect.Y += screenHeight / 2;
-            PlayerThreeBackground = new BackgroundItem(backTex, posRect, 0, originBack, EnumSettings.ItemOrientation.RIGHT);
+            Rectangle paraRect = new Rectangle(0, 0, screenWidth, screenHeight);
+            int spacing = screenWidth * 2;
 
-            //Added to undo mirrored Image positioning
-            posRect.X += screenWidth / 4;
-            posRect.Y += screenHeight / 4;
+            ParallaxingBackground sun = new ParallaxingBackground();
+            sun.Initialize(Content, "BingoEnvironment/Sun", screenWidth, spacing, paraRect, -0.1f);
+            ParallaxingBacking.Add(sun);
 
-            posRect.X += screenWidth / 2;
-            PlayerFourBackground = new BackgroundItem(backTex, posRect, 0, originBack);
+            ParallaxingBackground kite = new ParallaxingBackground();
+            kite.Initialize(Content, "BingoEnvironment/Kite", screenWidth, spacing, paraRect, -0.15f);
+            ParallaxingBacking.Add(kite);
 
-            MainBacking.Add(PlayerOneBackground);
-            MainBacking.Add(PlayerTwoBackground);
-            MainBacking.Add(PlayerThreeBackground);
-            MainBacking.Add(PlayerFourBackground);
+            spacing = screenWidth+200;
+            ParallaxingBackground cloudLarge = new ParallaxingBackground();
+            cloudLarge.Initialize(Content, "BingoEnvironment/CloudLarge", screenWidth, spacing, paraRect, -0.2f);
+            ParallaxingBacking.Add(cloudLarge);
+
+            ParallaxingBackground cloudMedium = new ParallaxingBackground();
+            cloudMedium.Initialize(Content, "BingoEnvironment/CloudMedium", screenWidth, spacing, paraRect, -0.25f);
+            ParallaxingBacking.Add(cloudMedium);
+
+            ParallaxingBackground cloudsSmall = new ParallaxingBackground();
+            cloudsSmall.Initialize(Content, "BingoEnvironment/CloudsSmall", screenWidth, spacing, paraRect, -0.3f);
+            ParallaxingBacking.Add(cloudsSmall);
 
             #endregion
 
             #region Position Bingo Boards
 
-            Texture2D boardTex = Content.Load<Texture2D>("TempBingoBoard");
+            Texture2D boardTex = Content.Load<Texture2D>("BingoEnvironment/BingoBoard");
             int boardWidth = Convert.ToInt16(screenHeight/2.3);
             Rectangle posBoard = new Rectangle( (screenWidth / 4) - boardWidth/2,
                                                 (screenHeight / 4) - boardWidth/2,
@@ -306,23 +305,25 @@ namespace ECE_700_BoardGame
 
             #region Position Dividers
 
-            Texture2D dividerTex = Content.Load<Texture2D>("Divider");
+            Texture2D dividerTex = Content.Load<Texture2D>("BingoEnvironment/BingoDivider");
 
             //Horizontals
-            Rectangle posDivider = new Rectangle(screenWidth/12, (screenHeight / 2) - (DIVIDER_THICKNESS / 2), screenWidth / 3, DIVIDER_THICKNESS);
+            Rectangle posDivider = new Rectangle(0, (screenHeight / 2) - (DIVIDER_THICKNESS / 2), screenWidth / 3, DIVIDER_THICKNESS);
             
             P1P4_Divider = new BackgroundItem(dividerTex, posDivider, 0);
 
-            posDivider.X += screenWidth / 2;
-            P2P3_Divider = new BackgroundItem(dividerTex, posDivider, 0);
+            posDivider.X = screenWidth;
+            posDivider.Y += DIVIDER_THICKNESS;
+            P2P3_Divider = new BackgroundItem(dividerTex, posDivider, MathHelper.Pi);
 
             //Verticals
-            posDivider = new Rectangle((screenWidth/2) + (DIVIDER_THICKNESS/2), screenHeight/12, screenWidth / 5, DIVIDER_THICKNESS);
+            posDivider = new Rectangle((screenWidth/2) + (DIVIDER_THICKNESS/2), 0, screenWidth / 5, DIVIDER_THICKNESS);
 
             P1P2_Divider = new BackgroundItem(dividerTex, posDivider, MathHelper.Pi/2);
 
-            posDivider.Y = screenHeight - (screenHeight/12) - posDivider.Width;
-            P3P4_Divider = new BackgroundItem(dividerTex, posDivider, MathHelper.Pi/2);
+            posDivider.Y = screenHeight;
+            posDivider.X -= DIVIDER_THICKNESS;
+            P3P4_Divider = new BackgroundItem(dividerTex, posDivider, (3*MathHelper.Pi)/2);
 
             Dividers.Add(P1P4_Divider);
             Dividers.Add(P2P3_Divider);
@@ -355,9 +356,9 @@ namespace ECE_700_BoardGame
             DataTable dt = Question.queryDBRows(tileAnswersQuery);
 
             //Initialize to top left tile position for player 1
-            Rectangle posRectAns = new Rectangle(   (screenWidth / 4) - (boardWidth / 2)  + (boardWidth / 50),
-                                                    (screenHeight / 4) - (boardWidth / 2) + (boardWidth / 35),
-                                                    boardWidth / 7, boardWidth / 7);    
+            Rectangle posRectAns = new Rectangle(   (screenWidth / 4) - (boardWidth / 2)  + (boardWidth / 25),
+                                                    (screenHeight / 4) - (boardWidth / 2) + (boardWidth / 20),
+                                                    boardWidth / 6, boardWidth / 6);    
             Texture2D daubTex = Content.Load<Texture2D>("daub");
             Texture2D errorTileTex = Content.Load<Texture2D>("error");
 
@@ -367,30 +368,36 @@ namespace ECE_700_BoardGame
                 {
                     //Player 2
                     case (1):
-                        posRectAns.X = ((screenWidth * 3) / 4) - (boardWidth / 2) + (boardWidth / 50);
-                        posRectAns.Y = (screenHeight / 4) - (boardWidth / 2) + (boardWidth / 35);
+                        posRectAns.X = ((screenWidth * 3) / 4) - (boardWidth / 2) + (boardWidth / 25);
+                        posRectAns.Y = (screenHeight / 4) - (boardWidth / 2) + (boardWidth / 20);
                         break;
 
                     //Player 3
                     case (2):
-                        posRectAns.X = (screenWidth / 4) - (boardWidth / 2) + (boardWidth / 50);
-                        posRectAns.Y = ((screenHeight * 3) / 4) - (boardWidth / 2) + (boardWidth / 35);
+                        posRectAns.X = (screenWidth / 4) - (boardWidth / 2) + (boardWidth / 25);
+                        posRectAns.Y = ((screenHeight * 3) / 4) - (boardWidth / 2) + (boardWidth / 20);
                         break;
 
                     //Player 4
                     case (3):
-                        posRectAns.X = ((screenWidth * 3) / 4) - (boardWidth / 2) + (boardWidth / 50);
-                        posRectAns.Y = ((screenHeight * 3) / 4) - (boardWidth / 2) + (boardWidth / 35);
+                        posRectAns.X = ((screenWidth * 3) / 4) - (boardWidth / 2) + (boardWidth / 25);
+                        posRectAns.Y = ((screenHeight * 3) / 4) - (boardWidth / 2) + (boardWidth / 20);
                         break;
                 }
                 
                 List<int> answerIndex = new List<int>();
-                while (answerIndex.Count < 25)
+                while (answerIndex.Count < 16)
                 {
                     int rand = new Random().Next(dt.Rows.Count);
                     if(!answerIndex.Contains(rand)){
                         answerIndex.Add(rand);
                     }
+                }
+
+                if (playerIndex < (PLAYER_COUNT / 2))
+                {
+                    posRectAns.X += posRectAns.Width;
+                    posRectAns.Y += posRectAns.Height;
                 }
 
                 int i = 0;
@@ -406,19 +413,26 @@ namespace ECE_700_BoardGame
                     //Shift Tile Position
                     if (i!=0)
                     {
-                        posRectAns.X += boardWidth/5;
+                        posRectAns.X += boardWidth/BOARD_TILE_WIDTH;
 
-                        if ((i % 5) == 0)
+                        if ((i % BOARD_TILE_WIDTH) == 0)
                         {
-                            posRectAns.X -= 5 * (boardWidth/5);
-                            posRectAns.Y += boardWidth / 5;
+                            posRectAns.X -= BOARD_TILE_WIDTH * (boardWidth / 4);
+                            posRectAns.Y += boardWidth / BOARD_TILE_WIDTH;
                         }
                     }
 
-                    BingoTile bt = new BingoTile(this, tileAnsTex, daubTex, errorTileTex, posRectAns);
+                    BingoTile bt;
+                    if (playerIndex < (PLAYER_COUNT/2))
+                    {
+                        bt = new BingoTile(this, tileAnsTex, daubTex, errorTileTex, posRectAns, (float)Math.PI);
+                    }
+                    else
+                    {
+                        bt = new BingoTile(this, tileAnsTex, daubTex, errorTileTex, posRectAns);
+                    }
+
                     bt.Initialize(answerID);
-                    //bt.Update(13);
-                    //touchTarget.TouchTapGesture += bt.OnTouchTapGesture;
                     PlayerTiles[playerIndex].Add(bt);
 
                     i++;
@@ -578,17 +592,20 @@ namespace ECE_700_BoardGame
                 applicationLoadCompleteSignalled = true;
             }
 
-            //TODO: Rotate the UI based on the value of screenTransform here if desired
-
             GraphicsDevice.Clear(backgroundColor);
 
             spriteBatch.Begin();
 
-            foreach (BackgroundItem bi in MainBacking)
+            BackgroundBase.Draw(spriteBatch);
+
+            foreach (ParallaxingBackground pb in ParallaxingBacking)
             {
-                bi.Draw(spriteBatch);
+                pb.Update();
+                pb.Draw(spriteBatch);
             }
 
+            PlayerColors.Draw(spriteBatch);
+            
             foreach (BackgroundItem bi in BingoBoards)
             {
                 bi.Draw(spriteBatch);

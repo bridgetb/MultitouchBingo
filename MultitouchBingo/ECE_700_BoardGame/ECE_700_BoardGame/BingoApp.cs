@@ -462,7 +462,7 @@ namespace ECE_700_BoardGame
                     foreach (TouchPoint touch in Touches)
                     {
                         TagData td = touch.Tag;
-                        if (td.Value == 1)
+                        if (td.Value == 8)
                         {
                             // Enable question changing
                             Question.Enabled = true;

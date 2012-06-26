@@ -70,7 +70,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Surface.Presentation, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -136,6 +136,7 @@
     <Compile Include="Engine\Animation.cs" />
     <Compile Include="Engine\BingoTile.cs" />
     <Compile Include="Engine\Button.cs" />
+    <Compile Include="Engine\ParallaxingBackground.cs" />
     <Compile Include="Engine\Player.cs" />
     <Compile Include="Engine\QuestionButton.cs" />
     <Compile Include="Helper\EnumSettings.cs" />

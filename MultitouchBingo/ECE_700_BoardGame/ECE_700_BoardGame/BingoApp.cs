@@ -110,6 +110,8 @@ namespace ECE_700_BoardGame
             ReadOnlyTouchPointCollection Touches;
             ReadOnlyTouchPointCollection TouchesPrevState;
 
+            bool QuestionChanged = false;
+            TimeSpan QuestionLastChanged; 
             private const int DIVIDER_THICKNESS = 60;
 
             //PlayerOne = TopLeft, Players Numbered Clockwise
@@ -475,33 +477,34 @@ namespace ECE_700_BoardGame
 
                     foreach (TouchPoint touch in Touches)
                     {
-                        TagData td = touch.Tag;
-                        if (td.Value == 8)
-                        {
-                            // Enable question changing
-                            Question.Enabled = true;
-                        }
-                        
 
-#if DEBUG
-                        if (td.Value == 1)
-                        {
-                            Debug.WriteLine(td.Value);
-                        }
-#endif
                         var result = from oldtouch in TouchesPrevState
                                      from newtouch in Touches
                                      where Helper.Geometry.Contains(newtouch.Bounds, oldtouch.X, oldtouch.Y) &&
                                      newtouch.Id == oldtouch.Id
                                      select oldtouch;
 
-
                         var sameTouch = result.FirstOrDefault();
-                        if(sameTouch != null){
-                            int x = 14;
-                            int y = x;
+                        if (sameTouch != null)
+                        {
                             continue;
                         }
+
+                        TagData td = touch.Tag;
+                        if (td.Value == 8 && !this.QuestionChanged) // && gameTime.TotalGameTime.Subtract(QuestionLastChanged).CompareTo(new TimeSpan(0, 0, 0, 0, 200)) == 1)
+                        {
+                            // Enable question changing
+                            Question.Enabled = true;
+                            this.QuestionChanged = true;
+                            QuestionLastChanged = gameTime.TotalGameTime;
+                        }
+
+#if DEBUG
+                        if (td.Value == 8)
+                        {
+                            Debug.WriteLine(td.Value);
+                        }
+#endif
 
                         //Check for tile touched
                         for (int playerIndex = 0; playerIndex < PLAYER_COUNT; playerIndex++)
@@ -531,7 +534,7 @@ namespace ECE_700_BoardGame
                         }
                     }
                     TouchesPrevState = Touches;
-
+                    QuestionChanged = false;
                     #endregion
 
                     #region Mouse Events

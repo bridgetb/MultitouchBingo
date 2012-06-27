@@ -22,6 +22,7 @@ namespace ECE_700_BoardGame.Engine
     {
         public Texture2D texture;
         public Rectangle position;
+        public Vector2 originOffset;
         
         public Button(Game game, Texture2D tex, Rectangle pos) : base(game)
         {
@@ -58,7 +59,7 @@ namespace ECE_700_BoardGame.Engine
 
         public void Draw(SpriteBatch spriteBatch, float orient)
         {
-            spriteBatch.Draw(texture, position, null, Color.White, orient, new Vector2(0,0), SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, position, null, Color.White, orient, originOffset, SpriteEffects.None, 0f);
         }
 
         protected bool IsPressed(TouchPoint point)

@@ -131,14 +131,11 @@ namespace ECE_700_BoardGame
             List<BackgroundItem> BingoBoards;
 
             //Dividers Between Players 
-            BackgroundItem P1P4_Divider;
-            BackgroundItem P2P3_Divider;
-            BackgroundItem P1P2_Divider;
-            BackgroundItem P3P4_Divider;
             List<BackgroundItem> Dividers;
 
             //Question tile in centre
             ECE_700_BoardGame.Engine.QuestionButton Question;
+            BackgroundItem QuestionArea;
 
             //Player answer tiles
             List<BingoTile>[] PlayerTiles;
@@ -311,21 +308,21 @@ namespace ECE_700_BoardGame
 
             //Horizontals
             Rectangle posDivider = new Rectangle(0, (screenHeight / 2) - (DIVIDER_THICKNESS / 2), screenWidth / 3, DIVIDER_THICKNESS);
-            
-            P1P4_Divider = new BackgroundItem(dividerTex, posDivider, 0);
+
+            BackgroundItem P1P4_Divider = new BackgroundItem(dividerTex, posDivider, 0);
 
             posDivider.X = screenWidth;
             posDivider.Y += DIVIDER_THICKNESS;
-            P2P3_Divider = new BackgroundItem(dividerTex, posDivider, MathHelper.Pi);
+            BackgroundItem P2P3_Divider = new BackgroundItem(dividerTex, posDivider, MathHelper.Pi);
 
             //Verticals
             posDivider = new Rectangle((screenWidth/2) + (DIVIDER_THICKNESS/2), 0, screenWidth / 5, DIVIDER_THICKNESS);
 
-            P1P2_Divider = new BackgroundItem(dividerTex, posDivider, MathHelper.Pi/2);
+            BackgroundItem P1P2_Divider = new BackgroundItem(dividerTex, posDivider, MathHelper.Pi / 2);
 
             posDivider.Y = screenHeight;
             posDivider.X -= DIVIDER_THICKNESS;
-            P3P4_Divider = new BackgroundItem(dividerTex, posDivider, (3*MathHelper.Pi)/2);
+            BackgroundItem P3P4_Divider = new BackgroundItem(dividerTex, posDivider, (3 * MathHelper.Pi) / 2);
 
             Dividers.Add(P1P4_Divider);
             Dividers.Add(P2P3_Divider);
@@ -335,9 +332,16 @@ namespace ECE_700_BoardGame
             #endregion
 
             #region Question Tile
+
             Texture2D questionTex = Content.Load<Texture2D>("Question");
             Rectangle questionPos = new Rectangle(screenWidth / 2-questionTex.Width/2, screenHeight/2-questionTex.Height/2, questionTex.Width, questionTex.Height);
             Question = new QuestionButton(this, questionTex, questionPos, "Any");
+
+            Texture2D quAreaTex = Content.Load<Texture2D>("BingoEnvironment/BingoQuestionMark_Area");
+            Vector2 originQuArea = new Vector2(quAreaTex.Width / 2, quAreaTex.Height / 2);
+            Rectangle posQuArea = new Rectangle(screenWidth / 2, screenHeight / 2, screenWidth, screenHeight);
+            //Texture, RectDestination, Orientation, imagePositionOrigin
+            QuestionArea = new BackgroundItem(quAreaTex, posQuArea, 0, originQuArea);
 
             #endregion
 
@@ -398,8 +402,8 @@ namespace ECE_700_BoardGame
 
                 if (playerIndex < (PLAYER_COUNT / 2))
                 {
-                    posRectAns.X += posRectAns.Width;
-                    posRectAns.Y += posRectAns.Height;
+                    //posRectAns.X += posRectAns.Width;
+                    //posRectAns.Y += posRectAns.Height;
                 }
 
                 int i = 0;
@@ -427,7 +431,7 @@ namespace ECE_700_BoardGame
                     BingoTile bt;
                     if (playerIndex < (PLAYER_COUNT/2))
                     {
-                        bt = new BingoTile(this, tileAnsTex, daubTex, errorTileTex, posRectAns, (float)Math.PI);
+                        bt = new BingoTile(this, tileAnsTex, daubTex, errorTileTex, posRectAns, (float)Math.PI, new Vector2(tileAnsTex.Width, tileAnsTex.Height) );
                     }
                     else
                     {
@@ -620,6 +624,7 @@ namespace ECE_700_BoardGame
             }
 
             Question.Draw(spriteBatch, gameTime);
+            QuestionArea.Draw(spriteBatch);
 
             for (int playerCount = 0; playerCount < PLAYER_COUNT; playerCount++)
             {

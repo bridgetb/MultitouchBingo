@@ -31,6 +31,8 @@ namespace ECE_700_BoardGame.Engine
         Texture2D AnsweredSprite;
         Texture2D ErrorSprite;
 
+        Vector2 ansSpriteOffset;
+        Vector2 errSpriteOffset;
         float TileOrient;
         Boolean Rotated;
 
@@ -50,7 +52,7 @@ namespace ECE_700_BoardGame.Engine
             this.ErrorSprite = errorSprite;
         }
 
-        public BingoTile(Game game, Texture2D tileSprite, Texture2D daubSprite, Texture2D errorSprite, Rectangle pos, float tileOrientation)
+        public BingoTile(Game game, Texture2D tileSprite, Texture2D daubSprite, Texture2D errorSprite, Rectangle pos, float tileOrientation, Vector2 originOffset)
             : base(game, tileSprite, pos)
         {
             this.Answered = false;
@@ -64,6 +66,9 @@ namespace ECE_700_BoardGame.Engine
 
             this.Rotated = true;
             this.TileOrient = tileOrientation;
+            this.originOffset = originOffset;
+            this.ansSpriteOffset = new Vector2(daubSprite.Width, daubSprite.Height);
+            this.errSpriteOffset = new Vector2(errorSprite.Width, errorSprite.Height);
         }
 
         /// <summary>
@@ -181,7 +186,7 @@ namespace ECE_700_BoardGame.Engine
             {
                 if (Rotated)
                 {
-                    spriteBatch.Draw(AnsweredSprite, position, null, Color.White, TileOrient, new Vector2(0, 0), SpriteEffects.None, 0f);
+                    spriteBatch.Draw(AnsweredSprite, position, null, Color.White, TileOrient, ansSpriteOffset, SpriteEffects.None, 0f);
                 }
                 else
                 {
@@ -194,7 +199,7 @@ namespace ECE_700_BoardGame.Engine
                 AttemptAnswer = false;
                 if (Rotated)
                 {
-                    spriteBatch.Draw(ErrorSprite, position, null, Color.White, TileOrient, new Vector2(0, 0), SpriteEffects.None, 0f);
+                    spriteBatch.Draw(ErrorSprite, position, null, Color.White, TileOrient, errSpriteOffset, SpriteEffects.None, 0f);
                 }
                 else
                 {

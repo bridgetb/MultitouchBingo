@@ -12,6 +12,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
+using System.Collections;
+
 using ECE_700_BoardGame.Layout;
 using ECE_700_BoardGame.Helper;
 using ECE_700_BoardGame.Engine;
@@ -316,7 +318,7 @@ namespace ECE_700_BoardGame
             BackgroundItem P2P3_Divider = new BackgroundItem(dividerTex, posDivider, MathHelper.Pi);
 
             //Verticals
-            posDivider = new Rectangle((screenWidth/2) + (DIVIDER_THICKNESS/2), 0, screenWidth / 5, DIVIDER_THICKNESS);
+            posDivider = new Rectangle((screenWidth/2) + (DIVIDER_THICKNESS/2), 0, screenWidth / 5 - 80, DIVIDER_THICKNESS);
 
             BackgroundItem P1P2_Divider = new BackgroundItem(dividerTex, posDivider, MathHelper.Pi / 2);
 
@@ -326,8 +328,8 @@ namespace ECE_700_BoardGame
 
             Dividers.Add(P1P4_Divider);
             Dividers.Add(P2P3_Divider);
-            Dividers.Add(P1P2_Divider);
-            Dividers.Add(P3P4_Divider);
+            Dividers.Add(P1P2_Divider); //top
+            Dividers.Add(P3P4_Divider); //bottom
 
             #endregion
 
@@ -352,11 +354,11 @@ namespace ECE_700_BoardGame
 
             if (tempTopic.Equals("Any"))
             {
-                tileAnswersQuery = "select QuestionID, Question, ImageID from Questions";
+                tileAnswersQuery = "select Questions.QuestionID, Questions.Question, Answers.ImageID from Questions inner join Answers on Questions.QuestionID = Answers.QuestionID where Difficulty = 1";
             }
             else
             {
-                tileAnswersQuery = "select QuestionID, Question, ImageID from Questions, Topics where Topics.TopicID = Questions.TopicID and Topic = '" + tempTopic + "'";
+                tileAnswersQuery = "select Questions.QuestionID, Questions.Question, Answers.ImageID from Topics, Questions inner join Answers on Questions.QuestionID = Answers.QuestionID where Difficulty = 1 and Topics.TopicID = Questions.TopicID and Topic = '" + tempTopic + "'";
             }
 
             DataTable dt = Question.queryDBRows(tileAnswersQuery);
@@ -410,9 +412,9 @@ namespace ECE_700_BoardGame
                 foreach (var tileAnswer in answerIndex)
                 {
                     object[] row = dt.Rows[tileAnswer].ItemArray;
-                    int answerID = Int32.Parse(row[0].ToString());
+                    int answerImageID = Int32.Parse(row[2].ToString());
                     
-                    string filename = Question.stringQueryDB("select Path from Answers, Images where Answers.QuestionID = " + answerID.ToString() + 
+                    string filename = Question.stringQueryDB("select Path from Answers, Images where Answers.ImageID = " + answerImageID.ToString() + 
                         " and Answers.ImageID = Images.ImageID and Difficulty = 1");
                     Texture2D tileAnsTex = Content.Load<Texture2D>(filename);
 
@@ -438,7 +440,7 @@ namespace ECE_700_BoardGame
                         bt = new BingoTile(this, tileAnsTex, daubTex, errorTileTex, posRectAns);
                     }
 
-                    bt.Initialize(answerID);
+                    bt.Initialize(answerImageID);
                     PlayerTiles[playerIndex].Add(bt);
 
                     i++;
@@ -532,7 +534,17 @@ namespace ECE_700_BoardGame
                             {
                                 foreach (BingoTile bt in PlayerTiles[playerIndex])
                                 {
-                                    bt.Update(questionID);
+                                    // Get possible answer images
+                                    DataTable dt = Question.queryDBRows("select ImageID from Answers where QuestionID = " + questionID.ToString());
+                                    ArrayList list = new ArrayList();
+                                    Debug.WriteLine("LIST : ");
+                                    for (int i = 0; i < dt.Rows.Count; i++)
+                                    {
+                                        list.Add(Int64.Parse(dt.Rows[0].ItemArray[0].ToString()));
+                                        Debug.Write(Int64.Parse(dt.Rows[0].ItemArray[0].ToString()));
+                                        Debug.Write(" ");
+                                    }
+                                    bt.Update(list);
                                 }
                             }
                         }
@@ -572,7 +584,14 @@ namespace ECE_700_BoardGame
                             {
                                 foreach (BingoTile bt in PlayerTiles[playerIndex])
                                 {
-                                    bt.Update(questionID);
+                                    // Get possible answer images
+                                    DataTable dt = Question.queryDBRows("select ImageID from Answers where QuestionID = " + questionID.ToString());
+                                    ArrayList list = new ArrayList();
+                                    for (int i = 0; i < dt.Rows.Count; i++)
+                                    {
+                                        list.Add(Int64.Parse(dt.Rows[0].ItemArray[0].ToString()));
+                                    }
+                                    bt.Update(list);
                                 }
                             }
                         }

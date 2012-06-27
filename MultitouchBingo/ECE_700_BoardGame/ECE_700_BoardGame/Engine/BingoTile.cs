@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Surface.Core;
 using System.Diagnostics;
+using System.Collections;
 
 
 namespace ECE_700_BoardGame.Engine
@@ -25,8 +26,8 @@ namespace ECE_700_BoardGame.Engine
 
         public bool AttemptAnswer;
         
-        int AnswerID;
-        int QuestionID;
+        int AnswerImageID;
+        ArrayList PossibleQuestions;
         
         Texture2D AnsweredSprite;
         Texture2D ErrorSprite;
@@ -45,8 +46,8 @@ namespace ECE_700_BoardGame.Engine
             this.AttemptAnswer = false;
             this.Rotated = false;
             
-            this.AnswerID = -1;
-            this.QuestionID = -1;
+            this.AnswerImageID = -1;
+            this.PossibleQuestions = new ArrayList();
             
             this.AnsweredSprite = daubSprite;
             this.ErrorSprite = errorSprite;
@@ -58,8 +59,8 @@ namespace ECE_700_BoardGame.Engine
             this.Answered = false;
             this.AttemptAnswer = false;
 
-            this.AnswerID = -1;
-            this.QuestionID = -1;
+            this.AnswerImageID = -1;
+            this.PossibleQuestions = new ArrayList();
 
             this.AnsweredSprite = daubSprite;
             this.ErrorSprite = errorSprite;
@@ -75,9 +76,9 @@ namespace ECE_700_BoardGame.Engine
         /// Allows the game component to perform any initialization it needs to before starting
         /// to run.  This is where it can query for any required services and load content.
         /// </summary>
-        public void Initialize(int ansId)
+        public void Initialize(int ansImgId)
         {
-            this.AnswerID = ansId;
+            this.AnswerImageID = ansImgId;
         }
 
 
@@ -137,29 +138,34 @@ namespace ECE_700_BoardGame.Engine
         /// Allows the game component to update itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        public void Update(int questionId)
+        public void Update(ArrayList possibleQuestions)
         {
-            this.QuestionID = questionId;
+            this.PossibleQuestions = possibleQuestions;
         }
 
         private bool IsCorrectAnswer()
         {
             try
             {
-                if ((AnswerID < 0) || (QuestionID < 0))
+                if ((AnswerImageID < 0))
                     throw new System.ArgumentException("ID cannot be less than 0");
-
-                if ((AnswerID == QuestionID) && (AnswerID >= 0) && (QuestionID >= 0))
+                foreach (Int64 obj in PossibleQuestions)
                 {
-                    return true;
+                    if ((AnswerImageID == obj) && (AnswerImageID >= 0) && (obj >= 0))
+                    {
+                        return true;
+                    }
                 }
+
+                // Check for other possible questions with the same answer
+                
                 return false;
             }
             catch (Exception e)
             {
                 Debug.WriteLine("Answer or Question ID Not initialized for tile");
-                Debug.WriteLine(AnswerID.ToString(), "AnswerID");
-                Debug.WriteLine(QuestionID.ToString(), "QuestionID");
+                Debug.WriteLine(AnswerImageID.ToString(), "AnswerID");
+                Debug.WriteLine(PossibleQuestions.ToString(), "QuestionID");
                 Debug.WriteLine(e.StackTrace.ToString());
                 return false;
             }

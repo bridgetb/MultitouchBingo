@@ -336,7 +336,7 @@ namespace ECE_700_BoardGame
             #region Question Tile
 
             Texture2D questionTex = Content.Load<Texture2D>("Question");
-            Rectangle questionPos = new Rectangle(screenWidth / 2-questionTex.Width/2, screenHeight/2-questionTex.Height/2, questionTex.Width, questionTex.Height);
+            Rectangle questionPos = new Rectangle(screenWidth / 2 - questionTex.Width / 2, screenHeight / 2 - questionTex.Height / 2, questionTex.Width, questionTex.Height);
             Question = new QuestionButton(this, questionTex, questionPos, "Any");
 
             Texture2D quAreaTex = Content.Load<Texture2D>("BingoEnvironment/BingoQuestionMark_Area");
@@ -416,7 +416,7 @@ namespace ECE_700_BoardGame
                     
                     string filename = Question.stringQueryDB("select Path from Answers, Images where Answers.ImageID = " + answerImageID.ToString() + 
                         " and Answers.ImageID = Images.ImageID and Difficulty = 1");
-                    Texture2D tileAnsTex = Content.Load<Texture2D>(filename);
+                    Texture2D tileAnsTex = Content.Load<Texture2D>("QuestionAnswerImages/"+filename);
 
                     //Shift Tile Position
                     if (i!=0)
@@ -497,7 +497,7 @@ namespace ECE_700_BoardGame
                         }
 
                         TagData td = touch.Tag;
-                        if (td.Value == 8 && !this.QuestionChanged) // && gameTime.TotalGameTime.Subtract(QuestionLastChanged).CompareTo(new TimeSpan(0, 0, 0, 0, 200)) == 1)
+                        if (td.Value == 0xC0 && !this.QuestionChanged) // && gameTime.TotalGameTime.Subtract(QuestionLastChanged).CompareTo(new TimeSpan(0, 0, 0, 0, 200)) == 1)
                         {
                             // Enable question changing
                             Question.Enabled = true;
@@ -505,12 +505,6 @@ namespace ECE_700_BoardGame
                             QuestionLastChanged = gameTime.TotalGameTime;
                         }
 
-#if DEBUG
-                        if (td.Value == 8)
-                        {
-                            Debug.WriteLine(td.Value);
-                        }
-#endif
 
                         //Check for tile touched
                         for (int playerIndex = 0; playerIndex < PLAYER_COUNT; playerIndex++)

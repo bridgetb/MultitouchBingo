@@ -119,7 +119,7 @@ namespace ECE_700_BoardGame.Engine
             string filename = stringQueryDB("select Path from Questions, Images where QuestionID = " + questionID.ToString() + " and Questions.ImageID = Images.ImageID");
                 
             // Update image to load as texture
-            texture = this.Game.Content.Load<Texture2D>(filename);
+            texture = this.Game.Content.Load<Texture2D>("QuestionAnswerImages/"+filename);
                             
             completedQuestions.Add(rand);
             this.Enabled = false;

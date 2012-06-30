@@ -335,7 +335,7 @@ namespace ECE_700_BoardGame
 
             #region Question Tile
 
-            Texture2D questionTex = Content.Load<Texture2D>("Question");
+            Texture2D questionTex = Content.Load<Texture2D>("QuestionAnswerImages/Question");
             Rectangle questionPos = new Rectangle(screenWidth / 2 - questionTex.Width / 2, screenHeight / 2 - questionTex.Height / 2, questionTex.Width, questionTex.Height);
             Question = new QuestionButton(this, questionTex, questionPos, "Any");
 
@@ -440,6 +440,13 @@ namespace ECE_700_BoardGame
                         bt = new BingoTile(this, tileAnsTex, daubTex, errorTileTex, posRectAns);
                     }
 
+                    DataTable questionImages = Question.queryDBRows("select ImageID from Answers where QuestionID = " + Question.getID().ToString());
+                    ArrayList list = new ArrayList();
+                    for (int j = 0; j < questionImages.Rows.Count; j++)
+                    {
+                        list.Add(Int64.Parse(questionImages.Rows[j].ItemArray[0].ToString()));
+                    }
+                    bt.Update(list);
                     bt.Initialize(answerImageID);
                     PlayerTiles[playerIndex].Add(bt);
 
@@ -531,12 +538,9 @@ namespace ECE_700_BoardGame
                                     // Get possible answer images
                                     DataTable dt = Question.queryDBRows("select ImageID from Answers where QuestionID = " + questionID.ToString());
                                     ArrayList list = new ArrayList();
-                                    Debug.WriteLine("LIST : ");
                                     for (int i = 0; i < dt.Rows.Count; i++)
                                     {
-                                        list.Add(Int64.Parse(dt.Rows[0].ItemArray[0].ToString()));
-                                        Debug.Write(Int64.Parse(dt.Rows[0].ItemArray[0].ToString()));
-                                        Debug.Write(" ");
+                                        list.Add(Int64.Parse(dt.Rows[i].ItemArray[0].ToString()));
                                     }
                                     bt.Update(list);
                                 }
@@ -583,7 +587,7 @@ namespace ECE_700_BoardGame
                                     ArrayList list = new ArrayList();
                                     for (int i = 0; i < dt.Rows.Count; i++)
                                     {
-                                        list.Add(Int64.Parse(dt.Rows[0].ItemArray[0].ToString()));
+                                        list.Add(Int64.Parse(dt.Rows[i].ItemArray[0].ToString()));
                                     }
                                     bt.Update(list);
                                 }

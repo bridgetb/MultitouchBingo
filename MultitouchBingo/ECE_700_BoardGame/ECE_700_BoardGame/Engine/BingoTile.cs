@@ -26,8 +26,8 @@ namespace ECE_700_BoardGame.Engine
 
         public bool AttemptAnswer;
         
-        int AnswerImageID;
-        ArrayList PossibleQuestions;
+        int ImageID;
+        ArrayList PossibleQuestionIDs;
         
         Texture2D AnsweredSprite;
         Texture2D ErrorSprite;
@@ -46,8 +46,8 @@ namespace ECE_700_BoardGame.Engine
             this.AttemptAnswer = false;
             this.Rotated = false;
             
-            this.AnswerImageID = -1;
-            this.PossibleQuestions = new ArrayList();
+            this.ImageID = -1;
+            this.PossibleQuestionIDs = new ArrayList();
             
             this.AnsweredSprite = daubSprite;
             this.ErrorSprite = errorSprite;
@@ -59,8 +59,8 @@ namespace ECE_700_BoardGame.Engine
             this.Answered = false;
             this.AttemptAnswer = false;
 
-            this.AnswerImageID = -1;
-            this.PossibleQuestions = new ArrayList();
+            this.ImageID = -1;
+            this.PossibleQuestionIDs = new ArrayList();
 
             this.AnsweredSprite = daubSprite;
             this.ErrorSprite = errorSprite;
@@ -78,7 +78,7 @@ namespace ECE_700_BoardGame.Engine
         /// </summary>
         public void Initialize(int ansImgId)
         {
-            this.AnswerImageID = ansImgId;
+            this.ImageID = ansImgId;
         }
 
 
@@ -140,18 +140,18 @@ namespace ECE_700_BoardGame.Engine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public void Update(ArrayList possibleQuestions)
         {
-            this.PossibleQuestions = possibleQuestions;
+            this.PossibleQuestionIDs = possibleQuestions;
         }
 
         private bool IsCorrectAnswer()
         {
             try
             {
-                if ((AnswerImageID < 0))
+                if ((ImageID < 0))
                     throw new System.ArgumentException("ID cannot be less than 0");
-                foreach (Int64 obj in PossibleQuestions)
+                foreach (Int64 obj in PossibleQuestionIDs)
                 {
-                    if ((AnswerImageID == obj) && (AnswerImageID >= 0) && (obj >= 0))
+                    if ((ImageID == obj) && (ImageID >= 0) && (obj >= 0))
                     {
                         return true;
                     }
@@ -164,8 +164,8 @@ namespace ECE_700_BoardGame.Engine
             catch (Exception e)
             {
                 Debug.WriteLine("Answer or Question ID Not initialized for tile");
-                Debug.WriteLine(AnswerImageID.ToString(), "AnswerID");
-                Debug.WriteLine(PossibleQuestions.ToString(), "QuestionID");
+                Debug.WriteLine(ImageID.ToString(), "AnswerID");
+                Debug.WriteLine(PossibleQuestionIDs.ToString(), "QuestionID");
                 Debug.WriteLine(e.StackTrace.ToString());
                 return false;
             }

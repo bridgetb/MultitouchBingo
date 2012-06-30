@@ -53,22 +53,6 @@ namespace ECE_700_BoardGame.Engine
             
         }
 
-
-        ///// <summary>
-        ///// This is called when the touch target receives a tap.
-        ///// </summary>
-        ///// <param name="sender"></param>
-        ///// <param name="args"></param>
-        //public bool OnTouchTapGesture(object sender, TouchEventArgs args)
-        //{
-        //    if (IsPressed(args.TouchPoint))
-        //    {
-        //        RandomiseQuestion();
-        //        return true;
-        //    }
-        //    return false;
-        //}
-
         public bool OnTouchTapGesture(TouchPoint touch)
         {
             if (IsPressed(touch))
@@ -241,13 +225,15 @@ namespace ECE_700_BoardGame.Engine
                 vec = font.MeasureString(part1);
                 part2 = this.currentQuestion.Substring(this.currentQuestion.IndexOf("\\n") + 2, this.currentQuestion.Length - this.currentQuestion.IndexOf("\\n") -2);
             }
-            batch.DrawString(font, part1, new Vector2(position.X + position.Width / 2 - vec.X / 2, position.Y + position.Height), Color.Black,
+            // Line 1
+            batch.DrawString(font, part1, new Vector2(position.X + position.Width / 2 - vec.X / 2, position.Y + position.Height + 50), Color.Black,
                 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
-            batch.DrawString(font, part1, new Vector2(position.X + position.Width / 2 + vec.X / 2, position.Y), Color.Black,
+            batch.DrawString(font, part1, new Vector2(position.X + position.Width / 2 + vec.X / 2, position.Y - 50), Color.Black,
                 Single.Parse(Math.PI.ToString()), new Vector2(0,0), scale, SpriteEffects.None, 0);
-            batch.DrawString(font, part2, new Vector2(position.X + position.Width / 2 - vec.X / 2, position.Y + position.Height + vec.Y), Color.Black,
+            // Line 2 (if any)
+            batch.DrawString(font, part2, new Vector2(position.X + position.Width / 2 - vec.X / 2, position.Y + position.Height + 50 + vec.Y), Color.Black,
                 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
-            batch.DrawString(font, part2, new Vector2(position.X + position.Width / 2 + vec.X / 2, position.Y - vec.Y), Color.Black,
+            batch.DrawString(font, part2, new Vector2(position.X + position.Width / 2 + vec.X / 2, position.Y - 50 - vec.Y), Color.Black,
                 Single.Parse(Math.PI.ToString()), new Vector2(0, 0), scale, SpriteEffects.None, 0);
 
 

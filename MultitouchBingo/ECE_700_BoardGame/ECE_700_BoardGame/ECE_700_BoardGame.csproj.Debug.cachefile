@@ -1,9 +1,9 @@
 Content\TempBingoBoard.xnb
 Content\Divider.xnb
-Content\daub.xnb
 Content\error.xnb
 Content\MountainBackground.xnb
 Content\Domino5.xnb
+Content\QuestionAnswerImages\Question.xnb
 Content\Strawberries.xnb
 Content\BingoEnvironment\BingoBoard.xnb
 Content\BingoEnvironment\Bingo_BlueBack.xnb
@@ -68,7 +68,7 @@ Content\QuestionAnswerImages\triangle.xnb
 Content\QuestionAnswerImages\tyres.xnb
 Content\QuestionAnswerImages\YellowBird.xnb
 Content\Comic.xnb
-Content\QuestionAnswerImages\Question.xnb
+Content\daub.xnb
 ExerciseMaterial.sdf
 Resources\icon.png
 ECE_700_BoardGame.xml

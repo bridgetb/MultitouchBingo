@@ -142,7 +142,9 @@ namespace ECE_700_BoardGame
             //Player answer tiles
             List<BingoTile>[] PlayerTiles;
 
-            Player[] PlayerData;     
+            Player[] PlayerData;
+
+            String Topic = "Any";
 
         #endregion
 
@@ -350,15 +352,14 @@ namespace ECE_700_BoardGame
             #region Answer Tiles
 
             string tileAnswersQuery;
-            string tempTopic = "Any";
 
-            if (tempTopic.Equals("Any"))
+            if (Topic.Equals("Any"))
             {
                 tileAnswersQuery = "select Questions.QuestionID, Questions.Question, Answers.ImageID from Questions inner join Answers on Questions.QuestionID = Answers.QuestionID where Difficulty = 1";
             }
             else
             {
-                tileAnswersQuery = "select Questions.QuestionID, Questions.Question, Answers.ImageID from Topics, Questions inner join Answers on Questions.QuestionID = Answers.QuestionID where Difficulty = 1 and Topics.TopicID = Questions.TopicID and Topic = '" + tempTopic + "'";
+                tileAnswersQuery = "select Questions.QuestionID, Questions.Question, Answers.ImageID from Topics, Questions inner join Answers on Questions.QuestionID = Answers.QuestionID where Difficulty = 1 and Topics.TopicID = Questions.TopicID and Topic = '" + Topic + "'";
             }
 
             DataTable dt = Question.queryDBRows(tileAnswersQuery);
@@ -392,13 +393,26 @@ namespace ECE_700_BoardGame
                         posRectAns.Y = ((screenHeight * 3) / 4) - (boardWidth / 2) + (boardWidth / 20);
                         break;
                 }
-                
+
                 List<int> answerIndex = new List<int>();
+                List<int> answerTileImages = new List<int>();
                 while (answerIndex.Count < 16)
                 {
                     int rand = new Random().Next(dt.Rows.Count);
-                    if(!answerIndex.Contains(rand)){
-                        answerIndex.Add(rand);
+                    while(!answerIndex.Contains(rand)){
+                        object[] row = dt.Rows[rand].ItemArray;
+                        int answerImageID = Int32.Parse(row[2].ToString());
+                        if (answerTileImages.Contains(answerImageID))
+                        {
+                            rand = new Random().Next(dt.Rows.Count);
+                            continue;
+                        }
+                        else
+                        {
+                            answerIndex.Add(rand);
+                            answerTileImages.Add(answerImageID);
+                            break;
+                        }
                     }
                 }
 
@@ -409,12 +423,9 @@ namespace ECE_700_BoardGame
                 }
 
                 int i = 0;
-                foreach (var tileAnswer in answerIndex)
+                foreach (var tileAnswer in answerTileImages)
                 {
-                    object[] row = dt.Rows[tileAnswer].ItemArray;
-                    int answerImageID = Int32.Parse(row[2].ToString());
-                    
-                    string filename = Question.stringQueryDB("select Path from Answers, Images where Answers.ImageID = " + answerImageID.ToString() + 
+                    string filename = Question.stringQueryDB("select Path from Answers, Images where Answers.ImageID = " + tileAnswer.ToString() + 
                         " and Answers.ImageID = Images.ImageID and Difficulty = 1");
                     Texture2D tileAnsTex = Content.Load<Texture2D>("QuestionAnswerImages/"+filename);
 
@@ -447,7 +458,7 @@ namespace ECE_700_BoardGame
                         list.Add(Int64.Parse(questionImages.Rows[j].ItemArray[0].ToString()));
                     }
                     bt.Update(list);
-                    bt.Initialize(answerImageID);
+                    bt.Initialize((int)tileAnswer);
                     PlayerTiles[playerIndex].Add(bt);
 
                     i++;

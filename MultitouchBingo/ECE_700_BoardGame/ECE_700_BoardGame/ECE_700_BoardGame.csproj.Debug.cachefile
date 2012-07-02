@@ -28,14 +28,11 @@ Content\QuestionAnswerImages\BlueBirdFewSticks.xnb
 Content\QuestionAnswerImages\burger.xnb
 Content\QuestionAnswerImages\burgerSushiComparison.xnb
 Content\QuestionAnswerImages\hotAirBalloon.xnb
-Content\QuestionAnswerImages\missing3.xnb
 Content\QuestionAnswerImages\pineapple.xnb
-Content\QuestionAnswerImages\saltPepper.xnb
 Content\QuestionAnswerImages\stripyTriangle.xnb
 Content\QuestionAnswerImages\triangle.xnb
 Content\QuestionAnswerImages\YellowBird.xnb
 Content\daub.xnb
-Content\Comic.xnb
 Content\QuestionAnswerImages\tyres.xnb
 Content\QuestionAnswerImages\cupComparison.xnb
 Content\QuestionAnswerImages\EggComparison.xnb
@@ -61,6 +58,7 @@ Content\QuestionAnswerImages\ChristmasTree.xnb
 Content\QuestionAnswerImages\cicada_wings.xnb
 Content\QuestionAnswerImages\circleTyre.xnb
 Content\QuestionAnswerImages\BirdsNest5eggs.xnb
+Content\Comic.xnb
 ExerciseMaterial.sdf
 Resources\icon.png
 ECE_700_BoardGame.xml

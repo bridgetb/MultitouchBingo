@@ -89,22 +89,22 @@ namespace ECE_700_BoardGame.Engine
 
             // Get new question from question set
             int rand = new Random().Next(possibleQuestions.Count);
-            int question = possibleQuestions.ElementAt(rand);
-            while (completedQuestions.Contains(question))
+            questionID = possibleQuestions.ElementAt(rand);
+            while (completedQuestions.Contains(questionID))
             {
                 rand = (rand + 1) % possibleQuestions.Count;
-                question = possibleQuestions.ElementAt(rand);
+                questionID = possibleQuestions.ElementAt(rand);
             }
             // Get question text from database
-            currentQuestion = databaseHelper.stringQueryDB("select Question from Questions where QuestionID = " + question.ToString());
+            currentQuestion = databaseHelper.stringQueryDB("select Question from Questions where QuestionID = " + questionID.ToString());
             
             // Get question image
-            string filename = databaseHelper.stringQueryDB("select Path from Questions, Images where QuestionID = " + question.ToString() + " and Questions.ImageID = Images.ImageID");
+            string filename = databaseHelper.stringQueryDB("select Path from Questions, Images where QuestionID = " + questionID.ToString() + " and Questions.ImageID = Images.ImageID");
                 
             // Update image to load as texture
             texture = this.Game.Content.Load<Texture2D>("QuestionAnswerImages/"+filename);
-                            
-            completedQuestions.Add(rand);
+
+            completedQuestions.Add(questionID);
             this.Enabled = false;
         }
 

@@ -139,6 +139,7 @@
     <Compile Include="Engine\ParallaxingBackground.cs" />
     <Compile Include="Engine\Player.cs" />
     <Compile Include="Engine\QuestionButton.cs" />
+    <Compile Include="Helper\DatabaseHelper.cs" />
     <Compile Include="Helper\EnumSettings.cs" />
     <Compile Include="Helper\Geometry.cs" />
     <Compile Include="Layout\BackgroundItem.cs" />

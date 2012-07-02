@@ -504,7 +504,7 @@ namespace ECE_700_BoardGame
                         }
 
                         TagData td = touch.Tag;
-                        if (td.Value == 0xC0 && !this.QuestionChanged) // && gameTime.TotalGameTime.Subtract(QuestionLastChanged).CompareTo(new TimeSpan(0, 0, 0, 0, 200)) == 1)
+                        if ((td.Value == 0xC0 || td.Value == 8) && !this.QuestionChanged) // && gameTime.TotalGameTime.Subtract(QuestionLastChanged).CompareTo(new TimeSpan(0, 0, 0, 0, 200)) == 1)
                         {
                             // Enable question changing
                             Question.Enabled = true;

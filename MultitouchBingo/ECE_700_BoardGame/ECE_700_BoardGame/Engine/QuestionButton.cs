@@ -83,9 +83,6 @@ namespace ECE_700_BoardGame.Engine
             if (completedQuestions.Count == maxQuestions)
             {
                 completedQuestions.Clear();
-#if DEBUG
-                Debug.WriteLine("Repeating questions");
-#endif
             }
 
             // Get new question from question set

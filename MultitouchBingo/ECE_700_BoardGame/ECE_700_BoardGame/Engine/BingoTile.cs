@@ -27,7 +27,7 @@ namespace ECE_700_BoardGame.Engine
         public bool AttemptAnswer;
         
         int ImageID;
-        ArrayList PossibleQuestionIDs;
+        List<int> AnswersToCurrentQuestion;
         
         Texture2D AnsweredSprite;
         Texture2D ErrorSprite;
@@ -47,7 +47,7 @@ namespace ECE_700_BoardGame.Engine
             this.Rotated = false;
             
             this.ImageID = -1;
-            this.PossibleQuestionIDs = new ArrayList();
+            this.AnswersToCurrentQuestion = new List<int>();
             
             this.AnsweredSprite = daubSprite;
             this.ErrorSprite = errorSprite;
@@ -60,7 +60,7 @@ namespace ECE_700_BoardGame.Engine
             this.AttemptAnswer = false;
 
             this.ImageID = -1;
-            this.PossibleQuestionIDs = new ArrayList();
+            this.AnswersToCurrentQuestion = new List<int>();
 
             this.AnsweredSprite = daubSprite;
             this.ErrorSprite = errorSprite;
@@ -138,9 +138,9 @@ namespace ECE_700_BoardGame.Engine
         /// Allows the game component to update itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        public void Update(ArrayList possibleQuestions)
+        public void Update(List<int> answersToCurrentQuestion)
         {
-            this.PossibleQuestionIDs = possibleQuestions;
+            this.AnswersToCurrentQuestion = answersToCurrentQuestion;
         }
 
         private bool IsCorrectAnswer()
@@ -149,7 +149,7 @@ namespace ECE_700_BoardGame.Engine
             {
                 if ((ImageID < 0))
                     throw new System.ArgumentException("ID cannot be less than 0");
-                foreach (Int64 obj in PossibleQuestionIDs)
+                foreach (Int64 obj in AnswersToCurrentQuestion)
                 {
                     if ((ImageID == obj) && (ImageID >= 0) && (obj >= 0))
                     {
@@ -165,7 +165,7 @@ namespace ECE_700_BoardGame.Engine
             {
                 Debug.WriteLine("Answer or Question ID Not initialized for tile");
                 Debug.WriteLine(ImageID.ToString(), "AnswerID");
-                Debug.WriteLine(PossibleQuestionIDs.ToString(), "QuestionID");
+                Debug.WriteLine(AnswersToCurrentQuestion.ToString(), "QuestionID");
                 Debug.WriteLine(e.StackTrace.ToString());
                 return false;
             }

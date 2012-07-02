@@ -146,6 +146,8 @@ namespace ECE_700_BoardGame
 
             String Topic = "Any";
 
+            DatabaseHelper dbhelper = new DatabaseHelper();    
+
         #endregion
 
         #region Overridden Game Methods
@@ -334,35 +336,21 @@ namespace ECE_700_BoardGame
             Dividers.Add(P3P4_Divider); //bottom
 
             #endregion
-
-            #region Question Tile
-
-            Texture2D questionTex = Content.Load<Texture2D>("QuestionAnswerImages/Question");
-            Rectangle questionPos = new Rectangle(screenWidth / 2 - questionTex.Width / 2, screenHeight / 2 - questionTex.Height / 2, questionTex.Width, questionTex.Height);
-            Question = new QuestionButton(this, questionTex, questionPos, "Any");
-
-            Texture2D quAreaTex = Content.Load<Texture2D>("BingoEnvironment/BingoQuestionMark_Area");
-            Vector2 originQuArea = new Vector2(quAreaTex.Width / 2, quAreaTex.Height / 2);
-            Rectangle posQuArea = new Rectangle(screenWidth / 2, screenHeight / 2, screenWidth, screenHeight);
-            //Texture, RectDestination, Orientation, imagePositionOrigin
-            QuestionArea = new BackgroundItem(quAreaTex, posQuArea, 0, originQuArea);
-
-            #endregion
-
+            
             #region Answer Tiles
 
             string tileAnswersQuery;
-
+            List<int> possibleQuestions = new List<int>();
             if (Topic.Equals("Any"))
             {
-                tileAnswersQuery = "select Questions.QuestionID, Questions.Question, Answers.ImageID from Questions inner join Answers on Questions.QuestionID = Answers.QuestionID where Difficulty = 1";
+                tileAnswersQuery = "select Questions.QuestionID, Questions.Question, Answers.ImageID from Questions inner join Answers on Questions.QuestionID = Answers.QuestionID"; // where Difficulty = 1";
             }
             else
             {
-                tileAnswersQuery = "select Questions.QuestionID, Questions.Question, Answers.ImageID from Topics, Questions inner join Answers on Questions.QuestionID = Answers.QuestionID where Difficulty = 1 and Topics.TopicID = Questions.TopicID and Topic = '" + Topic + "'";
+                tileAnswersQuery = "select Questions.QuestionID, Questions.Question, Answers.ImageID from Topics, Questions inner join Answers on Questions.QuestionID = Answers.QuestionID where Topics.TopicID = Questions.TopicID and Topic = '" + Topic + "'";
             }
-
-            DataTable dt = Question.queryDBRows(tileAnswersQuery);
+            
+            DataTable dt = dbhelper.queryDBRows(tileAnswersQuery);
 
             //Initialize to top left tile position for player 1
             Rectangle posRectAns = new Rectangle(   (screenWidth / 4) - (boardWidth / 2)  + (boardWidth / 25),
@@ -425,8 +413,8 @@ namespace ECE_700_BoardGame
                 int i = 0;
                 foreach (var tileAnswer in answerTileImages)
                 {
-                    string filename = Question.stringQueryDB("select Path from Answers, Images where Answers.ImageID = " + tileAnswer.ToString() + 
-                        " and Answers.ImageID = Images.ImageID and Difficulty = 1");
+                    string filename = dbhelper.stringQueryDB("select Path from Answers, Images where Answers.ImageID = " + tileAnswer.ToString() + 
+                        " and Answers.ImageID = Images.ImageID"); //TODO: specify difficulty
                     Texture2D tileAnsTex = Content.Load<Texture2D>("QuestionAnswerImages/"+filename);
 
                     //Shift Tile Position
@@ -451,19 +439,58 @@ namespace ECE_700_BoardGame
                         bt = new BingoTile(this, tileAnsTex, daubTex, errorTileTex, posRectAns);
                     }
 
-                    DataTable questionImages = Question.queryDBRows("select ImageID from Answers where QuestionID = " + Question.getID().ToString());
-                    ArrayList list = new ArrayList();
-                    for (int j = 0; j < questionImages.Rows.Count; j++)
-                    {
-                        list.Add(Int64.Parse(questionImages.Rows[j].ItemArray[0].ToString()));
-                    }
-                    bt.Update(list);
+                    //DataTable answerImages = dbhelper.queryDBRows("select ImageID from Answers where QuestionID = " + Question.getID().ToString());
+                    //List<int> list = new List<int>();
+                    //for (int j = 0; j < answerImages.Rows.Count; j++)
+                    //{
+                    //    list.Add(Int32.Parse(answerImages.Rows[j].ItemArray[0].ToString()));
+                    //}
+                    //bt.Update(list);
                     bt.Initialize((int)tileAnswer);
                     PlayerTiles[playerIndex].Add(bt);
+
+                    // Store all possible questions for the answer tiles in a question pool to be used by QuestionButton
+                    DataTable questionIds = dbhelper.queryDBRows(
+                        "select Questions.QuestionID from Questions, Answers where Questions.QuestionID = Answers.QuestionID and Answers.ImageID = " 
+                        + tileAnswer.ToString());
+                    for (int j = 0; j < questionIds.Rows.Count; j++)
+                    {
+                        if (!possibleQuestions.Contains(Int32.Parse(questionIds.Rows[j].ItemArray[0].ToString())))
+                            possibleQuestions.Add(Int32.Parse(questionIds.Rows[j].ItemArray[0].ToString()));
+                    }
 
                     i++;
                 }
             }
+
+            #endregion
+
+            #region Question Tile
+
+            Texture2D questionTex = Content.Load<Texture2D>("QuestionAnswerImages/Question");
+            Rectangle questionPos = new Rectangle(screenWidth / 2 - questionTex.Width / 2, screenHeight / 2 - questionTex.Height / 2, questionTex.Width, questionTex.Height);
+            Question = new QuestionButton(this, questionTex, questionPos, Topic, possibleQuestions, dbhelper);
+
+            // Notify all bingo tiles that a question has been set
+            DataTable answerImages = dbhelper.queryDBRows("select ImageID from Answers where QuestionID = " + Question.getID().ToString());
+            List<int> list = new List<int>();
+            for (int j = 0; j < answerImages.Rows.Count; j++)
+            {
+                list.Add(Int32.Parse(answerImages.Rows[j].ItemArray[0].ToString()));
+            }
+            foreach (List<BingoTile> pt in PlayerTiles)
+            {
+                foreach (BingoTile bt in pt)
+                {
+                    bt.Update(list);
+                }
+            }
+
+            Texture2D quAreaTex = Content.Load<Texture2D>("BingoEnvironment/BingoQuestionMark_Area");
+            Vector2 originQuArea = new Vector2(quAreaTex.Width / 2, quAreaTex.Height / 2);
+            Rectangle posQuArea = new Rectangle(screenWidth / 2, screenHeight / 2, screenWidth, screenHeight);
+            //Texture, RectDestination, Orientation, imagePositionOrigin
+            QuestionArea = new BackgroundItem(quAreaTex, posQuArea, 0, originQuArea);
 
             #endregion
 
@@ -550,11 +577,11 @@ namespace ECE_700_BoardGame
                                 foreach (BingoTile bt in PlayerTiles[playerIndex])
                                 {
                                     // Get possible answer images
-                                    DataTable dt = Question.queryDBRows("select ImageID from Answers where QuestionID = " + questionID.ToString());
-                                    ArrayList list = new ArrayList();
+                                    DataTable dt = dbhelper.queryDBRows("select ImageID from Answers where QuestionID = " + questionID.ToString());
+                                    List<int> list = new List<int>();
                                     for (int i = 0; i < dt.Rows.Count; i++)
                                     {
-                                        list.Add(Int64.Parse(dt.Rows[i].ItemArray[0].ToString()));
+                                        list.Add(Int32.Parse(dt.Rows[i].ItemArray[0].ToString()));
                                     }
                                     bt.Update(list);
                                 }
@@ -594,14 +621,15 @@ namespace ECE_700_BoardGame
                             //Notify tiles of new question ID
                             for (int playerIndex = 0; playerIndex < PLAYER_COUNT; playerIndex++)
                             {
+                                // Get possible answer images
+                                DataTable dt = dbhelper.queryDBRows("select ImageID from Answers where QuestionID = " + questionID.ToString());
+                                    
                                 foreach (BingoTile bt in PlayerTiles[playerIndex])
                                 {
-                                    // Get possible answer images
-                                    DataTable dt = Question.queryDBRows("select ImageID from Answers where QuestionID = " + questionID.ToString());
-                                    ArrayList list = new ArrayList();
+                                    List<int> list = new List<int>();
                                     for (int i = 0; i < dt.Rows.Count; i++)
                                     {
-                                        list.Add(Int64.Parse(dt.Rows[i].ItemArray[0].ToString()));
+                                        list.Add(Int32.Parse(dt.Rows[i].ItemArray[0].ToString()));
                                     }
                                     bt.Update(list);
                                 }
@@ -741,7 +769,7 @@ namespace ECE_700_BoardGame
 
             // Set large objects to null to facilitate garbage collection.
 
-            Question.disconnectDB();
+            dbhelper.disconnectDB();
             base.Dispose(disposing);
         }
 

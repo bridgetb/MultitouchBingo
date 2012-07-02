@@ -15,10 +15,8 @@ using Microsoft.Surface.Core;
 
 using System.Collections;
 using System.IO;
-using System.Data.Sql;
-using System.Data.SqlClient;
+using ECE_700_BoardGame.Helper;
 using System.Data;
-using System.Data.SqlServerCe;
 
 namespace ECE_700_BoardGame.Engine
 {
@@ -31,21 +29,25 @@ namespace ECE_700_BoardGame.Engine
         private string currentTopic {get; set;}
         private string currentQuestion;
         private int questionID;
-        private ArrayList completedQuestions;
+        private List<int> completedQuestions;
+        private List<int> possibleQuestions;
         private int maxQuestions;
         private ContentManager content;
+        private DatabaseHelper databaseHelper;
 
-        public QuestionButton(Game game, Texture2D tex, Rectangle pos, string topic)
+        public QuestionButton(Game game, Texture2D tex, Rectangle pos, string topic, List<int> possibleQuestions, DatabaseHelper dbhelper)
             : base(game, tex, pos)
         {
-            connectDB();
+            databaseHelper = dbhelper;
+            
             questions = SelectQuestions(topic);
-            completedQuestions = new ArrayList();
+            completedQuestions = new List<int>();
             content = game.Content;
 
             // Set max questions to ask
-            string result = stringQueryDB("select count(*) from Questions");
-            maxQuestions = Int32.Parse(result);
+            string result = databaseHelper.stringQueryDB("select count(*) from Questions");
+            maxQuestions = possibleQuestions.Count;
+            this.possibleQuestions = possibleQuestions;
 
             // Set starting question
             currentTopic = topic;
@@ -80,29 +82,29 @@ namespace ECE_700_BoardGame.Engine
         {
             string topic = currentTopic;
             // If all questions have been cycled through, repeat questions
-            if (completedQuestions.Count == maxQuestions)
+            if (completedQuestions.Count == possibleQuestions.Count)
             {
                 completedQuestions.Clear();
             }
 
             // Get new question from question set
-            int rand = new Random().Next(questions.Rows.Count);
-            while (completedQuestions.Contains(rand))
+            int rand = new Random().Next(possibleQuestions.Count);
+            questionID = possibleQuestions.ElementAt(rand);
+            while (completedQuestions.Contains(questionID))
             {
-                rand = new Random().Next(questions.Rows.Count);
+                rand = (rand + 1) % possibleQuestions.Count;
+                questionID = possibleQuestions.ElementAt(rand);
             }
-
-            object[] row = questions.Rows[rand].ItemArray;
-            questionID = Int32.Parse(row[0].ToString());
-            currentQuestion = row[1].ToString();
-
-            // Image exists
-            string filename = stringQueryDB("select Path from Questions, Images where QuestionID = " + questionID.ToString() + " and Questions.ImageID = Images.ImageID");
+            // Get question text from database
+            currentQuestion = databaseHelper.stringQueryDB("select Question from Questions where QuestionID = " + questionID.ToString());
+            
+            // Get question image
+            string filename = databaseHelper.stringQueryDB("select Path from Questions, Images where QuestionID = " + questionID.ToString() + " and Questions.ImageID = Images.ImageID");
                 
             // Update image to load as texture
             texture = this.Game.Content.Load<Texture2D>("QuestionAnswerImages/"+filename);
-                            
-            completedQuestions.Add(rand);
+
+            completedQuestions.Add(questionID);
             this.Enabled = false;
         }
 
@@ -123,84 +125,10 @@ namespace ECE_700_BoardGame.Engine
             {
                 query = "select QuestionID, Question, ImageID from Questions, Topics where Topics.TopicID = Questions.TopicID and Topic = '" + topic + "'";
             }
-            DataTable dt = queryDBRows(query);
+            DataTable dt = databaseHelper.queryDBRows(query);
             
             return dt;
         }
-
-        #region Database Calls
-        private SqlCeConnection conn;
-
-        private void connectDB()
-        {
-            conn = new SqlCeConnection();
-
-            conn.ConnectionString = @"Data Source='|DataDirectory|\ExerciseMaterial.sdf'; File Mode='shared read'";
-
-            conn.Open();
-            
-        }
-
-        public void disconnectDB()
-        {
-            conn.Close();
-        }
-
-        public DataTable queryDBRows(string query)
-        {
-            SqlCeCommand cmd = conn.CreateCommand();
-            cmd.Connection = conn;
-            try
-            {
-                cmd.CommandText = query;
-                DataTable dt = new DataTable();
-                SqlCeDataReader reader = cmd.ExecuteReader();
-                int cols = reader.FieldCount;
-                for (int i = 0; i < cols; i++)
-                {
-                    dt.Columns.Add(new DataColumn(reader.GetName(i)));
-                }
-
-                while (reader.Read())
-                {
-                    DataRow row = dt.NewRow();
-                    for (int i = 0; i < cols; i++)
-                    {
-                        row[reader.GetName(i)] = reader.GetValue(i);
-                    }
-                    dt.Rows.Add(row);
-
-                }
-                return dt;
-            }
-            catch (SqlException ex)
-            {
-                return null;
-            }
-        }
-
-        public string stringQueryDB(string query)
-        {
-            SqlCeCommand cmd = conn.CreateCommand();
-            cmd.Connection = conn;
-            try
-            {
-                cmd.CommandText = query;
-                object result = cmd.ExecuteScalar();
-                
-                if (result != null)
-                {
-                    string r = result.ToString();
-                    return r;
-                }
-                return null;
-            }
-            catch (SqlException ex)
-            {
-                return null;
-            }
-        }
-        #endregion
 
         public int getID()
         {
@@ -212,7 +140,7 @@ namespace ECE_700_BoardGame.Engine
             base.Draw(batch);
             float scale = 1;
 #if DEBUG
-            scale = 0.5f;
+            scale = 0.8f;
 #endif
             SpriteFont font = content.Load<SpriteFont>("Comic");
 
@@ -228,14 +156,14 @@ namespace ECE_700_BoardGame.Engine
             
             
             // Line 1
-            batch.DrawString(font, part1, new Vector2(position.X + position.Width / 2 - vec.X / 2, position.Y + position.Height + 50), Color.Black,
+            batch.DrawString(font, part1, new Vector2(position.X + position.Width / 2 - vec.X*scale / 2, position.Y + position.Height + 50), Color.Black,
                 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
-            batch.DrawString(font, part1, new Vector2(position.X + position.Width / 2 + vec.X / 2, position.Y - 50), Color.Black,
+            batch.DrawString(font, part1, new Vector2(position.X + position.Width / 2 + vec.X * scale / 2, position.Y - 50), Color.Black,
                 Single.Parse(Math.PI.ToString()), new Vector2(0,0), scale, SpriteEffects.None, 0);
             // Line 2 (if any)
-            batch.DrawString(font, part2, new Vector2(position.X + position.Width / 2 - vec.X / 2, position.Y + position.Height + 50 + vec.Y), Color.Black,
+            batch.DrawString(font, part2, new Vector2(position.X + position.Width / 2 - vec.X * scale / 2, position.Y + position.Height + 50 + vec.Y * scale), Color.Black,
                 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
-            batch.DrawString(font, part2, new Vector2(position.X + position.Width / 2 + vec.X / 2, position.Y - 50 - vec.Y), Color.Black,
+            batch.DrawString(font, part2, new Vector2(position.X + position.Width / 2 + vec.X * scale / 2, position.Y - 50 - vec.Y * scale), Color.Black,
                 Single.Parse(Math.PI.ToString()), new Vector2(0, 0), scale, SpriteEffects.None, 0);
 
 

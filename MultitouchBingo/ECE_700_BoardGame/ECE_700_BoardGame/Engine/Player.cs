@@ -5,6 +5,8 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.GamerServices;
 using System.Diagnostics;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework;
 
 namespace ECE_700_BoardGame.Engine
 {
@@ -20,15 +22,18 @@ namespace ECE_700_BoardGame.Engine
 
         int Score;
         int PlayerID;
+        SpriteFont WinnerMessage;
         GameDifficulty DifficultyLevel {get; set;}
 
         #endregion
 
-        public Player(List<BingoTile> playerTiles, int playerID, GameDifficulty difficulty){
+        public Player(List<BingoTile> playerTiles, int playerID, GameDifficulty difficulty, Game game){
+           
             this.PlayerTiles = playerTiles;
             AnsweredTiles = new bool[playerTiles.Count];
             this.PlayerID = playerID;
             DifficultyLevel = difficulty;
+            WinnerMessage = game.Content.Load<SpriteFont>("Comic");
         }
 
         /// <summary>
@@ -88,24 +93,112 @@ namespace ECE_700_BoardGame.Engine
         //TODO: Check correctly for all winning conditions for the game
         bool Bingo()
         {
-            for (int i = 0; i < AnsweredTiles.Length; i++)
+            bool victory;
+            int boardWidthHeight = (int)Math.Sqrt(AnsweredTiles.Length);
+
+            //Check for horizontal victory
+            for (int r = 0; r < boardWidthHeight; r++)
             {
-                if (!AnsweredTiles[i])
+                victory = true;
+                for (int c = 0; c < boardWidthHeight; c++)
                 {
-                    return false;
+                    if (!AnsweredTiles[(boardWidthHeight * r) + c])
+                    {
+                        victory = false;
+                    }
+                }
+                if (victory)
+                {
+                    return victory;
                 }
             }
-            
-            return true;
+
+
+            //Check for vertical victory
+            for (int r = 0; r < boardWidthHeight; r++)
+            {
+                victory = true;
+                for (int c = 0; c < boardWidthHeight; c++)
+                {
+                    if (!AnsweredTiles[(boardWidthHeight * c) + r])
+                    {
+                        victory = false;
+                    }
+                }
+                if (victory)
+                {
+                    return victory;
+                }
+            }
+
+            //Check for diagonal victory
+            victory = true;
+            for (int c = 0; c < boardWidthHeight; c++)
+            {
+                if (!AnsweredTiles[(boardWidthHeight * c) + c])
+                {
+                    victory = false;
+                }
+            }
+            if (victory)
+            {
+                return victory;
+            }
+
+            victory = true;
+            for (int c = 0; c < boardWidthHeight; c++)
+            {
+                if (!AnsweredTiles[(boardWidthHeight * c) + (boardWidthHeight - (c + 1))])
+                {
+                    victory = false;
+                }
+            }
+            return victory;
         }
 
         /// <summary>
         /// Rendering of the Player scoring data that are placed in each players section
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice)
         {
+            if (HasWon)
+            {
+                float rotation = 0;
+                Vector2 pos = new Vector2(graphicsDevice.Viewport.Width * 0.1f, graphicsDevice.Viewport.Height * 0.4f);
+                if (PlayerID < 2)
+                {
+                    rotation = (float)Math.PI;
+                }
+                else
+                {
+                    pos.Y += graphicsDevice.Viewport.Height * 0.2f;
+                }
 
+
+                switch (PlayerID)
+                {
+                    case 0:
+                        pos.X += graphicsDevice.Viewport.Width * 0.2f;
+                        break;
+                    case 1:
+                        pos.X += graphicsDevice.Viewport.Width * 0.8f;
+                        break;
+                    case 3:
+                        pos.X += graphicsDevice.Viewport.Width * 0.6f;
+                        break;
+                }
+                
+               
+                //TODO possibly change scaling
+                float scale = 2f;
+
+#if DEBUG
+                scale = 1.2f;
+#endif
+
+                spriteBatch.DrawString(WinnerMessage, "BINGO!!!", pos, Color.White, rotation, new Vector2(0, 0), scale, SpriteEffects.None, 0);
+            }
         }
     }
 }

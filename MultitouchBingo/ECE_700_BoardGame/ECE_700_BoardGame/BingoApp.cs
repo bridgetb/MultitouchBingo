@@ -469,7 +469,10 @@ namespace ECE_700_BoardGame
 
             #region Player Data
 
-            PlayerData[1] = new Player(PlayerTiles[1], 1, GameDifficulty.Easy);
+            for (int i = 0; i < PLAYER_COUNT; i++)
+            {
+                PlayerData[i] = new Player(PlayerTiles[i], i, GameDifficulty.Easy, this);
+            }
 
             #endregion
         }
@@ -531,7 +534,7 @@ namespace ECE_700_BoardGame
                             foreach (BingoTile bt in PlayerTiles[playerIndex])
                             {
                                 bt.OnTouchTapGesture(touch);
-                                PlayerData[1].tileAnswered(bt.Answered, tileNum);
+                                PlayerData[playerIndex].tileAnswered(bt.Answered, tileNum);
                                 tileNum++;
                             }
                         }
@@ -578,7 +581,7 @@ namespace ECE_700_BoardGame
                             foreach (BingoTile bt in PlayerTiles[playerIndex])
                             {
                                 bt.ClickEvent(Mouse_State);
-                                PlayerData[1].tileAnswered(bt.Answered, tileNum);
+                                PlayerData[playerIndex].tileAnswered(bt.Answered, tileNum);
                                 tileNum++;
                             }
                         }
@@ -661,6 +664,11 @@ namespace ECE_700_BoardGame
                 {
                     bt.Draw(spriteBatch);
                 }
+            }
+
+            foreach (Player player in PlayerData)
+            {
+                player.Draw(spriteBatch, GraphicsDevice);
             }
 
             spriteBatch.End();

@@ -211,6 +211,9 @@ namespace ECE_700_BoardGame.Engine
         {
             base.Draw(batch);
             float scale = 1;
+#if DEBUG
+            scale = 0.5f;
+#endif
             SpriteFont font = content.Load<SpriteFont>("Comic");
 
             Vector2 vec = font.MeasureString(this.currentQuestion);
@@ -222,6 +225,8 @@ namespace ECE_700_BoardGame.Engine
                 vec = font.MeasureString(part1);
                 part2 = this.currentQuestion.Substring(this.currentQuestion.IndexOf("\\n") + 2, this.currentQuestion.Length - this.currentQuestion.IndexOf("\\n") -2);
             }
+            
+            
             // Line 1
             batch.DrawString(font, part1, new Vector2(position.X + position.Width / 2 - vec.X / 2, position.Y + position.Height + 50), Color.Black,
                 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);

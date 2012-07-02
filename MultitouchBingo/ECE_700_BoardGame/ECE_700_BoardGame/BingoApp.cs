@@ -651,8 +651,9 @@ namespace ECE_700_BoardGame
                 bi.Draw(spriteBatch);
             }
 
-            Question.Draw(spriteBatch, gameTime);
             QuestionArea.Draw(spriteBatch);
+            Question.Draw(spriteBatch, gameTime);
+            
 
             for (int playerCount = 0; playerCount < PLAYER_COUNT; playerCount++)
             {

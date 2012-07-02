@@ -155,13 +155,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BingoEnvironment\Transparent.png">
-      <Name>Transparent</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="QuestionAnswerImages\1petBowl.JPG">
       <Name>1petBowl</Name>
       <Importer>TextureImporter</Importer>

@@ -16,7 +16,6 @@ Content\BingoEnvironment\Sun.xnb
 Content\BingoEnvironment\BingoDivider.xnb
 Content\BingoEnvironment\BingoQuestionMark_Area.xnb
 Content\BingoEnvironment\BingoQuestion_Section.xnb
-Content\BingoEnvironment\Transparent.xnb
 Content\QuestionAnswerImages\1petBowl.xnb
 Content\QuestionAnswerImages\2.xnb
 Content\QuestionAnswerImages\2cats.xnb
@@ -67,8 +66,8 @@ Content\QuestionAnswerImages\tileAns.xnb
 Content\QuestionAnswerImages\triangle.xnb
 Content\QuestionAnswerImages\tyres.xnb
 Content\QuestionAnswerImages\YellowBird.xnb
-Content\Comic.xnb
 Content\daub.xnb
+Content\Comic.xnb
 ExerciseMaterial.sdf
 Resources\icon.png
 ECE_700_BoardGame.xml

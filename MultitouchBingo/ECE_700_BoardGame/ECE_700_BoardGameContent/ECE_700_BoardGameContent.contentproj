@@ -160,11 +160,6 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="QuestionAnswerImages\2cats.jpg">
-      <Name>2cats</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="QuestionAnswerImages\2petBowls.png">
       <Name>2petBowls</Name>
       <Importer>TextureImporter</Importer>
@@ -197,11 +192,6 @@
     </Compile>
     <Compile Include="QuestionAnswerImages\BlueBirdFewSticks.png">
       <Name>BlueBirdFewSticks</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="QuestionAnswerImages\burger.png">
-      <Name>burger</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -329,11 +319,6 @@
     </Compile>
     <Compile Include="QuestionAnswerImages\saltGlassComparison.png">
       <Name>saltGlassComparison</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="QuestionAnswerImages\sushi.png">
-      <Name>sushi</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -471,6 +456,30 @@
     </Compile>
     <Compile Include="QuestionAnswerImages\Pumpkin.png">
       <Name>Pumpkin</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="QuestionAnswerImages\2cats.png">
+      <Name>2cats</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="QuestionAnswerImages\biscuit.png">
+      <Name>biscuit</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="QuestionAnswerImages\biscuitSandwichComparison.png">
+      <Name>biscuitSandwichComparison</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="QuestionAnswerImages\sandwich.png">
+      <Name>sandwich</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

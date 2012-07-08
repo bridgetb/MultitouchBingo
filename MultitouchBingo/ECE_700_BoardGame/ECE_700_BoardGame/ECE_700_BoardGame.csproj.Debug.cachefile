@@ -17,7 +17,6 @@ Content\BingoEnvironment\BingoDivider.xnb
 Content\BingoEnvironment\BingoQuestionMark_Area.xnb
 Content\BingoEnvironment\BingoQuestion_Section.xnb
 Content\QuestionAnswerImages\2.xnb
-Content\QuestionAnswerImages\2cats.xnb
 Content\QuestionAnswerImages\2petBowls.xnb
 Content\QuestionAnswerImages\3.xnb
 Content\QuestionAnswerImages\3birds.xnb
@@ -25,7 +24,6 @@ Content\QuestionAnswerImages\5.xnb
 Content\QuestionAnswerImages\7.xnb
 Content\QuestionAnswerImages\BirdsNest3eggs.xnb
 Content\QuestionAnswerImages\BlueBirdFewSticks.xnb
-Content\QuestionAnswerImages\burger.xnb
 Content\QuestionAnswerImages\burgerSushiComparison.xnb
 Content\QuestionAnswerImages\hotAirBalloon.xnb
 Content\QuestionAnswerImages\pineapple.xnb
@@ -47,7 +45,6 @@ Content\QuestionAnswerImages\kiwifruit.xnb
 Content\QuestionAnswerImages\pie.xnb
 Content\QuestionAnswerImages\salt.xnb
 Content\QuestionAnswerImages\saltGlassComparison.xnb
-Content\QuestionAnswerImages\sushi.xnb
 Content\QuestionAnswerImages\1petBowl.xnb
 Content\QuestionAnswerImages\3apples.xnb
 Content\QuestionAnswerImages\appleBucket.xnb
@@ -65,6 +62,20 @@ Content\QuestionAnswerImages\HeavierFood.xnb
 Content\QuestionAnswerImages\LighterFood.xnb
 Content\QuestionAnswerImages\Pumpkin.xnb
 Content\Comic.xnb
+Content\QuestionAnswerImages\2cats.xnb
+Content\QuestionAnswerImages\biscuit.xnb
+Content\QuestionAnswerImages\biscuitSandwichComparison.xnb
+Content\QuestionAnswerImages\sandwich.xnb
+Content\QuestionAnswerImages\grapesStrawberries.xnb
+Content\QuestionAnswerImages\grapes.xnb
+Content\QuestionAnswerImages\capsicumsPotatoes.xnb
+Content\QuestionAnswerImages\potatoes.xnb
+Content\QuestionAnswerImages\stopSign.xnb
+Content\QuestionAnswerImages\honeyComb.xnb
+Content\QuestionAnswerImages\sailBoat.xnb
+Content\QuestionAnswerImages\taranaki.xnb
+Content\QuestionAnswerImages\skateboard.xnb
+Content\QuestionAnswerImages\snowboards.xnb
 ExerciseMaterial.sdf
 Resources\icon.png
 ECE_700_BoardGame.xml

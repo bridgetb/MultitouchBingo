@@ -34,15 +34,19 @@ namespace ECE_700_BoardGame.Engine
         private int maxQuestions;
         private ContentManager content;
         private DatabaseHelper databaseHelper;
+        private float Rotation;
 
         public QuestionButton(Game game, Texture2D tex, Rectangle pos, string topic, List<int> possibleQuestions, DatabaseHelper dbhelper)
             : base(game, tex, pos)
         {
             databaseHelper = dbhelper;
+            Rotation = 0;
             
             questions = SelectQuestions(topic);
             completedQuestions = new List<int>();
             content = game.Content;
+
+            originOffset = new Vector2(0, 0);
 
             // Set max questions to ask
             string result = databaseHelper.stringQueryDB("select count(*) from Questions");
@@ -104,6 +108,9 @@ namespace ECE_700_BoardGame.Engine
             // Update image to load as texture
             texture = this.Game.Content.Load<Texture2D>("QuestionAnswerImages/"+filename);
 
+            originOffset.X = texture.Width / 2;
+            originOffset.Y = texture.Height / 2;
+
             completedQuestions.Add(questionID);
             this.Enabled = false;
         }
@@ -135,9 +142,19 @@ namespace ECE_700_BoardGame.Engine
             return questionID;
         }
 
+        /// <summary>
+        /// Allows the game component to update itself.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        public new void Update(GameTime gameTime)
+        {
+            Rotation += 0.005f;
+            Rotation = (Rotation >= (Math.PI * 2)) ? 0 : Rotation;
+        }
+
         public void Draw(SpriteBatch batch, GameTime gameTime)
         {
-            base.Draw(batch);
+            base.Draw(batch, Rotation);
             float scale = 1;
 #if DEBUG
             scale = 0.8f;
@@ -156,14 +173,14 @@ namespace ECE_700_BoardGame.Engine
             
             
             // Line 1
-            batch.DrawString(font, part1, new Vector2(position.X + position.Width / 2 - vec.X*scale / 2, position.Y + position.Height + 50), Color.Black,
+            batch.DrawString(font, part1, new Vector2(position.X - vec.X*scale / 2, position.Y + position.Height/2 + 50), Color.Black,
                 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
-            batch.DrawString(font, part1, new Vector2(position.X + position.Width / 2 + vec.X * scale / 2, position.Y - 50), Color.Black,
+            batch.DrawString(font, part1, new Vector2(position.X + vec.X * scale / 2, position.Y - position.Height/2 - 50), Color.Black,
                 Single.Parse(Math.PI.ToString()), new Vector2(0,0), scale, SpriteEffects.None, 0);
             // Line 2 (if any)
-            batch.DrawString(font, part2, new Vector2(position.X + position.Width / 2 - vec.X * scale / 2, position.Y + position.Height + 50 + vec.Y * scale), Color.Black,
+            batch.DrawString(font, part2, new Vector2(position.X - vec.X * scale / 2, position.Y + position.Height/2 + 50 + vec.Y * scale), Color.Black,
                 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
-            batch.DrawString(font, part2, new Vector2(position.X + position.Width / 2 + vec.X * scale / 2, position.Y - 50 - vec.Y * scale), Color.Black,
+            batch.DrawString(font, part2, new Vector2(position.X + vec.X * scale / 2, position.Y - position.Height/2 - 50 - vec.Y * scale), Color.Black,
                 Single.Parse(Math.PI.ToString()), new Vector2(0, 0), scale, SpriteEffects.None, 0);
 
 

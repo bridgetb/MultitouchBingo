@@ -468,7 +468,7 @@ namespace ECE_700_BoardGame
             #region Question Tile
 
             Texture2D questionTex = Content.Load<Texture2D>("QuestionAnswerImages/Question");
-            Rectangle questionPos = new Rectangle(screenWidth / 2 - questionTex.Width / 2, screenHeight / 2 - questionTex.Height / 2, questionTex.Width, questionTex.Height);
+            Rectangle questionPos = new Rectangle(screenWidth / 2, screenHeight / 2, questionTex.Width, questionTex.Height);
             Question = new QuestionButton(this, questionTex, questionPos, Topic, possibleQuestions, dbhelper);
 
             // Notify all bingo tiles that a question has been set
@@ -642,6 +642,7 @@ namespace ECE_700_BoardGame
                 }
             }
 
+            Question.Update(gameTime);
             base.Update(gameTime);
         }
 

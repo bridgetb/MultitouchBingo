@@ -185,11 +185,6 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="QuestionAnswerImages\BirdsNest3eggs.JPG">
-      <Name>BirdsNest3eggs</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="QuestionAnswerImages\BlueBirdFewSticks.png">
       <Name>BlueBirdFewSticks</Name>
       <Importer>TextureImporter</Importer>
@@ -197,11 +192,6 @@
     </Compile>
     <Compile Include="QuestionAnswerImages\burgerSushiComparison.png">
       <Name>burgerSushiComparison</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="QuestionAnswerImages\hotAirBalloon.JPG">
-      <Name>hotAirBalloon</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -217,16 +207,6 @@
     </Compile>
     <Compile Include="QuestionAnswerImages\stripyTriangle.png">
       <Name>stripyTriangle</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="QuestionAnswerImages\triangle.JPG">
-      <Name>triangle</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="QuestionAnswerImages\YellowBird.jpg">
-      <Name>YellowBird</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -603,13 +583,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="QuestionAnswerImages\yellowSpice.png">
-      <Name>yellowSpice</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="QuestionAnswerImages\spices.png">
       <Name>spices</Name>
       <Importer>TextureImporter</Importer>
@@ -626,6 +599,119 @@
   <ItemGroup>
     <Compile Include="QuestionAnswerImages\zebras.png">
       <Name>zebras</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="QuestionAnswerImages\hotAirBalloon.png">
+      <Name>hotAirBalloon</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="QuestionAnswerImages\kepler_kea.png">
+      <Name>kepler_kea</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="QuestionAnswerImages\stockvault-barn-owl-116738.png">
+      <Name>stockvault-barn-owl-116738</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="QuestionAnswerImages\stockvault-cake-120781.png">
+      <Name>stockvault-cake-120781</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="QuestionAnswerImages\stockvault-cup128825.png">
+      <Name>stockvault-cup128825</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="QuestionAnswerImages\stockvault-cupcake125042.png">
+      <Name>stockvault-cupcake125042</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="QuestionAnswerImages\stockvault-farmer-with-sheep-and-dogs131703.png">
+      <Name>stockvault-farmer-with-sheep-and-dogs131703</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="QuestionAnswerImages\stockvault-fireworks114135.png">
+      <Name>stockvault-fireworks114135</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="QuestionAnswerImages\stockvault-penguin116802.png">
+      <Name>stockvault-penguin116802</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="QuestionAnswerImages\stockvault-roller-coaster112146.png">
+      <Name>stockvault-roller-coaster112146</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="QuestionAnswerImages\stockvault-strawberries120418.png">
+      <Name>stockvault-strawberries120418</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="QuestionAnswerImages\stockvault-three-flying-geese99086.png">
+      <Name>stockvault-three-flying-geese99086</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="QuestionAnswerImages\sushi.png">
+      <Name>sushi</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="QuestionAnswerImages\triangle.png">
+      <Name>triangle</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="QuestionAnswerImages\YellowBird.png">
+      <Name>YellowBird</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="QuestionAnswerImages\YellowBirdNoStraw.png">
+      <Name>YellowBirdNoStraw</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="QuestionAnswerImages\BirdsNest3eggs.png">
+      <Name>BirdsNest3eggs</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="QuestionAnswerImages\chicken.png">
+      <Name>chicken</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="QuestionAnswerImages\yellowSpices.png">
+      <Name>yellowSpices</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

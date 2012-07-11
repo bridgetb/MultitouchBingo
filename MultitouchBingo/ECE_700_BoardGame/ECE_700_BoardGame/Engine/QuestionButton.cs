@@ -26,7 +26,7 @@ namespace ECE_700_BoardGame.Engine
     class QuestionButton : Button
     {
         private DataTable questions;
-        private string currentTopic {get; set;}
+        private List<String> currentTopics {get; set;}
         private string currentQuestion;
         private int questionID;
         private List<int> completedQuestions;
@@ -36,13 +36,12 @@ namespace ECE_700_BoardGame.Engine
         private DatabaseHelper databaseHelper;
         private float Rotation;
 
-        public QuestionButton(Game game, Texture2D tex, Rectangle pos, string topic, List<int> possibleQuestions, DatabaseHelper dbhelper)
+        public QuestionButton(Game game, Texture2D tex, Rectangle pos, List<String> topics, List<int> possibleQuestions, DatabaseHelper dbhelper)
             : base(game, tex, pos)
         {
             databaseHelper = dbhelper;
             Rotation = 0;
             
-            questions = SelectQuestions(topic);
             completedQuestions = new List<int>();
             content = game.Content;
 
@@ -54,9 +53,9 @@ namespace ECE_700_BoardGame.Engine
             this.possibleQuestions = possibleQuestions;
 
             // Set starting question
-            currentTopic = topic;
+            currentTopics = topics;
+            SelectQuestions(currentTopics);
             RandomiseQuestion();
-            
         }
 
         public bool OnTouchTapGesture(TouchPoint touch)
@@ -84,7 +83,6 @@ namespace ECE_700_BoardGame.Engine
         /// </summary>
         public void RandomiseQuestion()
         {
-            string topic = currentTopic;
             // If all questions have been cycled through, repeat questions
             if (completedQuestions.Count == possibleQuestions.Count)
             {
@@ -103,7 +101,8 @@ namespace ECE_700_BoardGame.Engine
             currentQuestion = databaseHelper.stringQueryDB("select Question from Questions where QuestionID = " + questionID.ToString());
             
             // Get question image
-            string filename = databaseHelper.stringQueryDB("select Path from Questions, Images where QuestionID = " + questionID.ToString() + " and Questions.ImageID = Images.ImageID");
+            string filename = databaseHelper.stringQueryDB("select Path from Questions, Images where QuestionID = " + questionID.ToString() 
+                + " and Questions.ImageID = Images.ImageID");
                 
             // Update image to load as texture
             texture = this.Game.Content.Load<Texture2D>("QuestionAnswerImages/"+filename);
@@ -120,20 +119,21 @@ namespace ECE_700_BoardGame.Engine
         /// </summary>
         /// <param name="topic"></param>
         /// <returns>DataTable with each row containing the question ID, question and a boolean to indicate whether there is an image associated with it</returns>
-        private DataTable SelectQuestions(string topic)
+        public DataTable SelectQuestions(List<String> topic)
         {
-            
+            currentTopics = topic;
             string query;
-            if (topic.Equals("Any"))
+            if (topic.Count == 3 || topic.Count == 0)
             {
                 query = "select QuestionID, Question, ImageID from Questions";
             }
             else
-            {
-                query = "select QuestionID, Question, ImageID from Questions, Topics where Topics.TopicID = Questions.TopicID and Topic = '" + topic + "'";
+            {                
+                query = "select QuestionID, Question, ImageID from Questions, Topics where Topics.TopicID = Questions.TopicID and " 
+                    + getTopicClause();
             }
             DataTable dt = databaseHelper.queryDBRows(query);
-            
+            questions = dt;
             return dt;
         }
 
@@ -142,6 +142,23 @@ namespace ECE_700_BoardGame.Engine
             return questionID;
         }
 
+        public string getTopicClause()
+        {
+            string topicClause = "(Topic = ";
+            for (int i = 0; i < currentTopics.Count; i++)
+            {
+                topicClause += "'" + currentTopics.ElementAt(i) + "'";
+                if (i < currentTopics.Count - 1)
+                {
+                    topicClause += " or Topic = ";
+                }
+                else
+                {
+                    topicClause += ")";
+                }
+            }
+            return topicClause;
+        }
         /// <summary>
         /// Allows the game component to update itself.
         /// </summary>

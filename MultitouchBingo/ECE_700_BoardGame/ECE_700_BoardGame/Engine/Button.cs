@@ -52,7 +52,7 @@ namespace ECE_700_BoardGame.Engine
         /// Rendering of the button
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, position, Color.White);
         }

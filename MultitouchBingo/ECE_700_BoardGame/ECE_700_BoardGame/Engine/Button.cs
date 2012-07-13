@@ -62,21 +62,24 @@ namespace ECE_700_BoardGame.Engine
             spriteBatch.Draw(texture, position, null, Color.White, orient, originOffset, SpriteEffects.None, 0f);
         }
 
-        protected bool IsPressed(TouchPoint point)
+        protected virtual bool IsPressed(TouchPoint point)
         {
+            //Rectangle largerArea = new Rectangle(position.X, position.Y, position.Width + 200, position.Height + 200);
 #if DEBUG
             Debug.WriteLine(point.X.ToString(), "Touch point X");
             Debug.WriteLine(point.Y.ToString(), "Touch point Y");
             Debug.WriteLine(position.Contains((int)point.X, (int)point.Y).ToString(), "Is Within Item Hit Detection");
 #endif
-            if( position.Contains((int)point.X, (int)point.Y) ){
+            if (position.Contains((int)point.X, (int)point.Y))
+            {
                 return true;
             }
             return false;
         }
 
-        protected bool IsPressed(MouseState clickPoint)
+        protected virtual bool IsPressed(MouseState clickPoint)
         {
+            //Rectangle largerArea = new Rectangle(position.X, position.Y, position.Width + 200, position.Height + 200);            
 #if DEBUG
             Debug.WriteLine(position.Contains((int)clickPoint.X, (int)clickPoint.Y).ToString(), "Is Within Item Hit Detection (CLICK)");
 #endif

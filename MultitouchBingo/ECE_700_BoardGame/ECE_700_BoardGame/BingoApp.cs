@@ -104,8 +104,6 @@ namespace ECE_700_BoardGame
         #endregion
 
         #region GameFields
-
-            ContentManager content;
         
             MouseState Mouse_State;
             MouseState Mouse_PrevState;
@@ -150,10 +148,12 @@ namespace ECE_700_BoardGame
             Player[] PlayerData;
 
             List<String> Topics;
-            List<SettingButton> TopicButtons;
+            List<SettingButton> SettingButtons;
+
+            GameDifficulty Difficulty = GameDifficulty.Easy;
             ContinueButton PlayButton;
 
-            DatabaseHelper dbhelper = new DatabaseHelper();    
+            DatabaseHelper dbhelper = new DatabaseHelper();
 
         #endregion
 
@@ -347,18 +347,35 @@ namespace ECE_700_BoardGame
             #endregion
             
             #region Game Settings
-            DataTable dt = this.dbhelper.queryDBRows("select Topic from Topics");
-            TopicButtons = new List<SettingButton>();
-            int y = screenHeight / 2 - dt.Rows.Count * 50;
             // Display topics
+            DataTable dt = this.dbhelper.queryDBRows("select Topic from Topics");
+            SettingButtons = new List<SettingButton>();
+            int y = screenHeight / 2 - dt.Rows.Count * 50;
+            
             Texture2D tex;
             Rectangle pos;
             foreach (DataRow row in dt.Rows)
             {
                 String topic = row.ItemArray[0].ToString();
                 tex = Content.Load<Texture2D>("BingoEnvironment/" + topic);
-                pos = new Rectangle(screenWidth / 4, y, tex.Width, tex.Height);
-                TopicButtons.Add(new SettingButton(this, tex, pos, "TOPIC", topic));
+                pos = new Rectangle(screenWidth / 8, y, tex.Width, tex.Height);
+                SettingButtons.Add(new SettingButton(this, tex, pos, "TOPIC", topic));
+                y += 100;
+            }
+            // Display difficulties
+            dt = this.dbhelper.queryDBRows("select Difficulty from DifficultyLevels");
+            y = screenHeight / 2 - dt.Rows.Count * 50;
+            foreach (DataRow row in dt.Rows)
+            {
+                String diff = row.ItemArray[0].ToString();
+                tex = Content.Load<Texture2D>("BingoEnvironment/" + diff);
+                pos = new Rectangle(screenWidth * 5 / 8, y, tex.Width, tex.Height);
+                SettingButton sb = new SettingButton(this, tex, pos, "DIFFICULTY", diff);
+                if (diff.Equals("Easy"))
+                {
+                    sb.Selected = true;
+                }
+                SettingButtons.Add(sb);
                 y += 100;
             }
 
@@ -411,7 +428,7 @@ namespace ECE_700_BoardGame
                         if (!this.hasSetOptions)
                         {
                             // Check for settings changed
-                            foreach (SettingButton b in this.TopicButtons)
+                            foreach (SettingButton b in this.SettingButtons)
                             {
                                 b.OnTouchTapGesture(touch);
                             }
@@ -564,23 +581,21 @@ namespace ECE_700_BoardGame
             if (!hasSetOptions)
             {
                 // Display topic options
-                int screenWidth = GraphicsDevice.Viewport.Width;
-                int screenHeight = GraphicsDevice.Viewport.Height;
-                int y = screenHeight / 2 - TopicButtons.Count * 50;
+                //int screenWidth = GraphicsDevice.Viewport.Width;
+                //int screenHeight = GraphicsDevice.Viewport.Height;
+                int y = screenHeight / 2 - SettingButtons.Count * 50;
                 String categories = "Categories:";
                 SpriteFont font = Content.Load<SpriteFont>("Comic");
-                Vector2 vec = font.MeasureString(categories);
-                spriteBatch.DrawString(font, categories, new Vector2(screenWidth / 4, y - 100), Color.Black,
+                String difficulty = "Difficulty levels:";
+                spriteBatch.DrawString(font, categories, new Vector2(screenWidth / 8, y - 100), Color.Black,
                     0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
-
+                spriteBatch.DrawString(font, difficulty, new Vector2(screenWidth * 5 / 8, y - 100), Color.Black,
+                    0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
             
-                foreach (SettingButton b in TopicButtons)
+                foreach (SettingButton b in SettingButtons)
                 {
                     b.Draw(spriteBatch);
                 }
-
-                // TODO: Display difficult levels
-                
 
                 // OK button
                 PlayButton.Draw(spriteBatch);
@@ -634,6 +649,30 @@ namespace ECE_700_BoardGame
                         this.Topics.Add(value);
                     break;
                 case "DIFFICULTY":
+                    // Ensure that only one level is selected at any point in time
+                    var result = from b in SettingButtons
+                                 where b.Setting.Equals(setting)
+                                 select b;
+                    foreach (SettingButton b in result)
+                    {
+                        // If button is not the selected difficulty and has been selected, deselect
+                        if (!b.Value.Equals(value))
+                        {
+                            b.Selected = false;
+                        }
+                        else
+                        {
+                            b.Selected = true; // Otherwise "undo" press
+                        }
+                    }
+                    if (value.Equals("Hard"))
+                    {
+                        this.Difficulty = GameDifficulty.Hard;
+                    }
+                    else
+                    {
+                        this.Difficulty = GameDifficulty.Easy;
+                    }
                     break;
                 default:
                     return;
@@ -648,14 +687,45 @@ namespace ECE_700_BoardGame
                     this.Topics.Remove(value);
                     break;
                 case "DIFFICULTY":
+                    // Ensure that only one level is selected at any point in time
+                    var result = from b in SettingButtons
+                                 where b.Setting.Equals(setting)
+                                 select b;
+                    foreach (SettingButton b in result)
+                    {
+                        // If button is not the selected difficulty and has been selected, deselect
+                        if (!b.Value.Equals(value))
+                        {
+                            b.Selected = false;
+                        }
+                        else
+                        {
+                            b.Selected = true; // Otherwise "undo" press
+                        }
+                    }
                     break;
                 default:
                     return;
             }
         }
 
+        /// <summary>
+        /// Sets the difficulty level of questions/answers - default is easy
+        /// </summary>
+        /// <param name="difficulty"></param>
         public void SetDifficulty(int difficulty)
         {
+            switch (difficulty) {
+                case (1):
+                    Difficulty = GameDifficulty.Easy;
+                    break;
+                case (2):
+                    Difficulty = GameDifficulty.Hard;
+                    break;
+                default:
+                    Difficulty = GameDifficulty.Easy;
+                    break;
+            }
         }
 
         public void FinishedSettingOptions()
@@ -667,28 +737,21 @@ namespace ECE_700_BoardGame
 
             string tileAnswersQuery;
             List<int> possibleQuestions = new List<int>();
+            string difficulty = "";
+            if (Difficulty.Equals(GameDifficulty.Easy))
+            {
+                difficulty = "and Difficulty = 1";
+            }
             if (Topics.Count == 3 || Topics.Count == 0)
             {
-                tileAnswersQuery = "select Questions.QuestionID, Questions.Question, Answers.ImageID from Questions inner join Answers on Questions.QuestionID = Answers.QuestionID"; // where Difficulty = 1";
+                tileAnswersQuery = "select Questions.QuestionID, Questions.Question, Answers.ImageID from Questions inner join Answers on Questions.QuestionID = Answers.QuestionID " + difficulty;
             }
             else
             {
-                string topic = "(Topic = ";
-                for (int i = 0; i < Topics.Count; i++)
-                {
-                    topic += "'" + Topics.ElementAt(i) + "'";
-                    if (i < Topics.Count - 1)
-                    {
-                        topic += " or Topic = ";
-                    }
-                    else
-                    {
-                        topic += ")";
-                    }
-                }
+                string topic = dbhelper.getQueryClause("Topic", Topics);
 
                 tileAnswersQuery = "select Questions.QuestionID, Questions.Question, Answers.ImageID from Topics, Questions " +
-                    "inner join Answers on Questions.QuestionID = Answers.QuestionID where Topics.TopicID = Questions.TopicID and " + topic;
+                    "inner join Answers on Questions.QuestionID = Answers.QuestionID where Topics.TopicID = Questions.TopicID and " + topic + difficulty;
             }
 
             DataTable dt = dbhelper.queryDBRows(tileAnswersQuery);
@@ -756,7 +819,7 @@ namespace ECE_700_BoardGame
                 foreach (var tileAnswer in answerTileImages)
                 {
                     string filename = dbhelper.stringQueryDB("select Path from Answers, Images where Answers.ImageID = " + tileAnswer.ToString() +
-                        " and Answers.ImageID = Images.ImageID"); //TODO: specify difficulty
+                        " and Answers.ImageID = Images.ImageID");
                     Texture2D tileAnsTex = Content.Load<Texture2D>("QuestionAnswerImages/" + filename);
 
                     //Shift Tile Position
@@ -781,13 +844,6 @@ namespace ECE_700_BoardGame
                         bt = new BingoTile(this, tileAnsTex, daubTex, errorTileTex, posRectAns);
                     }
 
-                    //DataTable answerImages = dbhelper.queryDBRows("select ImageID from Answers where QuestionID = " + Question.getID().ToString());
-                    //List<int> list = new List<int>();
-                    //for (int j = 0; j < answerImages.Rows.Count; j++)
-                    //{
-                    //    list.Add(Int32.Parse(answerImages.Rows[j].ItemArray[0].ToString()));
-                    //}
-                    //bt.Update(list);
                     bt.Initialize((int)tileAnswer);
                     PlayerTiles[playerIndex].Add(bt);
 
@@ -811,7 +867,7 @@ namespace ECE_700_BoardGame
 
             for (int i = 0; i < PLAYER_COUNT; i++)
             {
-                PlayerData[i] = new Player(PlayerTiles[i], i, GameDifficulty.Easy, this);
+                PlayerData[i] = new Player(PlayerTiles[i], i, this);
             }
 
             #endregion

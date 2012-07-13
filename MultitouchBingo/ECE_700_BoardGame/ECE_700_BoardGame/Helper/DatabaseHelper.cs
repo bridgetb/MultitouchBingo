@@ -84,5 +84,23 @@ namespace ECE_700_BoardGame.Helper
                 return null;
             }
         }
+
+        public string getQueryClause(String attribute, List<String> constraints)
+        {
+            string clause = "(" + attribute + " = ";
+            for (int i = 0; i < constraints.Count; i++)
+            {
+                clause += "'" + constraints.ElementAt(i) + "'";
+                if (i < constraints.Count - 1)
+                {
+                    clause += " or " + attribute + " = ";
+                }
+                else
+                {
+                    clause += ")";
+                }
+            }
+            return clause;
+        }
     }
 }

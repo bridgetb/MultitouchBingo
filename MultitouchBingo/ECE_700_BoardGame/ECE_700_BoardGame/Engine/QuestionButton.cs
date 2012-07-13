@@ -78,6 +78,34 @@ namespace ECE_700_BoardGame.Engine
             return false;
         }
 
+        protected override bool IsPressed(TouchPoint point)
+        {
+            Rectangle largerArea = new Rectangle(position.X - position.Height / 2 - 20, position.Y - position.Height / 2 - 20, position.Width + 20, position.Height + 20);  
+#if DEBUG
+            Debug.WriteLine(point.X.ToString(), "Touch point X");
+            Debug.WriteLine(point.Y.ToString(), "Touch point Y");
+            Debug.WriteLine(largerArea.Contains((int)point.X, (int)point.Y).ToString(), "Is Within Item Hit Detection");
+#endif
+            if (largerArea.Contains((int)point.X, (int)point.Y))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        protected override bool IsPressed(MouseState clickPoint)
+        {
+            Rectangle largerArea = new Rectangle(position.X - position.Width / 2 - 20, position.Y - position.Height / 2 - 20, position.Width + 20, position.Height + 20);            
+#if DEBUG
+            Debug.WriteLine(largerArea.Contains((int)clickPoint.X, (int)clickPoint.Y).ToString(), "Is Within Item Hit Detection (CLICK)");
+#endif
+            if (largerArea.Contains((int)clickPoint.X, (int)clickPoint.Y))
+            {
+                return true;
+            }
+            return false;
+        }
+
         /// <summary>
         /// Chooses a random question based on the current topic.
         /// </summary>
@@ -130,7 +158,7 @@ namespace ECE_700_BoardGame.Engine
             else
             {                
                 query = "select QuestionID, Question, ImageID from Questions, Topics where Topics.TopicID = Questions.TopicID and " 
-                    + getTopicClause();
+                    + databaseHelper.getQueryClause("Topic", currentTopics);
             }
             DataTable dt = databaseHelper.queryDBRows(query);
             questions = dt;
@@ -142,23 +170,6 @@ namespace ECE_700_BoardGame.Engine
             return questionID;
         }
 
-        public string getTopicClause()
-        {
-            string topicClause = "(Topic = ";
-            for (int i = 0; i < currentTopics.Count; i++)
-            {
-                topicClause += "'" + currentTopics.ElementAt(i) + "'";
-                if (i < currentTopics.Count - 1)
-                {
-                    topicClause += " or Topic = ";
-                }
-                else
-                {
-                    topicClause += ")";
-                }
-            }
-            return topicClause;
-        }
         /// <summary>
         /// Allows the game component to update itself.
         /// </summary>

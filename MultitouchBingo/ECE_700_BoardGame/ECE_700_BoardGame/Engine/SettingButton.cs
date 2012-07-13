@@ -11,10 +11,10 @@ namespace ECE_700_BoardGame.Engine
 {
     class SettingButton : Button
     {
-        String Setting;
-        String Value;
+        public String Setting { get; set; }
+        public String Value { get; set; }
         Game Game;
-        bool Selected = false;
+        public bool Selected {get; set;}
 
         public SettingButton(Game game, Texture2D tex, Rectangle pos, String setting, String value)
             : base(game, tex, pos)
@@ -22,6 +22,7 @@ namespace ECE_700_BoardGame.Engine
             Game = game;
             Setting = setting;
             Value = value;
+            Selected = false;
         }
 
         public bool OnTouchTapGesture(TouchPoint touch)
@@ -44,20 +45,21 @@ namespace ECE_700_BoardGame.Engine
             return false;
         }
 
-        protected void Toggle()
+        public void Toggle()
         {
             if (Game is BingoApp)
             {
                 if (Selected)
                 {
+                    Selected = false;
                     ((BingoApp)Game).RemoveSetting(Setting, Value);
                 }
                 else
                 {
+                    Selected = true;
                     ((BingoApp)Game).AddSetting(Setting, Value);
                 }
 
-                Selected = !Selected;
             }
         }
 
@@ -68,7 +70,7 @@ namespace ECE_700_BoardGame.Engine
             if (Selected)
             {
                 Texture2D tex = Game.Content.Load<Texture2D>("daub");
-                Rectangle pos = new Rectangle(position.Left-tex.Width/2, position.Bottom-tex.Height/2, tex.Width, tex.Height);
+                Rectangle pos = new Rectangle(position.Left - position.Height / 2, position.Bottom - position.Height, position.Height, position.Height);
                 spriteBatch.Draw(tex, pos, Color.White);
             }
         }

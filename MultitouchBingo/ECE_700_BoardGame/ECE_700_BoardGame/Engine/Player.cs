@@ -27,12 +27,12 @@ namespace ECE_700_BoardGame.Engine
 
         #endregion
 
-        public Player(List<BingoTile> playerTiles, int playerID, GameDifficulty difficulty, Game game){
+        public Player(List<BingoTile> playerTiles, int playerID, Game game)
+        {
            
             this.PlayerTiles = playerTiles;
             AnsweredTiles = new bool[playerTiles.Count];
             this.PlayerID = playerID;
-            DifficultyLevel = difficulty;
             WinnerMessage = game.Content.Load<SpriteFont>("Comic");
         }
 

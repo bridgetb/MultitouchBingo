@@ -30,13 +30,13 @@ namespace ECE_700_BoardGame.Engine
         private string currentQuestion;
         private int questionID;
         private List<int> completedQuestions;
-        private List<int> possibleQuestions;
+        private List<int> PossibleQuestions;
         private int maxQuestions;
         private ContentManager content;
         private DatabaseHelper databaseHelper;
         private float Rotation;
 
-        public QuestionButton(Game game, Texture2D tex, Rectangle pos, List<String> topics, List<int> possibleQuestions, DatabaseHelper dbhelper)
+        public QuestionButton(Game game, Texture2D tex, Rectangle pos, List<String> topics, ArrayList possibleQuestions, DatabaseHelper dbhelper)
             : base(game, tex, pos)
         {
             databaseHelper = dbhelper;
@@ -48,9 +48,12 @@ namespace ECE_700_BoardGame.Engine
             originOffset = new Vector2(0, 0);
 
             // Set max questions to ask
-            string result = databaseHelper.stringQueryDB("select count(*) from Questions");
             maxQuestions = possibleQuestions.Count;
-            this.possibleQuestions = possibleQuestions;
+            this.PossibleQuestions = new List<int>();
+            foreach (var i in possibleQuestions)
+            {
+                PossibleQuestions.Add(Int32.Parse(i.ToString()));
+            }
 
             // Set starting question
             currentTopics = topics;
@@ -112,18 +115,18 @@ namespace ECE_700_BoardGame.Engine
         public void RandomiseQuestion()
         {
             // If all questions have been cycled through, repeat questions
-            if (completedQuestions.Count == possibleQuestions.Count)
+            if (completedQuestions.Count == PossibleQuestions.Count)
             {
                 completedQuestions.Clear();
             }
 
             // Get new question from question set
-            int rand = new Random().Next(possibleQuestions.Count);
-            questionID = possibleQuestions.ElementAt(rand);
+            int rand = new Random().Next(PossibleQuestions.Count);
+            questionID = PossibleQuestions.ElementAt(rand);
             while (completedQuestions.Contains(questionID))
             {
-                rand = (rand + 1) % possibleQuestions.Count;
-                questionID = possibleQuestions.ElementAt(rand);
+                rand = (rand + 1) % PossibleQuestions.Count;
+                questionID = PossibleQuestions.ElementAt(rand);
             }
             // Get question text from database
             currentQuestion = databaseHelper.stringQueryDB("select Question from Questions where QuestionID = " + questionID.ToString());

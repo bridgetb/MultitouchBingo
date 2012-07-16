@@ -147,6 +147,8 @@ namespace ECE_700_BoardGame
 
             Player[] PlayerData;
 
+            Hashtable PossibleQuestions;
+
             List<String> Topics;
             List<SettingButton> SettingButtons;
 
@@ -496,7 +498,7 @@ namespace ECE_700_BoardGame
                         if (!this.hasSetOptions)
                         {
                             // Check for settings changed
-                            foreach (SettingButton b in this.TopicButtons)
+                            foreach (SettingButton b in this.SettingButtons)
                             {
                                 b.OnClickGesture(Mouse_State);
                             }
@@ -736,7 +738,8 @@ namespace ECE_700_BoardGame
             int bdWidth = Convert.ToInt16(screenHeight / 2.3);
 
             string tileAnswersQuery;
-            List<int> possibleQuestions = new List<int>();
+            //List<int> possibleQuestions = new List<int>();
+            PossibleQuestions = new Hashtable();
             string difficulty = "";
             if (Difficulty.Equals(GameDifficulty.Easy))
             {
@@ -744,7 +747,7 @@ namespace ECE_700_BoardGame
             }
             if (Topics.Count == 3 || Topics.Count == 0)
             {
-                tileAnswersQuery = "select Questions.QuestionID, Questions.Question, Answers.ImageID from Questions inner join Answers on Questions.QuestionID = Answers.QuestionID " + difficulty;
+                tileAnswersQuery = "select distinct Questions.QuestionID, Questions.Question, Answers.ImageID from Questions inner join Answers on Questions.QuestionID = Answers.QuestionID " + difficulty;
             }
             else
             {
@@ -853,8 +856,15 @@ namespace ECE_700_BoardGame
                         + tileAnswer.ToString());
                     for (int j = 0; j < questionIds.Rows.Count; j++)
                     {
-                        if (!possibleQuestions.Contains(Int32.Parse(questionIds.Rows[j].ItemArray[0].ToString())))
-                            possibleQuestions.Add(Int32.Parse(questionIds.Rows[j].ItemArray[0].ToString()));
+                        Int32 qId = Int32.Parse(questionIds.Rows[j].ItemArray[0].ToString());
+                        Int32 freq = 1;
+                        if (PossibleQuestions.Contains(qId))
+                        {
+                            freq = Int32.Parse(PossibleQuestions[qId].ToString());
+                            freq++;
+                            PossibleQuestions.Remove(qId);
+                        }
+                        PossibleQuestions.Add(qId, freq);
                     }
 
                     i++;
@@ -876,7 +886,7 @@ namespace ECE_700_BoardGame
 
             Texture2D questionTex = Content.Load<Texture2D>("QuestionAnswerImages/Question");
             Rectangle questionPos = new Rectangle(screenWidth / 2, screenHeight / 2, questionTex.Width, questionTex.Height);
-            Question = new QuestionButton(this, questionTex, questionPos, Topics, possibleQuestions, dbhelper);
+            Question = new QuestionButton(this, questionTex, questionPos, Topics, new ArrayList(PossibleQuestions.Keys), dbhelper);
 
             // Notify all bingo tiles that a question has been set
             DataTable answerImages = dbhelper.queryDBRows("select ImageID from Answers where QuestionID = " + Question.getID().ToString());

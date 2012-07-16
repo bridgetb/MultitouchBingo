@@ -109,6 +109,7 @@ namespace ECE_700_BoardGame.Engine
                 if (IsCorrectAnswer())
                 {
                     this.Answered = true;
+                    // TODO: Call back to BingoApp to remove answer
                 }
                 else
                 {
@@ -125,6 +126,7 @@ namespace ECE_700_BoardGame.Engine
                 if (IsCorrectAnswer())
                 {
                     this.Answered = true;
+                    // TODO: Call back to BingoApp to remove answer
                 }
                 else
                 {

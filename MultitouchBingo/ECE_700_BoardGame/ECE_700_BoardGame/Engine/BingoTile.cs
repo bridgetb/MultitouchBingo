@@ -110,6 +110,10 @@ namespace ECE_700_BoardGame.Engine
                 {
                     this.Answered = true;
                     // TODO: Call back to BingoApp to remove answer
+                    if (Game is BingoApp)
+                    {
+                        ((BingoApp)Game).UpdateQuestions(this.ImageID);
+                    }
                 }
                 else
                 {
@@ -127,6 +131,10 @@ namespace ECE_700_BoardGame.Engine
                 {
                     this.Answered = true;
                     // TODO: Call back to BingoApp to remove answer
+                    if (Game is BingoApp)
+                    {
+                        ((BingoApp)Game).UpdateQuestions(this.ImageID);
+                    }
                 }
                 else
                 {

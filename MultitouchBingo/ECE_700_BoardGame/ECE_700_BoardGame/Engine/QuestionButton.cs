@@ -31,12 +31,12 @@ namespace ECE_700_BoardGame.Engine
         private int questionID;
         private List<int> completedQuestions;
         private List<int> PossibleQuestions;
-        private int maxQuestions;
+        private Hashtable QuestionFrequency;
         private ContentManager content;
         private DatabaseHelper databaseHelper;
         private float Rotation;
 
-        public QuestionButton(Game game, Texture2D tex, Rectangle pos, List<String> topics, ArrayList possibleQuestions, DatabaseHelper dbhelper)
+        public QuestionButton(Game game, Texture2D tex, Rectangle pos, List<String> topics, DatabaseHelper dbhelper)
             : base(game, tex, pos)
         {
             databaseHelper = dbhelper;
@@ -46,19 +46,11 @@ namespace ECE_700_BoardGame.Engine
             content = game.Content;
 
             originOffset = new Vector2(0, 0);
-
-            // Set max questions to ask
-            maxQuestions = possibleQuestions.Count;
-            this.PossibleQuestions = new List<int>();
-            foreach (var i in possibleQuestions)
-            {
-                PossibleQuestions.Add(Int32.Parse(i.ToString()));
-            }
+            PossibleQuestions = new List<int>();
+            QuestionFrequency = new Hashtable();
 
             // Set starting question
             currentTopics = topics;
-            SelectQuestions(currentTopics);
-            RandomiseQuestion();
         }
 
         public bool OnTouchTapGesture(TouchPoint touch)
@@ -181,6 +173,53 @@ namespace ECE_700_BoardGame.Engine
         {
             Rotation += 0.005f;
             Rotation = (Rotation >= (Math.PI * 2)) ? 0 : Rotation;
+        }
+
+        public void RemoveQuestions(int answerImage)
+        {
+            // Remove questions to answer image from pool
+            DataTable questionIds = databaseHelper.queryDBRows(
+                        "select distinct Questions.QuestionID from Questions, Answers where Questions.QuestionID = Answers.QuestionID and Answers.ImageID = "
+                        + answerImage.ToString());
+            for (int j = 0; j < questionIds.Rows.Count; j++)
+            {
+                Int32 qId = Int32.Parse(questionIds.Rows[j].ItemArray[0].ToString());
+                Int32 freq = Int32.Parse(this.QuestionFrequency[qId].ToString());
+                QuestionFrequency.Remove(qId);
+                if (freq > 1) // decrement frequency if greater than 1, otherwise remove from hashtable
+                {
+                    freq--;
+                    this.QuestionFrequency.Add(qId, freq);
+                }
+                else
+                { // Remove question from list
+                    while (this.PossibleQuestions.Remove(qId))
+                    {
+                        Debug.WriteLine("Removed");
+                    }
+                }
+            }
+        }
+
+        public void AddQuestions(int answerImage)
+        {
+            // Add potential questions to answer image from pool
+            DataTable questionIds = databaseHelper.queryDBRows(
+                        "select distinct Questions.QuestionID from Questions, Answers where Questions.QuestionID = Answers.QuestionID and Answers.ImageID = "
+                        + answerImage.ToString());
+            for (int j = 0; j < questionIds.Rows.Count; j++)
+            {
+                Int32 qId = Int32.Parse(questionIds.Rows[j].ItemArray[0].ToString());
+                Int32 freq = 1;
+                if (QuestionFrequency.Contains(qId))
+                {
+                    freq = Int32.Parse(QuestionFrequency[qId].ToString());
+                    freq++;
+                    QuestionFrequency.Remove(qId);
+                }
+                QuestionFrequency.Add(qId, freq);
+                PossibleQuestions.Add(qId);
+            }
         }
 
         public void Draw(SpriteBatch batch, GameTime gameTime)

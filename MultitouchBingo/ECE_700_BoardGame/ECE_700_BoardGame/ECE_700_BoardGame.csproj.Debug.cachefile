@@ -121,7 +121,6 @@ Content\BingoEnvironment\Play.xnb
 Content\QuestionAnswerImages\natureStairway.xnb
 Content\BingoEnvironment\Easy.xnb
 Content\BingoEnvironment\Hard.xnb
-Content\Comic.xnb
 Content\QuestionAnswerImages\8.xnb
 Content\QuestionAnswerImages\9.xnb
 Content\QuestionAnswerImages\0.xnb
@@ -149,6 +148,7 @@ Content\QuestionAnswerImages\sunflower.xnb
 Content\QuestionAnswerImages\train.xnb
 Content\QuestionAnswerImages\walnut.xnb
 Content\QuestionAnswerImages\walnutPistachio.xnb
+Content\Comic.xnb
 ExerciseMaterial.sdf
 Resources\icon.png
 ECE_700_BoardGame.xml

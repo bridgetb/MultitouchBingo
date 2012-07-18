@@ -147,8 +147,6 @@ namespace ECE_700_BoardGame
 
             Player[] PlayerData;
 
-            Hashtable PossibleQuestions;
-
             List<String> Topics;
             List<SettingButton> SettingButtons;
 
@@ -641,7 +639,7 @@ namespace ECE_700_BoardGame
 
         #endregion
 
-        #region Options Setting
+        #region Settings
         public void AddSetting(String setting, String value)
         {
             switch (setting)
@@ -732,14 +730,20 @@ namespace ECE_700_BoardGame
 
         public void FinishedSettingOptions()
         {
+            #region Question Tile
+
+            Texture2D questionTex = Content.Load<Texture2D>("QuestionAnswerImages/Question"); // Dummy question image
+            Rectangle questionPos = new Rectangle(screenWidth / 2, screenHeight / 2, questionTex.Width, questionTex.Height);
+            Question = new QuestionButton(this, questionTex, questionPos, Topics, dbhelper);
+            
+            #endregion
+
             #region Answer Tiles
             int Width = GraphicsDevice.Viewport.Width;
             int Height = GraphicsDevice.Viewport.Height;
             int bdWidth = Convert.ToInt16(screenHeight / 2.3);
 
             string tileAnswersQuery;
-            //List<int> possibleQuestions = new List<int>();
-            PossibleQuestions = new Hashtable();
             string difficulty = "";
             if (Difficulty.Equals(GameDifficulty.Easy))
             {
@@ -850,22 +854,8 @@ namespace ECE_700_BoardGame
                     bt.Initialize((int)tileAnswer);
                     PlayerTiles[playerIndex].Add(bt);
 
-                    // Store all possible questions for the answer tiles in a question pool to be used by QuestionButton
-                    DataTable questionIds = dbhelper.queryDBRows(
-                        "select Questions.QuestionID from Questions, Answers where Questions.QuestionID = Answers.QuestionID and Answers.ImageID = "
-                        + tileAnswer.ToString());
-                    for (int j = 0; j < questionIds.Rows.Count; j++)
-                    {
-                        Int32 qId = Int32.Parse(questionIds.Rows[j].ItemArray[0].ToString());
-                        Int32 freq = 1;
-                        if (PossibleQuestions.Contains(qId))
-                        {
-                            freq = Int32.Parse(PossibleQuestions[qId].ToString());
-                            freq++;
-                            PossibleQuestions.Remove(qId);
-                        }
-                        PossibleQuestions.Add(qId, freq);
-                    }
+                    // Store all possible questions for the answer tile in a question pool held by QuestionButton
+                    Question.AddQuestions((int)tileAnswer);
 
                     i++;
                 }
@@ -873,20 +863,8 @@ namespace ECE_700_BoardGame
 
             #endregion
 
-            #region Player Data
-
-            for (int i = 0; i < PLAYER_COUNT; i++)
-            {
-                PlayerData[i] = new Player(PlayerTiles[i], i, this);
-            }
-
-            #endregion
-
-            #region Question Tile
-
-            Texture2D questionTex = Content.Load<Texture2D>("QuestionAnswerImages/Question");
-            Rectangle questionPos = new Rectangle(screenWidth / 2, screenHeight / 2, questionTex.Width, questionTex.Height);
-            Question = new QuestionButton(this, questionTex, questionPos, Topics, new ArrayList(PossibleQuestions.Keys), dbhelper);
+            #region Set Question
+            Question.RandomiseQuestion();
 
             // Notify all bingo tiles that a question has been set
             DataTable answerImages = dbhelper.queryDBRows("select ImageID from Answers where QuestionID = " + Question.getID().ToString());
@@ -911,9 +889,22 @@ namespace ECE_700_BoardGame
 
             #endregion
 
+            #region Player Data
+
+            for (int i = 0; i < PLAYER_COUNT; i++)
+            {
+                PlayerData[i] = new Player(PlayerTiles[i], i, this);
+            }
+
+            #endregion
             Question.SelectQuestions(this.Topics);
             
             this.hasSetOptions = true;
+        }
+
+        public void UpdateQuestions(int AnswerImage)
+        {
+            this.Question.RemoveQuestions(AnswerImage);
         }
         #endregion
 

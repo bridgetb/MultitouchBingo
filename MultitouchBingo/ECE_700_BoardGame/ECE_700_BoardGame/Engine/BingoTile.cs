@@ -22,13 +22,23 @@ namespace ECE_700_BoardGame.Engine
     {
         #region Fields
 
-        public bool Answered;
 
+        private const int CORRECT_IMAGE_W = 136;
+        private const int CORRECT_IMAGE_H = 136;
+
+        private const int INCORRECT_IMAGE_W = 200;
+        private const int INCORRECT_IMAGE_H = 200;
+
+        public bool Answered;
         public bool AttemptAnswer;
-        
+        bool Locked;
+
+        Animation CorrectAnswer;
+        Animation IncorrectAnswer;
+
         int ImageID;
         List<int> AnswersToCurrentQuestion;
-        
+
         Texture2D AnsweredSprite;
         Texture2D ErrorSprite;
 
@@ -45,12 +55,21 @@ namespace ECE_700_BoardGame.Engine
             this.Answered = false;
             this.AttemptAnswer = false;
             this.Rotated = false;
-            
+            this.Locked = false;
+
             this.ImageID = -1;
             this.AnswersToCurrentQuestion = new List<int>();
-            
+
             this.AnsweredSprite = daubSprite;
             this.ErrorSprite = errorSprite;
+
+            CorrectAnswer = new Animation();
+            CorrectAnswer.Initialize(daubSprite, new Vector2(pos.X, pos.Y), CORRECT_IMAGE_W, CORRECT_IMAGE_H, 15, 50, Color.White, (float)pos.Width / CORRECT_IMAGE_W, false, true);
+            CorrectAnswer.Active = false;
+
+            IncorrectAnswer = new Animation();
+            IncorrectAnswer.Initialize(errorSprite, new Vector2(pos.X, pos.Y), INCORRECT_IMAGE_W, INCORRECT_IMAGE_H, 7, 50, Color.White, (float)pos.Width / INCORRECT_IMAGE_W, false, false);
+            IncorrectAnswer.Active = false;
         }
 
         public BingoTile(Game game, Texture2D tileSprite, Texture2D daubSprite, Texture2D errorSprite, Rectangle pos, float tileOrientation, Vector2 originOffset)
@@ -58,6 +77,7 @@ namespace ECE_700_BoardGame.Engine
         {
             this.Answered = false;
             this.AttemptAnswer = false;
+            this.Locked = false;
 
             this.ImageID = -1;
             this.AnswersToCurrentQuestion = new List<int>();
@@ -70,6 +90,14 @@ namespace ECE_700_BoardGame.Engine
             this.originOffset = originOffset;
             this.ansSpriteOffset = new Vector2(daubSprite.Width, daubSprite.Height);
             this.errSpriteOffset = new Vector2(errorSprite.Width, errorSprite.Height);
+
+            CorrectAnswer = new Animation();
+            CorrectAnswer.Initialize(daubSprite, new Vector2(pos.X, pos.Y), CORRECT_IMAGE_W, CORRECT_IMAGE_H, 15, 50, Color.White, (float)pos.Width / CORRECT_IMAGE_W, false, true);
+            CorrectAnswer.Active = false;
+
+            IncorrectAnswer = new Animation();
+            IncorrectAnswer.Initialize(errorSprite, new Vector2(pos.X, pos.Y), INCORRECT_IMAGE_W, INCORRECT_IMAGE_H, 7, 50, Color.White, (float)pos.Width / INCORRECT_IMAGE_W, false, false);
+            IncorrectAnswer.Active = false;
         }
 
         /// <summary>
@@ -87,29 +115,41 @@ namespace ECE_700_BoardGame.Engine
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
-        public void OnTouchTapGesture(object sender, TouchEventArgs args)
-        {
-            if (IsPressed(args.TouchPoint) && !this.Answered)
-            {
-                if (IsCorrectAnswer())
-                {
-                    this.Answered = true;
-                }
-                else
-                {
-                    this.AttemptAnswer = true;
-                }
-            }
-        }
+        //public void OnTouchTapGesture(object sender, TouchEventArgs args)
+
+        //{
+        //    if (IsPressed(args.TouchPoint) && !this.Answered)
+
+        //    {
+        //        if (IsCorrectAnswer())
+
+        //        {
+        //            this.Answered = true;
+
+
+
+        //            CorrectAnswer.Active = true;
+        //        }
+        //        else
+        //        {
+        //            this.AttemptAnswer = true;
+
+
+
+        //        }
+        //    }
+        //}
 
         public void OnTouchTapGesture(TouchPoint touch)
         {
-            if (IsPressed(touch) && !this.Answered)
+            if (IsPressed(touch) && !this.Answered && !this.Locked)
             {
                 if (IsCorrectAnswer())
                 {
                     this.Answered = true;
-                    // TODO: Call back to BingoApp to remove answer
+                    CorrectAnswer.Active = true;
+
+                    // Call back to BingoApp to remove answer
                     if (Game is BingoApp)
                     {
                         ((BingoApp)Game).UpdateQuestions(this.ImageID);
@@ -118,6 +158,7 @@ namespace ECE_700_BoardGame.Engine
                 else
                 {
                     this.AttemptAnswer = true;
+                    IncorrectAnswer.Active = true;
                 }
             }
         }
@@ -130,7 +171,9 @@ namespace ECE_700_BoardGame.Engine
                 if (IsCorrectAnswer())
                 {
                     this.Answered = true;
-                    // TODO: Call back to BingoApp to remove answer
+                    CorrectAnswer.Active = true;
+
+                    // Call back to BingoApp to remove answer
                     if (Game is BingoApp)
                     {
                         ((BingoApp)Game).UpdateQuestions(this.ImageID);
@@ -139,6 +182,7 @@ namespace ECE_700_BoardGame.Engine
                 else
                 {
                     this.AttemptAnswer = true;
+                    IncorrectAnswer.Active = true;
                 }
             }
         }
@@ -148,9 +192,25 @@ namespace ECE_700_BoardGame.Engine
         /// Allows the game component to update itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        public void Update(List<int> answersToCurrentQuestion)
+        public void UpdateQuestion(List<int> answersToCurrentQuestion)
         {
             this.AnswersToCurrentQuestion = answersToCurrentQuestion;
+        }
+
+        /// <summary>
+        /// Allows the game component to update itself.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        public void Update(GameTime gametime)
+        {
+            if (CorrectAnswer.Active)
+            {
+                CorrectAnswer.Update(gametime);
+            }
+            if (IncorrectAnswer.Active)
+            {
+                IncorrectAnswer.Update(gametime);
+            }
         }
 
         private bool IsCorrectAnswer()
@@ -168,7 +228,7 @@ namespace ECE_700_BoardGame.Engine
                 }
 
                 // Check for other possible questions with the same answer
-                
+
                 return false;
             }
             catch (Exception e)
@@ -189,38 +249,53 @@ namespace ECE_700_BoardGame.Engine
         {
             //if (!Answered && !AttemptAnswer)
             //{
-                if (Rotated)
-                {
-                    base.Draw(spriteBatch, (float)Math.PI);
-                }
-                else
-                {
-                    base.Draw(spriteBatch);
-                }
+            if (Rotated)
+            {
+                base.Draw(spriteBatch, (float)Math.PI);
+            }
+            else
+            {
+                base.Draw(spriteBatch);
+            }
             //}
             if (Answered)
             {
                 if (Rotated)
                 {
-                    spriteBatch.Draw(AnsweredSprite, position, null, Color.White, TileOrient, ansSpriteOffset, SpriteEffects.None, 0f);
+                    //spriteBatch.Draw(AnsweredSprite, position, null, Color.White, TileOrient, ansSpriteOffset, SpriteEffects.None, 0f);
+                    CorrectAnswer.Draw(spriteBatch, true);
                 }
                 else
                 {
                     //base.Draw(spriteBatch);
-                    spriteBatch.Draw(AnsweredSprite, position, Color.White);
+                    //spriteBatch.Draw(AnsweredSprite, position, Color.White);
+                    CorrectAnswer.Draw(spriteBatch, false);
                 }
             }
-            else if(AttemptAnswer)
+            else if (AttemptAnswer)
             {
                 AttemptAnswer = false;
                 if (Rotated)
                 {
-                    spriteBatch.Draw(ErrorSprite, position, null, Color.White, TileOrient, errSpriteOffset, SpriteEffects.None, 0f);
+                    IncorrectAnswer.Draw(spriteBatch, true);
+                    //spriteBatch.Draw(ErrorSprite, position, null, Color.White, TileOrient, errSpriteOffset, SpriteEffects.None, 0f);
                 }
                 else
                 {
+                    IncorrectAnswer.Draw(spriteBatch, false);
                     //base.Draw(spriteBatch);
-                    spriteBatch.Draw(ErrorSprite, position, Color.White);
+                    //spriteBatch.Draw(ErrorSprite, position, Color.White);
+                }
+            }
+            if (IncorrectAnswer.Active)
+            {
+                if (Rotated)
+                {
+                    IncorrectAnswer.Draw(spriteBatch, true);
+                }
+                else
+                {
+                    IncorrectAnswer.Draw(spriteBatch, false);
                 }
             }
         }

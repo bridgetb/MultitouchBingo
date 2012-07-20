@@ -104,56 +104,61 @@ namespace ECE_700_BoardGame
         #endregion
 
         #region GameFields
-        
-            MouseState Mouse_State;
-            MouseState Mouse_PrevState;
 
-            ReadOnlyTouchPointCollection Touches;
-            ReadOnlyTouchPointCollection TouchesPrevState;
+        MouseState Mouse_State;
+        MouseState Mouse_PrevState;
 
-            bool QuestionChanged = false;
-            TimeSpan QuestionLastChanged; 
-            private const int DIVIDER_THICKNESS = 60;
+        ReadOnlyTouchPointCollection Touches;
+        ReadOnlyTouchPointCollection TouchesPrevState;
 
-            //PlayerOne = TopLeft, Players Numbered Clockwise
-            private const int PLAYER_COUNT = 4;
-            private const int BOARD_TILE_WIDTH = 4;
+        bool QuestionChanged = false;
+        TimeSpan QuestionLastChanged;
+        private const int DIVIDER_THICKNESS = 60;
 
-            int screenWidth;
-            int screenHeight;
-            int boardWidth;
+        //PlayerOne = TopLeft, Players Numbered Clockwise
+        private const int PLAYER_COUNT = 4;
+        private const int BOARD_TILE_WIDTH = 4;
 
-            //Background Elements. All content sits on top of this content
-            BackgroundItem BackgroundBase;
-            BackgroundItem PlayerColors;
-            List<ParallaxingBackground> ParallaxingBacking;
+        int screenWidth;
+        int screenHeight;
+        int boardWidth;
 
-            //Bingo Grids That tiles sit amongst
-            BackgroundItem BingoGridOne;
-            BackgroundItem BingoGridTwo;
-            BackgroundItem BingoGridThree;
-            BackgroundItem BingoGridFour;
-            List<BackgroundItem> BingoBoards;
+        //Background Elements. All content sits on top of this content
+        BackgroundItem BackgroundBase;
+        BackgroundItem PlayerColors;
+        List<ParallaxingBackground> ParallaxingBacking;
 
-            //Dividers Between Players 
-            List<BackgroundItem> Dividers;
+        //Bingo Grids That tiles sit amongst
+        BackgroundItem BingoGridOne;
+        BackgroundItem BingoGridTwo;
+        BackgroundItem BingoGridThree;
+        BackgroundItem BingoGridFour;
+        List<BackgroundItem> BingoBoards;
 
-            //Question tile in centre
-            ECE_700_BoardGame.Engine.QuestionButton Question;
-            BackgroundItem QuestionArea;
+        //Dividers Between Players 
+        List<BackgroundItem> Dividers;
 
-            //Player answer tiles
-            List<BingoTile>[] PlayerTiles;
+        //Question tile in centre
+        ECE_700_BoardGame.Engine.QuestionButton Question;
+        BackgroundItem QuestionArea;
 
-            Player[] PlayerData;
+        //Player answer tiles
+        List<BingoTile>[] PlayerTiles;
 
-            List<String> Topics;
-            List<SettingButton> SettingButtons;
+        //List<Animation> IncorrectAnswerDaub;
+        //List<Animation> CorrectAnswerDaub;
+        Texture2D IncorrectSpriteStrip;
+        Texture2D CorrectSpriteStrip;
 
-            GameDifficulty Difficulty = GameDifficulty.Easy;
-            ContinueButton PlayButton;
+        Player[] PlayerData;
 
-            DatabaseHelper dbhelper = new DatabaseHelper();
+        List<String> Topics;
+        List<SettingButton> SettingButtons;
+
+        GameDifficulty Difficulty = GameDifficulty.Easy;
+        ContinueButton PlayButton;
+
+        DatabaseHelper dbhelper = new DatabaseHelper();
 
         #endregion
 
@@ -169,19 +174,20 @@ namespace ECE_700_BoardGame
         {
             #region Lists
 
-            BingoBoards         = new List<BackgroundItem>();
-            Dividers            = new List<BackgroundItem>();
-            ParallaxingBacking  = new List<ParallaxingBackground>();
+            BingoBoards = new List<BackgroundItem>();
+            Dividers = new List<BackgroundItem>();
+            ParallaxingBacking = new List<ParallaxingBackground>();
 
             PlayerTiles = new List<BingoTile>[PLAYER_COUNT];
             PlayerData = new Player[PLAYER_COUNT];
 
-            for(int i=0; i<PLAYER_COUNT; i++){
+            for (int i = 0; i < PLAYER_COUNT; i++)
+            {
                 PlayerTiles[i] = new List<BingoTile>();
             }
 
             Topics = new List<String>();
-            
+
             #endregion
 
             #region TemplatedInitialize
@@ -242,11 +248,14 @@ namespace ECE_700_BoardGame
             Debug.WriteLine(screenWidth.ToString() + " " + screenHeight.ToString(), "Screen Width, Height");
 #endif
 
+            CorrectSpriteStrip = Content.Load<Texture2D>("BingoEnvironment/GrinStrip");
+            IncorrectSpriteStrip = Content.Load<Texture2D>("BingoEnvironment/SurpriseStrip");
+
             #region Position Main Background Tiles
 
             Texture2D backTex = Content.Load<Texture2D>("BingoEnvironment/Bingo_BlueBack");
-            Vector2 originBack = new Vector2(backTex.Width/2, backTex.Height/2);
-            Rectangle posRect = new Rectangle(screenWidth/2, screenHeight/2, screenWidth, screenHeight);
+            Vector2 originBack = new Vector2(backTex.Width / 2, backTex.Height / 2);
+            Rectangle posRect = new Rectangle(screenWidth / 2, screenHeight / 2, screenWidth, screenHeight);
 
             //Path, RectDestination, Orientation, ContentManager
             BackgroundBase = new BackgroundItem(backTex, posRect, 0, originBack);
@@ -269,7 +278,7 @@ namespace ECE_700_BoardGame
             kite.Initialize(Content, "BingoEnvironment/Kite", screenWidth, spacing, paraRect, -0.15f);
             ParallaxingBacking.Add(kite);
 
-            spacing = screenWidth+200;
+            spacing = screenWidth + 200;
             ParallaxingBackground cloudLarge = new ParallaxingBackground();
             cloudLarge.Initialize(Content, "BingoEnvironment/CloudLarge", screenWidth, spacing, paraRect, -0.2f);
             ParallaxingBacking.Add(cloudLarge);
@@ -287,9 +296,9 @@ namespace ECE_700_BoardGame
             #region Position Bingo Boards
 
             Texture2D boardTex = Content.Load<Texture2D>("BingoEnvironment/BingoBoard");
-            boardWidth = Convert.ToInt16(screenHeight/2.3);
-            Rectangle posBoard = new Rectangle( (screenWidth / 4) - boardWidth/2,
-                                                (screenHeight / 4) - boardWidth/2,
+            boardWidth = Convert.ToInt16(screenHeight / 2.3);
+            Rectangle posBoard = new Rectangle((screenWidth / 4) - boardWidth / 2,
+                                                (screenHeight / 4) - boardWidth / 2,
                                                 boardWidth, boardWidth);
             //Vector2 originBoard = new Vector2(posBoard.Width / 2, posBoard.Height / 2);
 
@@ -299,14 +308,14 @@ namespace ECE_700_BoardGame
             Debug.WriteLine(posBoard.Width.ToString() + " " + posBoard.Height.ToString(), "Board Size");
 #endif
             BingoGridOne = new BackgroundItem(boardTex, posBoard, 0);
-                                                                     
-            posBoard.X += screenWidth / 2;         
+
+            posBoard.X += screenWidth / 2;
             BingoGridTwo = new BackgroundItem(boardTex, posBoard, 0);
-                                                                     
-            posBoard.Y = screenHeight - (screenHeight / 4) - (boardWidth/2);       
+
+            posBoard.Y = screenHeight - (screenHeight / 4) - (boardWidth / 2);
             BingoGridThree = new BackgroundItem(boardTex, posBoard, 0);
-                                                                     
-            posBoard.X -= screenWidth / 2;         
+
+            posBoard.X -= screenWidth / 2;
             BingoGridFour = new BackgroundItem(boardTex, posBoard, 0);
 
 
@@ -331,7 +340,7 @@ namespace ECE_700_BoardGame
             BackgroundItem P2P3_Divider = new BackgroundItem(dividerTex, posDivider, MathHelper.Pi);
 
             //Verticals
-            posDivider = new Rectangle((screenWidth/2) + (DIVIDER_THICKNESS/2), 0, screenWidth / 5 - 80, DIVIDER_THICKNESS);
+            posDivider = new Rectangle((screenWidth / 2) + (DIVIDER_THICKNESS / 2), 0, screenWidth / 5 - 80, DIVIDER_THICKNESS);
 
             BackgroundItem P1P2_Divider = new BackgroundItem(dividerTex, posDivider, MathHelper.Pi / 2);
 
@@ -345,13 +354,13 @@ namespace ECE_700_BoardGame
             Dividers.Add(P3P4_Divider); //bottom
 
             #endregion
-            
+
             #region Game Settings
             // Display topics
             DataTable dt = this.dbhelper.queryDBRows("select Topic from Topics");
             SettingButtons = new List<SettingButton>();
             int y = screenHeight / 2 - dt.Rows.Count * 50;
-            
+
             Texture2D tex;
             Rectangle pos;
             foreach (DataRow row in dt.Rows)
@@ -432,10 +441,10 @@ namespace ECE_700_BoardGame
                             {
                                 b.OnTouchTapGesture(touch);
                             }
-                            PlayButton.OnTouchTapGesture(touch);
+                            PlayButton.OnTouchTapGesture(touch, gameTime);
                             continue;
                         }
-                        
+
                         TagData td = touch.Tag;
                         if ((td.Value == 0xC0 || td.Value == 8) && !this.QuestionChanged)
                         {
@@ -445,7 +454,7 @@ namespace ECE_700_BoardGame
                             QuestionLastChanged = gameTime.TotalGameTime;
                         }
 
-                        
+
                         //Check for tile touched
                         for (int playerIndex = 0; playerIndex < PLAYER_COUNT; playerIndex++)
                         {
@@ -475,7 +484,8 @@ namespace ECE_700_BoardGame
                                     {
                                         list.Add(Int32.Parse(dt.Rows[i].ItemArray[0].ToString()));
                                     }
-                                    bt.Update(list);
+
+                                    bt.UpdateQuestion(list);
                                 }
                             }
                         }
@@ -500,7 +510,7 @@ namespace ECE_700_BoardGame
                             {
                                 b.OnClickGesture(Mouse_State);
                             }
-                            PlayButton.OnClickGesture(Mouse_State);
+                            PlayButton.OnClickGesture(Mouse_State, gameTime);
                         }
                         else
                         {
@@ -535,7 +545,8 @@ namespace ECE_700_BoardGame
                                         {
                                             list.Add(Int32.Parse(dt.Rows[i].ItemArray[0].ToString()));
                                         }
-                                        bt.Update(list);
+
+                                        bt.UpdateQuestion(list);
                                     }
                                 }
                             }
@@ -544,6 +555,14 @@ namespace ECE_700_BoardGame
                     }
 #endif
                     #endregion
+                }
+            }
+
+            for (int playerIndex = 0; playerIndex < PLAYER_COUNT; playerIndex++)
+            {
+                foreach (BingoTile bt in PlayerTiles[playerIndex])
+                {
+                    bt.Update(gameTime);
                 }
             }
 
@@ -591,7 +610,7 @@ namespace ECE_700_BoardGame
                     0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
                 spriteBatch.DrawString(font, difficulty, new Vector2(screenWidth * 5 / 8, y - 100), Color.Black,
                     0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
-            
+
                 foreach (SettingButton b in SettingButtons)
                 {
                     b.Draw(spriteBatch);
@@ -639,7 +658,8 @@ namespace ECE_700_BoardGame
 
         #endregion
 
-        #region Settings
+
+        #region Options Setting
         public void AddSetting(String setting, String value)
         {
             switch (setting)
@@ -676,7 +696,7 @@ namespace ECE_700_BoardGame
                     break;
                 default:
                     return;
-            }            
+            }
         }
 
         public void RemoveSetting(String setting, String value)
@@ -715,7 +735,8 @@ namespace ECE_700_BoardGame
         /// <param name="difficulty"></param>
         public void SetDifficulty(int difficulty)
         {
-            switch (difficulty) {
+            switch (difficulty)
+            {
                 case (1):
                     Difficulty = GameDifficulty.Easy;
                     break;
@@ -728,14 +749,14 @@ namespace ECE_700_BoardGame
             }
         }
 
-        public void FinishedSettingOptions()
+        public void FinishedSettingOptions(GameTime gameTime)
         {
             #region Question Tile
 
             Texture2D questionTex = Content.Load<Texture2D>("QuestionAnswerImages/Question"); // Dummy question image
             Rectangle questionPos = new Rectangle(screenWidth / 2, screenHeight / 2, questionTex.Width, questionTex.Height);
             Question = new QuestionButton(this, questionTex, questionPos, Topics, dbhelper);
-            
+
             #endregion
 
             #region Answer Tiles
@@ -744,6 +765,7 @@ namespace ECE_700_BoardGame
             int bdWidth = Convert.ToInt16(screenHeight / 2.3);
 
             string tileAnswersQuery;
+
             string difficulty = "";
             if (Difficulty.Equals(GameDifficulty.Easy))
             {
@@ -767,8 +789,6 @@ namespace ECE_700_BoardGame
             Rectangle posRectAns = new Rectangle((screenWidth / 4) - (boardWidth / 2) + (boardWidth / 25),
                                                     (screenHeight / 4) - (boardWidth / 2) + (boardWidth / 20),
                                                     boardWidth / 6, boardWidth / 6);
-            Texture2D daubTex = Content.Load<Texture2D>("daub");
-            Texture2D errorTileTex = Content.Load<Texture2D>("error");
 
             for (int playerIndex = 0; playerIndex < PLAYER_COUNT; playerIndex++)
             {
@@ -844,19 +864,18 @@ namespace ECE_700_BoardGame
                     BingoTile bt;
                     if (playerIndex < (PLAYER_COUNT / 2))
                     {
-                        bt = new BingoTile(this, tileAnsTex, daubTex, errorTileTex, posRectAns, (float)Math.PI, new Vector2(tileAnsTex.Width, tileAnsTex.Height));
+                        bt = new BingoTile(this, tileAnsTex, CorrectSpriteStrip, IncorrectSpriteStrip, posRectAns, (float)Math.PI, new Vector2(tileAnsTex.Width, tileAnsTex.Height));
                     }
                     else
                     {
-                        bt = new BingoTile(this, tileAnsTex, daubTex, errorTileTex, posRectAns);
+                        bt = new BingoTile(this, tileAnsTex, CorrectSpriteStrip, IncorrectSpriteStrip, posRectAns);
                     }
 
                     bt.Initialize((int)tileAnswer);
                     PlayerTiles[playerIndex].Add(bt);
 
-                    // Store all possible questions for the answer tile in a question pool held by QuestionButton
+                    // Store all possible questions for the answer tiles in a question pool to be used by QuestionButton
                     Question.AddQuestions((int)tileAnswer);
-
                     i++;
                 }
             }
@@ -865,6 +884,7 @@ namespace ECE_700_BoardGame
 
             #region Set Question
             Question.RandomiseQuestion();
+
 
             // Notify all bingo tiles that a question has been set
             DataTable answerImages = dbhelper.queryDBRows("select ImageID from Answers where QuestionID = " + Question.getID().ToString());
@@ -877,7 +897,8 @@ namespace ECE_700_BoardGame
             {
                 foreach (BingoTile bt in pt)
                 {
-                    bt.Update(list);
+                    bt.UpdateQuestion(list);
+
                 }
             }
 
@@ -898,7 +919,7 @@ namespace ECE_700_BoardGame
 
             #endregion
             Question.SelectQuestions(this.Topics);
-            
+
             this.hasSetOptions = true;
         }
 

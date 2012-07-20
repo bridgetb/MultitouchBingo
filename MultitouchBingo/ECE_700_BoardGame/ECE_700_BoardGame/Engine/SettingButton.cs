@@ -85,23 +85,23 @@ namespace ECE_700_BoardGame.Engine
             
         }
 
-        public bool OnTouchTapGesture(TouchPoint touch)
+        public bool OnTouchTapGesture(TouchPoint touch, GameTime gametime)
         {
             if (IsPressed(touch))
             {
                 if (Game is BingoApp)
-                    ((BingoApp)Game).FinishedSettingOptions();
+                    ((BingoApp)Game).FinishedSettingOptions(gametime);
                 return true;
             }
             return false;
         }
 
-        public bool OnClickGesture(MouseState mouseState)
+        public bool OnClickGesture(MouseState mouseState, GameTime gametime)
         {
             if (IsPressed(mouseState))
             {
                 if (Game is BingoApp)
-                    ((BingoApp)Game).FinishedSettingOptions();
+                    ((BingoApp)Game).FinishedSettingOptions(gametime);
                 return true;
             }
             return false;

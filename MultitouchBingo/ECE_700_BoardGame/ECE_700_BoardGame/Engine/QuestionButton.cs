@@ -23,7 +23,7 @@ namespace ECE_700_BoardGame.Engine
     /// <summary>
     /// This class represents the centre button containing the question or item called out in each Bingo iteration.
     /// </summary>
-    class QuestionButton : Button
+    class QuestionButton : MenuButton
     {
         private DataTable questions;
         private List<String> currentTopics {get; set;}

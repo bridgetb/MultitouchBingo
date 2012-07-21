@@ -21,14 +21,19 @@ namespace ECE_700_BoardGame.Screens
         int ScreenWidth;
         SpriteBatch SpriteBatch;
         ContentManager Content;
-        ContinueButton PlayButton;
+        PlayButton PlayButton;
         DatabaseHelper DBhelper;
         List<String> Topics;
         List<SettingButton> SettingButtons;
+        List<MenuButton> EnabledButtons;
 
         GameDifficulty Difficulty = GameDifficulty.Easy;
 
         ReadOnlyTouchPointCollection TouchesPrevState;
+
+        State ScreenState;
+
+        public enum State { ChooseTopic, ChooseDifficulty, ConfirmOptions }
 
         public MenuScreen(Game game, SpriteBatch spriteBatch, int screenHeight, int screenWidth)
         {
@@ -38,35 +43,28 @@ namespace ECE_700_BoardGame.Screens
             ScreenWidth = screenWidth;
             Topics = new List<String>();
             SettingButtons = new List<SettingButton>();
+            EnabledButtons = new List<MenuButton>();
             DBhelper = DatabaseHelper.Instance;
+
+            // Set state to first state where user can choose topics
+            ScreenState = State.ChooseTopic;
         }
 
         public void Draw(GameTime gameTime)
         {
-            // Display topic options
-            int y = ScreenHeight / 2 - SettingButtons.Count * 50;
-            String categories = "Categories:";
-            SpriteFont font = Content.Load<SpriteFont>("Comic");
-            String difficulty = "Difficulty levels:";
-            SpriteBatch.DrawString(font, categories, new Vector2(ScreenWidth / 8, y - 100), Color.Black,
-                0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
-            SpriteBatch.DrawString(font, difficulty, new Vector2(ScreenWidth * 5 / 8, y - 100), Color.Black,
-                0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
-
-            foreach (SettingButton b in SettingButtons)
+            // TODO: Draw BINGO title!
+            // Display all enabled options                    
+            foreach (MenuButton b in EnabledButtons)
             {
                 b.Draw(SpriteBatch);
-            }
-
-            // OK button
-            PlayButton.Draw(SpriteBatch);
+            }                    
         }
 
         public void LoadContent(ContentManager content)
         {
             Content = content;
 
-            #region Game Settings
+            #region Topic Buttons
             // Display topics
             DataTable dt = this.DBhelper.queryDBRows("select Topic from Topics");
             
@@ -82,6 +80,9 @@ namespace ECE_700_BoardGame.Screens
                 SettingButtons.Add(new SettingButton(Game, tex, pos, "TOPIC", topic));
                 y += 100;
             }
+            #endregion
+
+            #region Difficulty Buttons
             // Display difficulties
             dt = this.DBhelper.queryDBRows("select Difficulty from DifficultyLevels");
             y = ScreenHeight / 2 - dt.Rows.Count * 50;
@@ -98,11 +99,15 @@ namespace ECE_700_BoardGame.Screens
                 SettingButtons.Add(sb);
                 y += 100;
             }
+            #endregion
 
+            #region Play Button
             tex = Content.Load<Texture2D>("BingoEnvironment/Play");
             pos = new Rectangle(ScreenWidth / 2, y, tex.Width, tex.Height);
-            PlayButton = new ContinueButton(Game, tex, pos);
+            PlayButton = new PlayButton(Game, tex, pos);
             #endregion
+
+            this.SetState(State.ChooseTopic);
         }
 
         public void Update(GameTime gameTime, ReadOnlyTouchPointCollection touches)
@@ -126,22 +131,75 @@ namespace ECE_700_BoardGame.Screens
                     continue;
                 }
                 // Check for settings changed
-                foreach (SettingButton b in this.SettingButtons)
+                State initial = this.ScreenState;
+                State after = this.ScreenState;
+                foreach (MenuButton b in EnabledButtons)
                 {
-                    b.OnTouchTapGesture(touch);
+                    if (b.OnTouchTapGesture(touch)) // selected >=1 topic
+                    {
+                        if (b is SettingButton && ((SettingButton)b).Setting.Equals("TOPIC"))
+                            after = State.ChooseDifficulty;
+                        else if (b is SettingButton && ((SettingButton)b).Setting.Equals("DIFFICULTY"))
+                            after = State.ConfirmOptions;
+                    }
                 }
-                PlayButton.OnTouchTapGesture(touch, gameTime);
+                if (EnabledButtons.Contains(PlayButton))
+                    PlayButton.OnTouchTapGesture(touch);
+                if (after > initial)
+                {
+                    this.SetState(after);
+                }
             }
         }
 
         public void Update(GameTime gameTime, MouseState ms)
         {
             // Check for settings changed
-            foreach (SettingButton b in this.SettingButtons)
+            State initial = this.ScreenState;
+            State after = this.ScreenState;
+            foreach (MenuButton b in EnabledButtons)
             {
-                b.OnClickGesture(ms);
+                if (b.OnClickGesture(ms)) // selected >=1 topic
+                {
+                    if (b is SettingButton && ((SettingButton)b).Setting.Equals("TOPIC"))
+                        after = State.ChooseDifficulty;
+                    else if (b is SettingButton && ((SettingButton)b).Setting.Equals("DIFFICULTY"))
+                        after = State.ConfirmOptions;
+                }
             }
-            PlayButton.OnClickGesture(ms, gameTime);
+            if (EnabledButtons.Contains(PlayButton))
+                PlayButton.OnClickGesture(ms);
+            if (after > initial)
+            {
+                this.SetState(after);
+            }
+        }
+
+        public void SetState(State screenState)
+        {
+            this.ScreenState = screenState;
+            switch (screenState)
+            {
+                case State.ChooseTopic:
+                    var e = from newButton in SettingButtons
+                            where newButton.Setting.Equals("TOPIC")
+                            && newButton is SettingButton
+                            select newButton;
+                    EnabledButtons.AddRange(e);
+                    break;
+                case State.ChooseDifficulty:
+                    e = from newButton in SettingButtons
+                            where newButton.Setting.Equals("DIFFICULTY")
+                            && newButton is SettingButton
+                            select newButton;
+                    EnabledButtons.AddRange(e);
+                    break;
+                case State.ConfirmOptions:
+                    EnabledButtons.Add(PlayButton);
+                    break;
+                default:
+                    break;
+            }
         }
 
         #region Options Setting
@@ -234,7 +292,7 @@ namespace ECE_700_BoardGame.Screens
             }
         }
 
-        public void FinishedSettingOptions(GameTime gameTime)
+        public void FinishedSettingOptions()
         {
             if (Game is BingoApp)
             {

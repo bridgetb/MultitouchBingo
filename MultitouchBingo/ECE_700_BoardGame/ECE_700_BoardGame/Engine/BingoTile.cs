@@ -19,7 +19,7 @@ namespace ECE_700_BoardGame.Engine
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class BingoTile : Button
+    public class BingoTile : MenuButton
     {
         #region Fields
 

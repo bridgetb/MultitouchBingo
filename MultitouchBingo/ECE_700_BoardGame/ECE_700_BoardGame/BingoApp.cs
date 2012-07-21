@@ -36,7 +36,6 @@ namespace ECE_700_BoardGame
         private TouchTarget touchTarget;
         private Color backgroundColor = new Color(81, 81, 81);
         private bool applicationLoadCompleteSignalled;
-        private bool hasSetOptions = false;
 
         private UserOrientation currentOrientation = UserOrientation.Bottom;
         private Matrix screenTransform = Matrix.Identity;

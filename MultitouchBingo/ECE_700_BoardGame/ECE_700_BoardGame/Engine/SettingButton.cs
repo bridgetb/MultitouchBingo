@@ -10,23 +10,21 @@ using ECE_700_BoardGame.Screens;
 
 namespace ECE_700_BoardGame.Engine
 {
-    class SettingButton : Button
+    class SettingButton : MenuButton
     {
         public String Setting { get; set; }
         public String Value { get; set; }
-        Game Game;
         public bool Selected {get; set;}
 
         public SettingButton(Game game, Texture2D tex, Rectangle pos, String setting, String value)
             : base(game, tex, pos)
         {
-            Game = game;
             Setting = setting;
             Value = value;
             Selected = false;
         }
 
-        public bool OnTouchTapGesture(TouchPoint touch)
+        public override bool OnTouchTapGesture(TouchPoint touch)
         {
             if (IsPressed(touch))
             {
@@ -36,7 +34,7 @@ namespace ECE_700_BoardGame.Engine
             return false;
         }
 
-        public bool OnClickGesture(MouseState mouseState)
+        public override bool OnClickGesture(MouseState mouseState)
         {
             if (IsPressed(mouseState))
             {
@@ -86,15 +84,14 @@ namespace ECE_700_BoardGame.Engine
 
     }
 
-    class ContinueButton : Button
+    class PlayButton : MenuButton
     {
-        public ContinueButton(Game game, Texture2D tex, Rectangle pos)
+        public PlayButton(Game game, Texture2D tex, Rectangle pos)
             : base(game, tex, pos)
         {
-            
         }
 
-        public bool OnTouchTapGesture(TouchPoint touch, GameTime gametime)
+        public override bool OnTouchTapGesture(TouchPoint touch)
         {
             if (IsPressed(touch))
             {
@@ -103,7 +100,7 @@ namespace ECE_700_BoardGame.Engine
                     Screen s = ((BingoApp)Game).GetGameState();
                     if (s is MenuScreen)
                     {
-                        ((MenuScreen)s).FinishedSettingOptions(gametime);
+                        ((MenuScreen)s).FinishedSettingOptions();
                     }
                 }
                 return true;
@@ -111,7 +108,7 @@ namespace ECE_700_BoardGame.Engine
             return false;
         }
 
-        public bool OnClickGesture(MouseState mouseState, GameTime gametime)
+        public override bool OnClickGesture(MouseState mouseState)
         {
             if (IsPressed(mouseState))
             {
@@ -120,7 +117,7 @@ namespace ECE_700_BoardGame.Engine
                     Screen s = ((BingoApp)Game).GetGameState();
                     if (s is MenuScreen)
                     {
-                        ((MenuScreen)s).FinishedSettingOptions(gametime);
+                        ((MenuScreen)s).FinishedSettingOptions();
                     }
                 }
                 return true;

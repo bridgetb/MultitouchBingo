@@ -12,12 +12,27 @@ namespace ECE_700_BoardGame.Helper
 {
     class DatabaseHelper
     {
-        private SqlCeConnection conn;
 
-        public DatabaseHelper()
-        {
+        private static DatabaseHelper instance;
+
+        private DatabaseHelper() {
             connectDB();
         }
+
+        public static DatabaseHelper Instance
+        {
+            get 
+            {
+                if (instance == null)
+                {
+                    instance = new DatabaseHelper();
+                }
+                return instance;
+            }
+        }
+
+        private SqlCeConnection conn;
+
 
         private void connectDB()
         {

@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Surface.Core;
 using Microsoft.Xna.Framework.Input;
+using ECE_700_BoardGame.Screens;
 
 namespace ECE_700_BoardGame.Engine
 {
@@ -52,12 +53,20 @@ namespace ECE_700_BoardGame.Engine
                 if (Selected)
                 {
                     Selected = false;
-                    ((BingoApp)Game).RemoveSetting(Setting, Value);
+                    Screen s = ((BingoApp)Game).GetGameState();
+                    if (s is MenuScreen)
+                    {
+                        ((MenuScreen)s).RemoveSetting(Setting, Value);
+                    }
                 }
                 else
                 {
                     Selected = true;
-                    ((BingoApp)Game).AddSetting(Setting, Value);
+                    Screen s = ((BingoApp)Game).GetGameState();
+                    if (s is MenuScreen)
+                    {
+                        ((MenuScreen)s).AddSetting(Setting, Value);
+                    }
                 }
 
             }
@@ -90,7 +99,13 @@ namespace ECE_700_BoardGame.Engine
             if (IsPressed(touch))
             {
                 if (Game is BingoApp)
-                    ((BingoApp)Game).FinishedSettingOptions(gametime);
+                {
+                    Screen s = ((BingoApp)Game).GetGameState();
+                    if (s is MenuScreen)
+                    {
+                        ((MenuScreen)s).FinishedSettingOptions(gametime);
+                    }
+                }
                 return true;
             }
             return false;
@@ -101,7 +116,13 @@ namespace ECE_700_BoardGame.Engine
             if (IsPressed(mouseState))
             {
                 if (Game is BingoApp)
-                    ((BingoApp)Game).FinishedSettingOptions(gametime);
+                {
+                    Screen s = ((BingoApp)Game).GetGameState();
+                    if (s is MenuScreen)
+                    {
+                        ((MenuScreen)s).FinishedSettingOptions(gametime);
+                    }
+                }
                 return true;
             }
             return false;

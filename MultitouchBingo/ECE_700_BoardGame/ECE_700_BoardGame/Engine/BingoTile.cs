@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using Microsoft.Surface.Core;
 using System.Diagnostics;
 using System.Collections;
+using ECE_700_BoardGame.Screens;
 
 
 namespace ECE_700_BoardGame.Engine
@@ -152,7 +153,9 @@ namespace ECE_700_BoardGame.Engine
                     // Call back to BingoApp to remove answer
                     if (Game is BingoApp)
                     {
-                        ((BingoApp)Game).UpdateQuestions(this.ImageID);
+                        Screen s = ((BingoApp)Game).GetGameState();
+                        if (s is GameScreen)
+                            ((GameScreen)s).UpdateQuestions(this.ImageID);
                     }
                 }
                 else
@@ -176,7 +179,9 @@ namespace ECE_700_BoardGame.Engine
                     // Call back to BingoApp to remove answer
                     if (Game is BingoApp)
                     {
-                        ((BingoApp)Game).UpdateQuestions(this.ImageID);
+                        Screen s = ((BingoApp)Game).GetGameState();
+                        if (s is GameScreen)
+                            ((GameScreen)s).UpdateQuestions(this.ImageID);
                     }
                 }
                 else

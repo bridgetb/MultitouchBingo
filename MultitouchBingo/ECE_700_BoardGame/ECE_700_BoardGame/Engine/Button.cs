@@ -20,32 +20,71 @@ namespace ECE_700_BoardGame.Engine
     /// </summary>
     public abstract class Button : DrawableGameComponent
     {
-        public Texture2D texture;
-        public Rectangle position;
-        public Vector2 originOffset;
+        public Texture2D Texture;
+        public Rectangle Position;
+        public Rectangle Target;
+        public Vector2 OriginOffset;
+        int XChange = 0;
+        int YChange = 0;
+        public bool IsTranslating { get; set; }
+
+        protected int Alpha = 255;
         
-        public Button(Game game, Texture2D tex, Rectangle pos) : base(game)
+        public Button(Game game, Texture2D tex, Rectangle pos, Rectangle target) : base(game)
         {
-            this.texture = tex;
-            this.position = pos;
+            this.Texture = tex;
+            this.Position = pos;
+            this.Target = target;
         }
         /// <summary>
         /// Allows the game component to perform any initialization it needs to before starting
         /// to run.  This is where it can query for any required services and load content.
         /// </summary>
-        public void Initialize()
+        public override void Initialize()
         {
-            // TODO: Add your initialization code here
+            if (Target.Equals(Position))
+            {
+                return;
+            }
+            int frames = Math.Abs(Target.X - Position.X);
+            if (frames == 0 || (frames > Math.Abs(Target.Y - Position.Y) && Math.Abs(Target.Y - Position.Y) != 0))
+            {
+                frames = Math.Abs(Target.Y - Position.Y) / 10;
+            }
 
+            XChange = (Target.X - Position.X) / frames;
+            YChange = (Target.Y - Position.Y) / frames;
         }
 
         /// <summary>
         /// Allows the game component to update itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gametime)
         {
-            // 
+            if (!this.IsTranslating)
+                return;
+            if (Math.Abs((Position.X + XChange) - Target.X) < Math.Abs(Position.X - Target.X))
+            {
+                Position.X += XChange;
+            }
+            else
+            {
+                // Gone past target
+                Position.X = Target.X;
+                XChange = 0;
+            }
+            if (Math.Abs((Position.Y + XChange) - Target.Y) < Math.Abs(Position.Y - Target.Y))
+            {
+                Position.Y += YChange;
+            }
+            else
+            {
+                // Gone past target
+                Position.Y = Target.Y;
+                YChange = 0;
+            }
+            base.Update(gametime);
         }
 
         /// <summary>
@@ -54,23 +93,23 @@ namespace ECE_700_BoardGame.Engine
         /// <param name="spriteBatch"></param>
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, Color.White);
+            spriteBatch.Draw(Texture, Position, new Color(255, 255, 255, (byte)MathHelper.Clamp(Alpha, 0, 255)));
         }
 
-        public void Draw(SpriteBatch spriteBatch, float orient)
+        public virtual void Draw(SpriteBatch spriteBatch, float orient)
         {
-            spriteBatch.Draw(texture, position, null, Color.White, orient, originOffset, SpriteEffects.None, 0f);
+            spriteBatch.Draw(Texture, Position, null, new Color(255, 255, 255, (byte)MathHelper.Clamp(Alpha, 0, 255)), orient, 
+                OriginOffset, SpriteEffects.None, 0f);
         }
 
         protected virtual bool IsPressed(TouchPoint point)
         {
-            //Rectangle largerArea = new Rectangle(position.X, position.Y, position.Width + 200, position.Height + 200);
 #if DEBUG
             Debug.WriteLine(point.X.ToString(), "Touch point X");
             Debug.WriteLine(point.Y.ToString(), "Touch point Y");
-            Debug.WriteLine(position.Contains((int)point.X, (int)point.Y).ToString(), "Is Within Item Hit Detection");
+            Debug.WriteLine(Position.Contains((int)point.X, (int)point.Y).ToString(), "Is Within Item Hit Detection");
 #endif
-            if (position.Contains((int)point.X, (int)point.Y))
+            if (Position.Contains((int)point.X, (int)point.Y))
             {
                 return true;
             }
@@ -81,9 +120,9 @@ namespace ECE_700_BoardGame.Engine
         {
             //Rectangle largerArea = new Rectangle(position.X, position.Y, position.Width + 200, position.Height + 200);            
 #if DEBUG
-            Debug.WriteLine(position.Contains((int)clickPoint.X, (int)clickPoint.Y).ToString(), "Is Within Item Hit Detection (CLICK)");
+            Debug.WriteLine(Position.Contains((int)clickPoint.X, (int)clickPoint.Y).ToString(), "Is Within Item Hit Detection (CLICK)");
 #endif
-            if (position.Contains((int)clickPoint.X, (int)clickPoint.Y))
+            if (Position.Contains((int)clickPoint.X, (int)clickPoint.Y))
             {
                 return true;
             }

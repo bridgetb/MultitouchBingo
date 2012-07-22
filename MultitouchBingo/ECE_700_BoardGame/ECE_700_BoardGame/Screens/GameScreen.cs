@@ -155,7 +155,7 @@ namespace ECE_700_BoardGame.Screens
 
             Texture2D questionTex = Content.Load<Texture2D>("QuestionAnswerImages/Question"); // Dummy question image
             Rectangle questionPos = new Rectangle(ScreenWidth / 2, ScreenHeight / 2, questionTex.Width, questionTex.Height);
-            Question = new QuestionButton(Game, questionTex, questionPos, Topics, DBhelper);
+            Question = new QuestionButton(Game, questionTex, questionPos, questionPos, Topics, DBhelper);
 
             #endregion
 
@@ -260,11 +260,11 @@ namespace ECE_700_BoardGame.Screens
                     BingoTile bt;
                     if (playerIndex < (PLAYER_COUNT / 2))
                     {
-                        bt = new BingoTile(Game, tileAnsTex, CorrectSpriteStrip, IncorrectSpriteStrip, posRectAns, (float)Math.PI, new Vector2(tileAnsTex.Width, tileAnsTex.Height));
+                        bt = new BingoTile(Game, tileAnsTex, CorrectSpriteStrip, IncorrectSpriteStrip, posRectAns, posRectAns, (float)Math.PI, new Vector2(tileAnsTex.Width, tileAnsTex.Height));
                     }
                     else
                     {
-                        bt = new BingoTile(Game, tileAnsTex, CorrectSpriteStrip, IncorrectSpriteStrip, posRectAns);
+                        bt = new BingoTile(Game, tileAnsTex, CorrectSpriteStrip, IncorrectSpriteStrip, posRectAns, posRectAns);
                     }
 
                     bt.Initialize((int)tileAnswer);

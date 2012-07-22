@@ -14,14 +14,17 @@ namespace ECE_700_BoardGame.Engine
     {
         public String Setting { get; set; }
         public String Value { get; set; }
-        public bool Selected {get; set;}
+        public bool Selected { get; set; }
+        int FadeInc = 20;
+        double FadeInDelay = .035;
 
-        public SettingButton(Game game, Texture2D tex, Rectangle pos, String setting, String value)
-            : base(game, tex, pos)
+        public SettingButton(Game game, Texture2D tex, Rectangle pos, Rectangle target, String setting, String value)
+            : base(game, tex, pos, target)
         {
             Setting = setting;
             Value = value;
             Selected = false;
+            Alpha = 1;
         }
 
         public override bool OnTouchTapGesture(TouchPoint touch)
@@ -77,18 +80,33 @@ namespace ECE_700_BoardGame.Engine
             if (Selected)
             {
                 Texture2D tex = Game.Content.Load<Texture2D>("daub");
-                Rectangle pos = new Rectangle(position.Left - position.Height / 2, position.Bottom - position.Height, position.Height, position.Height);
+                Rectangle pos = new Rectangle(Position.Left - Position.Height / 2, Position.Bottom - Position.Height, Position.Height, Position.Height);
                 spriteBatch.Draw(tex, pos, Color.White);
             }
         }
 
+        public override void Update(GameTime gametime)
+        {
+            FadeInDelay -= gametime.ElapsedGameTime.TotalSeconds;
+            if (FadeInDelay <= 0)
+            {
+                FadeInDelay = .035;
+                Alpha += FadeInc;
+                if (Alpha >= 255)
+                {
+                    FadeInc = 0;
+                }
+            }
+            base.Update(gametime);
+        }
     }
 
     class PlayButton : MenuButton
     {
-        public PlayButton(Game game, Texture2D tex, Rectangle pos)
-            : base(game, tex, pos)
+        public PlayButton(Game game, Texture2D tex, Rectangle pos, Rectangle target)
+            : base(game, tex, pos, target)
         {
+            Alpha = 255;
         }
 
         public override bool OnTouchTapGesture(TouchPoint touch)

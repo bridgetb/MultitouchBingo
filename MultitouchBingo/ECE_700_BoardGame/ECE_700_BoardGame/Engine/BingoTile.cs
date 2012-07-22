@@ -19,7 +19,7 @@ namespace ECE_700_BoardGame.Engine
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class BingoTile : MenuButton
+    public class BingoTile : Button
     {
         #region Fields
 
@@ -50,8 +50,8 @@ namespace ECE_700_BoardGame.Engine
 
         #endregion
 
-        public BingoTile(Game game, Texture2D tileSprite, Texture2D daubSprite, Texture2D errorSprite, Rectangle pos)
-            : base(game, tileSprite, pos)
+        public BingoTile(Game game, Texture2D tileSprite, Texture2D daubSprite, Texture2D errorSprite, Rectangle pos, Rectangle target)
+            : base(game, tileSprite, pos, target)
         {
             this.Answered = false;
             this.AttemptAnswer = false;
@@ -65,16 +65,17 @@ namespace ECE_700_BoardGame.Engine
             this.ErrorSprite = errorSprite;
 
             CorrectAnswer = new Animation();
-            CorrectAnswer.Initialize(daubSprite, new Vector2(pos.X, pos.Y), CORRECT_IMAGE_W, CORRECT_IMAGE_H, 15, 50, Color.White, (float)pos.Width / CORRECT_IMAGE_W, false, true);
+            CorrectAnswer.Initialize(daubSprite, new Vector2(pos.X, pos.Y), new Vector2(pos.X, pos.Y), CORRECT_IMAGE_W, CORRECT_IMAGE_H, 15, 50, Color.White, (float)pos.Width / CORRECT_IMAGE_W, false, true);
             CorrectAnswer.Active = false;
 
             IncorrectAnswer = new Animation();
-            IncorrectAnswer.Initialize(errorSprite, new Vector2(pos.X, pos.Y), INCORRECT_IMAGE_W, INCORRECT_IMAGE_H, 7, 50, Color.White, (float)pos.Width / INCORRECT_IMAGE_W, false, false);
+            IncorrectAnswer.Initialize(errorSprite, new Vector2(pos.X, pos.Y), new Vector2(pos.X, pos.Y), INCORRECT_IMAGE_W, INCORRECT_IMAGE_H, 7, 50, Color.White, (float)pos.Width / INCORRECT_IMAGE_W, false, false);
             IncorrectAnswer.Active = false;
         }
 
-        public BingoTile(Game game, Texture2D tileSprite, Texture2D daubSprite, Texture2D errorSprite, Rectangle pos, float tileOrientation, Vector2 originOffset)
-            : base(game, tileSprite, pos)
+        public BingoTile(Game game, Texture2D tileSprite, Texture2D daubSprite, Texture2D errorSprite, Rectangle pos, 
+            Rectangle target, float tileOrientation, Vector2 originOffset)
+            : base(game, tileSprite, pos, target)
         {
             this.Answered = false;
             this.AttemptAnswer = false;
@@ -88,16 +89,16 @@ namespace ECE_700_BoardGame.Engine
 
             this.Rotated = true;
             this.TileOrient = tileOrientation;
-            this.originOffset = originOffset;
+            this.OriginOffset = originOffset;
             this.ansSpriteOffset = new Vector2(daubSprite.Width, daubSprite.Height);
             this.errSpriteOffset = new Vector2(errorSprite.Width, errorSprite.Height);
 
             CorrectAnswer = new Animation();
-            CorrectAnswer.Initialize(daubSprite, new Vector2(pos.X, pos.Y), CORRECT_IMAGE_W, CORRECT_IMAGE_H, 15, 50, Color.White, (float)pos.Width / CORRECT_IMAGE_W, false, true);
+            CorrectAnswer.Initialize(daubSprite, new Vector2(pos.X, pos.Y), new Vector2(pos.X, pos.Y), CORRECT_IMAGE_W, CORRECT_IMAGE_H, 15, 50, Color.White, (float)pos.Width / CORRECT_IMAGE_W, false, true);
             CorrectAnswer.Active = false;
 
             IncorrectAnswer = new Animation();
-            IncorrectAnswer.Initialize(errorSprite, new Vector2(pos.X, pos.Y), INCORRECT_IMAGE_W, INCORRECT_IMAGE_H, 7, 50, Color.White, (float)pos.Width / INCORRECT_IMAGE_W, false, false);
+            IncorrectAnswer.Initialize(errorSprite, new Vector2(pos.X, pos.Y), new Vector2(pos.X, pos.Y), INCORRECT_IMAGE_W, INCORRECT_IMAGE_H, 7, 50, Color.White, (float)pos.Width / INCORRECT_IMAGE_W, false, false);
             IncorrectAnswer.Active = false;
         }
 
@@ -206,7 +207,7 @@ namespace ECE_700_BoardGame.Engine
         /// Allows the game component to update itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        public void Update(GameTime gametime)
+        override public void Update(GameTime gametime)
         {
             if (CorrectAnswer.Active)
             {
@@ -250,7 +251,7 @@ namespace ECE_700_BoardGame.Engine
         /// Rendering of the Bingo Tiles that are placed on each players board
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public void Draw(SpriteBatch spriteBatch)
+        override public void Draw(SpriteBatch spriteBatch)
         {
             //if (!Answered && !AttemptAnswer)
             //{

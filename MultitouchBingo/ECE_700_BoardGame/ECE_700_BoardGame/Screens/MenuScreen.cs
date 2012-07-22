@@ -26,6 +26,7 @@ namespace ECE_700_BoardGame.Screens
         List<String> Topics;
         List<SettingButton> SettingButtons;
         List<MenuButton> EnabledButtons;
+        List<Animation> MovingTopics;
 
         GameDifficulty Difficulty = GameDifficulty.Easy;
 
@@ -44,6 +45,7 @@ namespace ECE_700_BoardGame.Screens
             Topics = new List<String>();
             SettingButtons = new List<SettingButton>();
             EnabledButtons = new List<MenuButton>();
+            MovingTopics = new List<Animation>();
             DBhelper = DatabaseHelper.Instance;
 
             // Set state to first state where user can choose topics
@@ -76,8 +78,9 @@ namespace ECE_700_BoardGame.Screens
             {
                 String topic = row.ItemArray[0].ToString();
                 tex = Content.Load<Texture2D>("BingoEnvironment/" + topic);
-                pos = new Rectangle(ScreenWidth / 8, y, tex.Width, tex.Height);
-                SettingButtons.Add(new SettingButton(Game, tex, pos, "TOPIC", topic));
+                pos = new Rectangle(ScreenWidth / 2 - tex.Width / 2, y, tex.Width, tex.Height);
+                Rectangle target = new Rectangle(ScreenWidth / 4 - tex.Width / 2, y, tex.Width, tex.Height);
+                SettingButtons.Add(new SettingButton(Game, tex, pos, target, "TOPIC", topic));
                 y += 100;
             }
             #endregion
@@ -91,7 +94,7 @@ namespace ECE_700_BoardGame.Screens
                 String diff = row.ItemArray[0].ToString();
                 tex = Content.Load<Texture2D>("BingoEnvironment/" + diff);
                 pos = new Rectangle(ScreenWidth * 5 / 8, y, tex.Width, tex.Height);
-                SettingButton sb = new SettingButton(Game, tex, pos, "DIFFICULTY", diff);
+                SettingButton sb = new SettingButton(Game, tex, pos, pos, "DIFFICULTY", diff);
                 if (diff.Equals("Easy"))
                 {
                     sb.Selected = true;
@@ -104,7 +107,7 @@ namespace ECE_700_BoardGame.Screens
             #region Play Button
             tex = Content.Load<Texture2D>("BingoEnvironment/Play");
             pos = new Rectangle(ScreenWidth / 2, y, tex.Width, tex.Height);
-            PlayButton = new PlayButton(Game, tex, pos);
+            PlayButton = new PlayButton(Game, tex, pos, pos);
             #endregion
 
             this.SetState(State.ChooseTopic);
@@ -147,8 +150,23 @@ namespace ECE_700_BoardGame.Screens
                     PlayButton.OnTouchTapGesture(touch);
                 if (after > initial)
                 {
+                    if (after == State.ChooseDifficulty)
+                    {
+                        // Activate animations
+                        foreach (MenuButton b in EnabledButtons)
+                        {
+                            if (b is SettingButton)
+                            {
+                                b.IsTranslating = true;
+                            }
+                        }
+                    }
                     this.SetState(after);
                 }
+            }
+            foreach (MenuButton b in EnabledButtons)
+            {
+                b.Update(gameTime);
             }
         }
 
@@ -171,7 +189,22 @@ namespace ECE_700_BoardGame.Screens
                 PlayButton.OnClickGesture(ms);
             if (after > initial)
             {
+                if (after == State.ChooseDifficulty)
+                {
+                    // Activate animations
+                    foreach (MenuButton b in EnabledButtons)
+                    {
+                        if (b is SettingButton)
+                        {
+                            b.IsTranslating = true;
+                        }
+                    }
+                }
                 this.SetState(after);
+            } 
+            foreach (MenuButton b in EnabledButtons)
+            {
+                b.Update(gameTime);
             }
         }
 
@@ -185,6 +218,10 @@ namespace ECE_700_BoardGame.Screens
                             where newButton.Setting.Equals("TOPIC")
                             && newButton is SettingButton
                             select newButton;
+                    foreach (SettingButton b in e)
+                    {
+                        b.Initialize();
+                    }
                     EnabledButtons.AddRange(e);
                     break;
                 case State.ChooseDifficulty:

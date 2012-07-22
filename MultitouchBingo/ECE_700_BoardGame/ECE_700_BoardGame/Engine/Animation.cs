@@ -58,6 +58,9 @@ namespace ECE_700_BoardGame.Engine
 
         // Width of a given frame
         public Vector2 Position;
+        public Vector2 TargetPosition;
+        int XInc;
+        int YInc;
 
         public Animation()//Game game)
         //: base(game)
@@ -69,7 +72,7 @@ namespace ECE_700_BoardGame.Engine
         /// Allows the game component to perform any initialization it needs to before starting
         /// to run.  This is where it can query for any required services and load content.
         /// </summary>
-        public void Initialize(Texture2D texture, Vector2 position,
+        public void Initialize(Texture2D texture, Vector2 position, Vector2 targetPosition,
                                 int frameWidth, int frameHeight, int frameCount,
                                 int frameTime, Color color, float scale, bool looping, bool hold)
         {
@@ -84,6 +87,10 @@ namespace ECE_700_BoardGame.Engine
 
             Looping = looping;
             Position = position;
+            TargetPosition = targetPosition;
+            XInc = ((int)TargetPosition.X - (int)Position.X) / frameCount;
+            YInc = ((int)TargetPosition.Y - (int)Position.Y) / frameCount;
+
             spriteStrip = texture;
 
             // Set the time to zero
@@ -141,6 +148,22 @@ namespace ECE_700_BoardGame.Engine
 
             // Grab the correct frame in the image strip by multiplying the currentFrame index by the frame width
             sourceRect = new Rectangle(currentFrame * FrameWidth, 0, FrameWidth, FrameHeight);
+
+            if (!Position.Equals(TargetPosition))
+            {
+                Rectangle rec1 = new Rectangle((int)Position.X, (int)Position.Y, 20, 20);
+                Rectangle rec2 = new Rectangle((int)TargetPosition.X, (int)TargetPosition.Y, 20, 20);
+                if (rec1.Intersects(rec2))
+                {
+                    Position.X = TargetPosition.X;
+                    Position.Y = TargetPosition.Y;
+                }
+                else
+                {
+                    Position.X += XInc;
+                    Position.Y += YInc;
+                }
+            }
 
             // Set destination
             destinationRect = new Rectangle((int)Position.X,

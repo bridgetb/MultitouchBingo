@@ -36,8 +36,8 @@ namespace ECE_700_BoardGame.Engine
         private DatabaseHelper databaseHelper;
         private float Rotation;
 
-        public QuestionButton(Game game, Texture2D tex, Rectangle pos, List<String> topics, DatabaseHelper dbhelper)
-            : base(game, tex, pos)
+        public QuestionButton(Game game, Texture2D tex, Rectangle pos, Rectangle target, List<String> topics, DatabaseHelper dbhelper)
+            : base(game, tex, pos, target)
         {
             databaseHelper = dbhelper;
             Rotation = 0;
@@ -45,7 +45,7 @@ namespace ECE_700_BoardGame.Engine
             completedQuestions = new List<int>();
             content = game.Content;
 
-            originOffset = new Vector2(0, 0);
+            OriginOffset = new Vector2(0, 0);
             PossibleQuestions = new List<int>();
             QuestionFrequency = new Hashtable();
 
@@ -53,7 +53,7 @@ namespace ECE_700_BoardGame.Engine
             currentTopics = topics;
         }
 
-        public bool OnTouchTapGesture(TouchPoint touch)
+        override public bool OnTouchTapGesture(TouchPoint touch)
         {
             if (IsPressed(touch))
             {
@@ -63,7 +63,7 @@ namespace ECE_700_BoardGame.Engine
             return false;
         }
 
-        public bool OnClickGesture(MouseState mouseState)
+        override public bool OnClickGesture(MouseState mouseState)
         {
             if (IsPressed(mouseState))
             {
@@ -75,7 +75,7 @@ namespace ECE_700_BoardGame.Engine
 
         protected override bool IsPressed(TouchPoint point)
         {
-            Rectangle largerArea = new Rectangle(position.X - position.Height / 2 - 20, position.Y - position.Height / 2 - 20, position.Width + 20, position.Height + 20);  
+            Rectangle largerArea = new Rectangle(Position.X - Position.Height / 2 - 20, Position.Y - Position.Height / 2 - 20, Position.Width + 20, Position.Height + 20);  
 #if DEBUG
             Debug.WriteLine(point.X.ToString(), "Touch point X");
             Debug.WriteLine(point.Y.ToString(), "Touch point Y");
@@ -90,7 +90,7 @@ namespace ECE_700_BoardGame.Engine
 
         protected override bool IsPressed(MouseState clickPoint)
         {
-            Rectangle largerArea = new Rectangle(position.X - position.Width / 2 - 20, position.Y - position.Height / 2 - 20, position.Width + 20, position.Height + 20);            
+            Rectangle largerArea = new Rectangle(Position.X - Position.Width / 2 - 20, Position.Y - Position.Height / 2 - 20, Position.Width + 20, Position.Height + 20);            
 #if DEBUG
             Debug.WriteLine(largerArea.Contains((int)clickPoint.X, (int)clickPoint.Y).ToString(), "Is Within Item Hit Detection (CLICK)");
 #endif
@@ -128,10 +128,10 @@ namespace ECE_700_BoardGame.Engine
                 + " and Questions.ImageID = Images.ImageID");
                 
             // Update image to load as texture
-            texture = this.Game.Content.Load<Texture2D>("QuestionAnswerImages/"+filename);
+            Texture = this.Game.Content.Load<Texture2D>("QuestionAnswerImages/"+filename);
 
-            originOffset.X = texture.Width / 2;
-            originOffset.Y = texture.Height / 2;
+            OriginOffset.X = Texture.Width / 2;
+            OriginOffset.Y = Texture.Height / 2;
 
             completedQuestions.Add(questionID);
             this.Enabled = false;
@@ -243,14 +243,14 @@ namespace ECE_700_BoardGame.Engine
             
             
             // Line 1
-            batch.DrawString(font, part1, new Vector2(position.X - vec.X*scale / 2, position.Y + position.Height/2 + 50), Color.Black,
+            batch.DrawString(font, part1, new Vector2(Position.X - vec.X*scale / 2, Position.Y + Position.Height/2 + 50), Color.Black,
                 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
-            batch.DrawString(font, part1, new Vector2(position.X + vec.X * scale / 2, position.Y - position.Height/2 - 50), Color.Black,
+            batch.DrawString(font, part1, new Vector2(Position.X + vec.X * scale / 2, Position.Y - Position.Height/2 - 50), Color.Black,
                 Single.Parse(Math.PI.ToString()), new Vector2(0,0), scale, SpriteEffects.None, 0);
             // Line 2 (if any)
-            batch.DrawString(font, part2, new Vector2(position.X - vec.X * scale / 2, position.Y + position.Height/2 + 50 + vec.Y * scale), Color.Black,
+            batch.DrawString(font, part2, new Vector2(Position.X - vec.X * scale / 2, Position.Y + Position.Height/2 + 50 + vec.Y * scale), Color.Black,
                 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
-            batch.DrawString(font, part2, new Vector2(position.X + vec.X * scale / 2, position.Y - position.Height/2 - 50 - vec.Y * scale), Color.Black,
+            batch.DrawString(font, part2, new Vector2(Position.X + vec.X * scale / 2, Position.Y - Position.Height/2 - 50 - vec.Y * scale), Color.Black,
                 Single.Parse(Math.PI.ToString()), new Vector2(0, 0), scale, SpriteEffects.None, 0);
 
 

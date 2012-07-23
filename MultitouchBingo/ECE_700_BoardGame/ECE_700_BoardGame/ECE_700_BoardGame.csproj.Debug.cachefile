@@ -69,7 +69,6 @@ Content\MountainBackground.xnb
 Content\Domino5.xnb
 Content\QuestionAnswerImages\Question.xnb
 Content\Strawberries.xnb
-Content\BingoEnvironment\BingoBoard.xnb
 Content\BingoEnvironment\Bingo_BlueBack.xnb
 Content\BingoEnvironment\Bingo_PlayerColours.xnb
 Content\BingoEnvironment\CloudLarge.xnb
@@ -155,6 +154,8 @@ Content\QuestionAnswerImages\Number\giraffe.xnb
 Content\BingoEnvironment\GrinStrip.xnb
 Content\BingoEnvironment\SurpriseStrip.xnb
 Content\Comic.xnb
+Content\BingoEnvironment\BingoBoard4x4.xnb
+Content\BingoEnvironment\BingoBoard3x3.xnb
 ExerciseMaterial.sdf
 Resources\icon.png
 ECE_700_BoardGame.xml

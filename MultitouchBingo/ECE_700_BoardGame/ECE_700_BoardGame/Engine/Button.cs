@@ -49,11 +49,11 @@ namespace ECE_700_BoardGame.Engine
             int frames = Math.Abs(Target.X - Position.X);
             if (frames == 0 || (frames > Math.Abs(Target.Y - Position.Y) && Math.Abs(Target.Y - Position.Y) != 0))
             {
-                frames = Math.Abs(Target.Y - Position.Y) / 10;
+                frames = Math.Abs(Target.Y - Position.Y) / 100;
             }
 
-            XChange = (Target.X - Position.X) / frames;
-            YChange = (Target.Y - Position.Y) / frames;
+            XChange = (Target.X - Position.X) / frames * 15;
+            YChange = (Target.Y - Position.Y) / frames * 15;
         }
 
         /// <summary>
@@ -62,28 +62,6 @@ namespace ECE_700_BoardGame.Engine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gametime)
         {
-            if (!this.IsTranslating)
-                return;
-            if (Math.Abs((Position.X + XChange) - Target.X) < Math.Abs(Position.X - Target.X))
-            {
-                Position.X += XChange;
-            }
-            else
-            {
-                // Gone past target
-                Position.X = Target.X;
-                XChange = 0;
-            }
-            if (Math.Abs((Position.Y + XChange) - Target.Y) < Math.Abs(Position.Y - Target.Y))
-            {
-                Position.Y += YChange;
-            }
-            else
-            {
-                // Gone past target
-                Position.Y = Target.Y;
-                YChange = 0;
-            }
             base.Update(gametime);
         }
 
@@ -93,11 +71,57 @@ namespace ECE_700_BoardGame.Engine
         /// <param name="spriteBatch"></param>
         public virtual void Draw(SpriteBatch spriteBatch)
         {
+            if (this.IsTranslating)
+            {
+                if (Math.Abs((Position.X + XChange) - Target.X) < Math.Abs(Position.X - Target.X))
+                {
+                    Position.X += XChange;
+                }
+                else
+                {
+                    // Gone past target
+                    Position.X = Target.X;
+                    XChange = 0;
+                }
+                if (Math.Abs((Position.Y + XChange) - Target.Y) < Math.Abs(Position.Y - Target.Y))
+                {
+                    Position.Y += YChange;
+                }
+                else
+                {
+                    // Gone past target
+                    Position.Y = Target.Y;
+                    YChange = 0;
+                }
+            }
             spriteBatch.Draw(Texture, Position, new Color(255, 255, 255, (byte)MathHelper.Clamp(Alpha, 0, 255)));
         }
 
         public virtual void Draw(SpriteBatch spriteBatch, float orient)
         {
+            if (this.IsTranslating)
+            {
+                if (Math.Abs((Position.X + XChange) - Target.X) < Math.Abs(Position.X - Target.X))
+                {
+                    Position.X += XChange;
+                }
+                else
+                {
+                    // Gone past target
+                    Position.X = Target.X;
+                    XChange = 0;
+                }
+                if (Math.Abs((Position.Y + XChange) - Target.Y) < Math.Abs(Position.Y - Target.Y))
+                {
+                    Position.Y += YChange;
+                }
+                else
+                {
+                    // Gone past target
+                    Position.Y = Target.Y;
+                    YChange = 0;
+                }
+            }
             spriteBatch.Draw(Texture, Position, null, new Color(255, 255, 255, (byte)MathHelper.Clamp(Alpha, 0, 255)), orient, 
                 OriginOffset, SpriteEffects.None, 0f);
         }

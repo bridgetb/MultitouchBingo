@@ -55,7 +55,7 @@ namespace ECE_700_BoardGame.Screens
         Player[] PlayerData;
 
         private const int PLAYER_COUNT = 4;
-        private const int BOARD_TILE_WIDTH = 4;
+        private int BOARD_TILE_WIDTH;
         private const int DIVIDER_THICKNESS = 60;
 
         public GameScreen(Game game, SpriteBatch spriteBatch, int screenHeight, int screenWidth, List<String> topics, 
@@ -91,8 +91,17 @@ namespace ECE_700_BoardGame.Screens
             IncorrectSpriteStrip = Content.Load<Texture2D>("BingoEnvironment/SurpriseStrip");
 
             #region Position Bingo Boards
-
-            Texture2D boardTex = Content.Load<Texture2D>("BingoEnvironment/BingoBoard");
+            Texture2D boardTex;
+            if (this.Difficulty == GameDifficulty.Easy)
+            {
+                boardTex = Content.Load<Texture2D>("BingoEnvironment/BingoBoard3x3");
+                BOARD_TILE_WIDTH = 3;
+            }
+            else
+            {
+                boardTex = Content.Load<Texture2D>("BingoEnvironment/BingoBoard4x4");
+                BOARD_TILE_WIDTH = 4;
+            }
             int boardWidth = Convert.ToInt16(ScreenHeight / 2.3);
             Rectangle posBoard = new Rectangle((ScreenWidth / 4) - boardWidth / 2,
                                                 (ScreenHeight / 4) - boardWidth / 2,
@@ -182,9 +191,11 @@ namespace ECE_700_BoardGame.Screens
             DataTable dt = DBhelper.queryDBRows(tileAnswersQuery);
 
             //Initialize to top left tile position for player 1
-            Rectangle posRectAns = new Rectangle((ScreenWidth / 4) - (boardWidth / 2) + (boardWidth / 25),
-                                                    (ScreenHeight / 4) - (boardWidth / 2) + (boardWidth / 20),
-                                                    boardWidth / 6, boardWidth / 6);
+            int ansTileLength = (int)(boardWidth / (BOARD_TILE_WIDTH * 1.5));
+            int gapInTile = (int)(boardWidth / BOARD_TILE_WIDTH * 0.25 * 0.75);
+            Rectangle posRectAns = new Rectangle((ScreenWidth / 4) - (boardWidth / 2) + gapInTile,
+                                                    (ScreenHeight / 4) - (boardWidth / 2) + gapInTile,
+                                                    ansTileLength, ansTileLength);
 
             for (int playerIndex = 0; playerIndex < PLAYER_COUNT; playerIndex++)
             {
@@ -192,26 +203,29 @@ namespace ECE_700_BoardGame.Screens
                 {
                     //Player 2
                     case (1):
-                        posRectAns.X = ((ScreenWidth * 3) / 4) - (boardWidth / 2) + (boardWidth / 25);
-                        posRectAns.Y = (ScreenHeight / 4) - (boardWidth / 2) + (boardWidth / 20);
+                        //posRectAns.X = ((ScreenWidth * 3) / 4) - (boardWidth / 2) + (boardWidth / 25);
+                        posRectAns.X = ((ScreenWidth * 3) / 4) - (boardWidth / 2) + gapInTile;
+                        posRectAns.Y = (ScreenHeight / 4) - (boardWidth / 2) + gapInTile;
                         break;
 
                     //Player 3
                     case (2):
-                        posRectAns.X = (ScreenWidth / 4) - (boardWidth / 2) + (boardWidth / 25);
-                        posRectAns.Y = ((ScreenHeight * 3) / 4) - (boardWidth / 2) + (boardWidth / 20);
+                        //posRectAns.X = (ScreenWidth / 4) - (boardWidth / 2) + (boardWidth / 25);
+                        posRectAns.X = (ScreenWidth / 4) - (boardWidth / 2) + gapInTile;
+                        posRectAns.Y = ((ScreenHeight * 3) / 4) - (boardWidth / 2) + gapInTile;
                         break;
 
                     //Player 4
                     case (3):
-                        posRectAns.X = ((ScreenWidth * 3) / 4) - (boardWidth / 2) + (boardWidth / 25);
-                        posRectAns.Y = ((ScreenHeight * 3) / 4) - (boardWidth / 2) + (boardWidth / 20);
+                        //posRectAns.X = ((ScreenWidth * 3) / 4) - (boardWidth / 2) + (boardWidth / 25);
+                        posRectAns.X = ((ScreenWidth * 3) / 4) - (boardWidth / 2) + gapInTile;
+                        posRectAns.Y = ((ScreenHeight * 3) / 4) - (boardWidth / 2) + gapInTile;
                         break;
                 }
 
                 List<int> answerIndex = new List<int>();
                 List<int> answerTileImages = new List<int>();
-                while (answerIndex.Count < 16)
+                while (answerIndex.Count < BOARD_TILE_WIDTH * BOARD_TILE_WIDTH)
                 {
                     int rand = new Random().Next(dt.Rows.Count);
                     while (!answerIndex.Contains(rand))
@@ -252,7 +266,8 @@ namespace ECE_700_BoardGame.Screens
 
                         if ((i % BOARD_TILE_WIDTH) == 0)
                         {
-                            posRectAns.X -= BOARD_TILE_WIDTH * (boardWidth / 4);
+                            //posRectAns.X -= BOARD_TILE_WIDTH * (boardWidth / 4);
+                            posRectAns.X -= boardWidth;
                             posRectAns.Y += boardWidth / BOARD_TILE_WIDTH;
                         }
                     }
@@ -314,7 +329,7 @@ namespace ECE_700_BoardGame.Screens
             }
 
             #endregion
-            Question.SelectQuestions(this.Topics);
+            //Question.SelectQuestions(this.Topics);
         }
 
         public void Draw(GameTime gameTime)

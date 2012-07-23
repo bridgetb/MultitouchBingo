@@ -412,8 +412,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BingoEnvironment\BingoBoard.png">
-      <Name>BingoBoard</Name>
+    <Compile Include="BingoEnvironment\BingoBoard4x4.png">
+      <Name>BingoBoard4x4</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -909,6 +909,13 @@
     </Compile>
     <Compile Include="BingoEnvironment\SurpriseStrip.png">
       <Name>SurpriseStrip</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BingoEnvironment\BingoBoard3x3.png">
+      <Name>BingoBoard3x3</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

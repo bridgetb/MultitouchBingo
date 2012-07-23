@@ -107,7 +107,7 @@ namespace ECE_700_BoardGame.Engine
         public void RandomiseQuestion()
         {
             // If all questions have been cycled through, repeat questions
-            if (completedQuestions.Count == PossibleQuestions.Count)
+            if (completedQuestions.Distinct().Count() == PossibleQuestions.Count)
             {
                 completedQuestions.Clear();
             }
@@ -136,7 +136,7 @@ namespace ECE_700_BoardGame.Engine
             completedQuestions.Add(questionID);
             this.Enabled = false;
         }
-
+        /*
         /// <summary>
         /// Finds all questions associated with a topic in the database
         /// </summary>
@@ -158,7 +158,7 @@ namespace ECE_700_BoardGame.Engine
             DataTable dt = databaseHelper.queryDBRows(query);
             questions = dt;
             return dt;
-        }
+        }*/
 
         public int getID()
         {

@@ -69,19 +69,28 @@ namespace ECE_700_BoardGame.Screens
             #region Topic Buttons
             // Display topics
             DataTable dt = this.DBhelper.queryDBRows("select Topic from Topics");
-            
-            int y = ScreenHeight / 2 - dt.Rows.Count * 50;
+
+            int x = ScreenWidth / (dt.Rows.Count + 1);
+            int xSpacing = x;
+            int y = ScreenHeight / 2;
 
             Texture2D tex;
             Rectangle pos;
+            //int frames = (int) (Math.Pow((Math.Pow((ScreenWidth * 0.5), 2.0) + Math.Pow(ScreenHeight / 4, 2.0)), 0.5) / 100);
+            int frames = ScreenWidth / 100; ;
+            int i = 0;
             foreach (DataRow row in dt.Rows)
             {
                 String topic = row.ItemArray[0].ToString();
                 tex = Content.Load<Texture2D>("BingoEnvironment/" + topic);
-                pos = new Rectangle(ScreenWidth / 2 - tex.Width / 2, y, tex.Width, tex.Height);
-                Rectangle target = new Rectangle(ScreenWidth / 4 - tex.Width / 2, y, tex.Width, tex.Height);
-                SettingButtons.Add(new SettingButton(Game, tex, pos, target, "TOPIC", topic));
-                y += 100;
+                pos = new Rectangle(x - tex.Width / 2, y, tex.Width, tex.Height);
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine("width " + tex.Width.ToString() + "; height " + tex.Height.ToString());
+#endif
+                Rectangle target = new Rectangle(ScreenWidth / 4 - tex.Width / 2, y + (i - 1) * ScreenHeight / 4, tex.Width, tex.Height);
+                SettingButtons.Add(new SettingButton(Game, tex, pos, target, frames, "TOPIC", topic));
+                x += xSpacing;
+                i++;
             }
             #endregion
 

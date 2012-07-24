@@ -26,6 +26,7 @@ namespace ECE_700_BoardGame.Engine
         public Vector2 OriginOffset;
         int XChange = 0;
         int YChange = 0;
+        int Frames = -1;
         public bool IsTranslating { get; set; }
 
         protected int Alpha = 255;
@@ -36,6 +37,16 @@ namespace ECE_700_BoardGame.Engine
             this.Position = pos;
             this.Target = target;
         }
+
+        public Button(Game game, Texture2D tex, Rectangle pos, Rectangle target, int frames)
+            : base(game)
+        {
+            this.Texture = tex;
+            this.Position = pos;
+            this.Target = target;
+            this.Frames = frames;
+        }
+
         /// <summary>
         /// Allows the game component to perform any initialization it needs to before starting
         /// to run.  This is where it can query for any required services and load content.
@@ -46,14 +57,20 @@ namespace ECE_700_BoardGame.Engine
             {
                 return;
             }
-            int frames = Math.Abs(Target.X - Position.X);
-            if (frames == 0 || (frames > Math.Abs(Target.Y - Position.Y) && Math.Abs(Target.Y - Position.Y) != 0))
+            else if (Frames != -1)
             {
-                frames = Math.Abs(Target.Y - Position.Y) / 100;
+                XChange = (Target.X - Position.X) / Frames;
+                YChange = (Target.Y - Position.Y) / Frames;
+                return;
+            }
+            Frames = Math.Abs(Target.X - Position.X);
+            if (Frames == 0 || (Frames > Math.Abs(Target.Y - Position.Y) && Math.Abs(Target.Y - Position.Y) != 0))
+            {
+                Frames = Math.Abs(Target.Y - Position.Y) / 100;
             }
 
-            XChange = (Target.X - Position.X) / frames * 15;
-            YChange = (Target.Y - Position.Y) / frames * 15;
+            XChange = (Target.X - Position.X) / Frames;
+            YChange = (Target.Y - Position.Y) / Frames;
         }
 
         /// <summary>
@@ -71,33 +88,18 @@ namespace ECE_700_BoardGame.Engine
         /// <param name="spriteBatch"></param>
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            if (this.IsTranslating)
-            {
-                if (Math.Abs((Position.X + XChange) - Target.X) < Math.Abs(Position.X - Target.X))
-                {
-                    Position.X += XChange;
-                }
-                else
-                {
-                    // Gone past target
-                    Position.X = Target.X;
-                    XChange = 0;
-                }
-                if (Math.Abs((Position.Y + XChange) - Target.Y) < Math.Abs(Position.Y - Target.Y))
-                {
-                    Position.Y += YChange;
-                }
-                else
-                {
-                    // Gone past target
-                    Position.Y = Target.Y;
-                    YChange = 0;
-                }
-            }
+            ChangeCoordinates();
             spriteBatch.Draw(Texture, Position, new Color(255, 255, 255, (byte)MathHelper.Clamp(Alpha, 0, 255)));
         }
 
         public virtual void Draw(SpriteBatch spriteBatch, float orient)
+        {
+            ChangeCoordinates();
+            spriteBatch.Draw(Texture, Position, null, new Color(255, 255, 255, (byte)MathHelper.Clamp(Alpha, 0, 255)), orient, 
+                OriginOffset, SpriteEffects.None, 0f);
+        }
+
+        private void ChangeCoordinates()
         {
             if (this.IsTranslating)
             {
@@ -111,7 +113,7 @@ namespace ECE_700_BoardGame.Engine
                     Position.X = Target.X;
                     XChange = 0;
                 }
-                if (Math.Abs((Position.Y + XChange) - Target.Y) < Math.Abs(Position.Y - Target.Y))
+                if (Math.Abs((Position.Y + YChange) - Target.Y) < Math.Abs(Position.Y - Target.Y))
                 {
                     Position.Y += YChange;
                 }
@@ -122,10 +124,7 @@ namespace ECE_700_BoardGame.Engine
                     YChange = 0;
                 }
             }
-            spriteBatch.Draw(Texture, Position, null, new Color(255, 255, 255, (byte)MathHelper.Clamp(Alpha, 0, 255)), orient, 
-                OriginOffset, SpriteEffects.None, 0f);
         }
-
         protected virtual bool IsPressed(TouchPoint point)
         {
 #if DEBUG

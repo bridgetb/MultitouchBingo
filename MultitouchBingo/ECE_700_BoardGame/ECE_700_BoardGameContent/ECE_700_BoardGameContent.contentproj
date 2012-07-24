@@ -618,11 +618,6 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="QuestionAnswerImages\stockvault-penguin116802.png">
-      <Name>stockvault-penguin116802</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="QuestionAnswerImages\stockvault-roller-coaster112146.png">
       <Name>stockvault-roller-coaster112146</Name>
       <Importer>TextureImporter</Importer>
@@ -630,11 +625,6 @@
     </Compile>
     <Compile Include="QuestionAnswerImages\stockvault-strawberries120418.png">
       <Name>stockvault-strawberries120418</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="QuestionAnswerImages\stockvault-three-flying-geese99086.png">
-      <Name>stockvault-three-flying-geese99086</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

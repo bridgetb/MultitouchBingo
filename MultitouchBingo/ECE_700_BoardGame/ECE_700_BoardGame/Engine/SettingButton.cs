@@ -27,6 +27,15 @@ namespace ECE_700_BoardGame.Engine
             Alpha = 1;
         }
 
+        public SettingButton(Game game, Texture2D tex, Rectangle pos, Rectangle target, int frames, String setting, String value)
+            : base(game, tex, pos, target, frames)
+        {
+            Setting = setting;
+            Value = value;
+            Selected = false;
+            Alpha = 1;
+        }
+
         public override bool OnTouchTapGesture(TouchPoint touch)
         {
             if (IsPressed(touch))

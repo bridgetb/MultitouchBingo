@@ -11,7 +11,10 @@ namespace ECE_700_BoardGame.Engine
 {
     public abstract class MenuButton : Button
     {
-        public MenuButton(Game game, Texture2D tex, Rectangle pos, Rectangle target) : base(game, tex, pos, target) { }
+        public MenuButton(Game game, Texture2D tex, Rectangle pos, Rectangle target) 
+            : base(game, tex, pos, target) { }
+        public MenuButton(Game game, Texture2D tex, Rectangle pos, Rectangle target, int frames) 
+            : base(game, tex, pos, target, frames) { }
 
         public virtual bool OnTouchTapGesture(TouchPoint touch)
         {

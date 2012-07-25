@@ -375,18 +375,16 @@ namespace ECE_700_BoardGame.Screens
                 
             foreach (TouchPoint touch in touches)
             {
+                var result = from oldtouch in TouchesPrevState
+                             where Helper.Geometry.Contains(touch.Bounds, oldtouch.X, oldtouch.Y) &&
+                             touch.Id == oldtouch.Id
+                             select oldtouch;
 
-                //var result = from oldtouch in TouchesPrevState
-                //             from newtouch in touches
-                //             where Helper.Geometry.Contains(newtouch.Bounds, oldtouch.X, oldtouch.Y) &&
-                //             newtouch.Id == oldtouch.Id
-                //             select oldtouch;
-
-                //var sameTouch = result.FirstOrDefault();
-                //if (sameTouch != null)
-                //{
-                //    continue;
-                //}
+                var sameTouch = result.FirstOrDefault();
+                if (sameTouch != null)
+                {
+                    continue;
+                }
                 TagData td = touch.Tag;
                 if ((td.Value == 0xC0 || td.Value == 8) && !this.QuestionChanged)
                 {

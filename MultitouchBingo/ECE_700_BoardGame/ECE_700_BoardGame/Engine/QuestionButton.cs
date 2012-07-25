@@ -216,9 +216,12 @@ namespace ECE_700_BoardGame.Engine
                     freq = Int32.Parse(QuestionFrequency[qId].ToString());
                     freq++;
                     QuestionFrequency.Remove(qId);
+                } else 
+                {
+                    PossibleQuestions.Add(qId);
                 }
                 QuestionFrequency.Add(qId, freq);
-                PossibleQuestions.Add(qId);
+                    
             }
         }
 

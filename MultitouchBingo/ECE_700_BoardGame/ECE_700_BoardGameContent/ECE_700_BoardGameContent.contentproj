@@ -53,6 +53,11 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+    <Compile Include="QuestionAnswerImages\Number\1Kangaroo.png">
+      <Name>1Kangaroo</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="QuestionAnswerImages\Number\1petBowl.png">
       <Name>1petBowl</Name>
       <Importer>TextureImporter</Importer>
@@ -83,8 +88,18 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+    <Compile Include="QuestionAnswerImages\Number\3Kangaroos.png">
+      <Name>3Kangaroos</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="QuestionAnswerImages\Number\4.png">
       <Name>4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="QuestionAnswerImages\Number\4swans.png">
+      <Name>4swans</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -138,6 +153,16 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+    <Compile Include="QuestionAnswerImages\Number\camel2humps.png">
+      <Name>camel2humps</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="QuestionAnswerImages\Number\camels.png">
+      <Name>camels</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="QuestionAnswerImages\Number\cicada_wings.png">
       <Name>cicada_wings</Name>
       <Importer>TextureImporter</Importer>
@@ -148,8 +173,18 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+    <Compile Include="QuestionAnswerImages\Number\dolphin.png">
+      <Name>dolphin</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="QuestionAnswerImages\Number\ducklings.png">
       <Name>ducklings</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="QuestionAnswerImages\Number\ducksGoose.png">
+      <Name>ducksGoose</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -160,6 +195,11 @@
     </Compile>
     <Compile Include="QuestionAnswerImages\Number\elephantTusks.png">
       <Name>elephantTusks</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="QuestionAnswerImages\Number\giraffe.png">
+      <Name>giraffe</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -183,13 +223,38 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+    <Compile Include="QuestionAnswerImages\Number\parrots.png">
+      <Name>parrots</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="QuestionAnswerImages\Number\penguin.png">
+      <Name>penguin</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="QuestionAnswerImages\Number\puppy.png">
       <Name>puppy</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+    <Compile Include="QuestionAnswerImages\Number\SnakeManyStripes.png">
+      <Name>SnakeManyStripes</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="QuestionAnswerImages\Number\spider.png">
       <Name>spider</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="QuestionAnswerImages\Number\stockvault-snake100454.jpg">
+      <Name>stockvault-snake100454</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="QuestionAnswerImages\Number\swan.png">
+      <Name>swan</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -859,39 +924,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="QuestionAnswerImages\Number\SnakeManyStripes.png">
-      <Name>SnakeManyStripes</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="QuestionAnswerImages\Number\stockvault-snake100454.jpg">
-      <Name>stockvault-snake100454</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="QuestionAnswerImages\Number\parrots.png">
-      <Name>parrots</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="QuestionAnswerImages\Number\ducksGoose.png">
-      <Name>ducksGoose</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="QuestionAnswerImages\Number\giraffe.png">
-      <Name>giraffe</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="BingoEnvironment\GrinStrip.png">
       <Name>GrinStrip</Name>
       <Importer>TextureImporter</Importer>
@@ -911,40 +943,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="QuestionAnswerImages\Number\dolphin.png">
-      <Name>dolphin</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="QuestionAnswerImages\Number\penguin.png">
-      <Name>penguin</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="QuestionAnswerImages\Number\1Kangaroo.png">
-      <Name>1Kangaroo</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="QuestionAnswerImages\Number\3Kangaroos.png">
-      <Name>3Kangaroos</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="QuestionAnswerImages\Number\camel2humps.png">
-      <Name>camel2humps</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="QuestionAnswerImages\Number\camels.png">
-      <Name>camels</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="QuestionAnswerImages\Measurement\Juice_Comparison.png">
       <Name>Juice_Comparison</Name>
       <Importer>TextureImporter</Importer>
@@ -952,6 +950,13 @@
     </Compile>
     <Compile Include="QuestionAnswerImages\Measurement\Juice_Filled.png">
       <Name>Juice_Filled</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="QuestionAnswerImages\Measurement\fruitsWatermelon.png">
+      <Name>fruitsWatermelon</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

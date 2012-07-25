@@ -429,9 +429,8 @@ namespace ECE_700_BoardGame.Screens
                     }
                 }
                 TouchesPrevState = touches;
-                QuestionChanged = false;
             }
-
+            QuestionChanged = false;
 
             for (int playerIndex = 0; playerIndex < PLAYER_COUNT; playerIndex++)
             {

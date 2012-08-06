@@ -25,6 +25,8 @@ namespace ECE_700_BoardGame.Screens
         ContentManager Content;
         DatabaseHelper DBhelper = DatabaseHelper.Instance;
         ReadOnlyTouchPointCollection TouchesPrevState;
+        TagData TagPrevState;
+
 
         //Bingo Grids That tiles sit amongst
         BackgroundItem BingoGridOne;
@@ -373,11 +375,9 @@ namespace ECE_700_BoardGame.Screens
                 
             foreach (TouchPoint touch in touches)
             {
-
                 var result = from oldtouch in TouchesPrevState
-                             from newtouch in touches
-                             where Helper.Geometry.Contains(newtouch.Bounds, oldtouch.X, oldtouch.Y) &&
-                             newtouch.Id == oldtouch.Id
+                             where Helper.Geometry.Contains(touch.Bounds, oldtouch.X, oldtouch.Y) &&
+                             touch.Id == oldtouch.Id
                              select oldtouch;
 
                 var sameTouch = result.FirstOrDefault();
@@ -390,9 +390,8 @@ namespace ECE_700_BoardGame.Screens
                 {
                     // Enable question changing
                     Question.Enabled = true;
-                    this.QuestionChanged = true;
+                    //this.QuestionChanged = true;
                 }
-
 
                 //Check for tile touched
                 for (int playerIndex = 0; playerIndex < PLAYER_COUNT; playerIndex++)
@@ -410,6 +409,7 @@ namespace ECE_700_BoardGame.Screens
                 if (Question.Enabled && Question.OnTouchTapGesture(touch))
                 {
                     int questionID = Question.getID();
+                    this.QuestionChanged = true;
 
                     //Notify tiles of new question ID
                     for (int playerIndex = 0; playerIndex < PLAYER_COUNT; playerIndex++)
@@ -428,10 +428,11 @@ namespace ECE_700_BoardGame.Screens
                         }
                     }
                 }
-                TouchesPrevState = touches;
-                QuestionChanged = false;
+                //TouchesPrevState = touches;
+                //QuestionChanged = false;
             }
-
+            TouchesPrevState = touches;
+            QuestionChanged = false;
 
             for (int playerIndex = 0; playerIndex < PLAYER_COUNT; playerIndex++)
             {

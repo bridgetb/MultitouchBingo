@@ -23,6 +23,7 @@ namespace ECE_700_BoardGame.Engine
         int Score;
         int PlayerID;
         SpriteFont WinnerMessage;
+        Texture2D Highlight;
         GameDifficulty DifficultyLevel {get; set;}
 
         #endregion
@@ -34,6 +35,7 @@ namespace ECE_700_BoardGame.Engine
             AnsweredTiles = new bool[playerTiles.Count];
             this.PlayerID = playerID;
             WinnerMessage = game.Content.Load<SpriteFont>("Comic");
+            Highlight = game.Content.Load<Texture2D>("BingoEnvironment/Highlight");
         }
 
         /// <summary>
@@ -93,23 +95,28 @@ namespace ECE_700_BoardGame.Engine
         //TODO: Check correctly for all winning conditions for the game
         bool Bingo()
         {
-            bool victory;
+            bool victory1 = true, victory2 = true, victory3 = true, victory4 = true;
             int boardWidthHeight = (int)Math.Sqrt(AnsweredTiles.Length);
 
             //Check for horizontal victory
             for (int r = 0; r < boardWidthHeight; r++)
             {
-                victory = true;
+                victory1 = true;
                 for (int c = 0; c < boardWidthHeight; c++)
                 {
                     if (!AnsweredTiles[(boardWidthHeight * r) + c])
                     {
-                        victory = false;
+                        victory1 = false;
+                        break;
                     }
                 }
-                if (victory)
+                if (victory1)
                 {
-                    return victory;
+                    //TODO: highlight victory row
+                    for (int i = r * boardWidthHeight; i < (r + 1) * boardWidthHeight; i++)
+                    {
+                        PlayerTiles[i].SetWinningRow(Highlight);
+                    }
                 }
             }
 
@@ -117,43 +124,54 @@ namespace ECE_700_BoardGame.Engine
             //Check for vertical victory
             for (int r = 0; r < boardWidthHeight; r++)
             {
-                victory = true;
+                victory2 = true;
                 for (int c = 0; c < boardWidthHeight; c++)
                 {
                     if (!AnsweredTiles[(boardWidthHeight * c) + r])
                     {
-                        victory = false;
+                        victory2 = false;
                     }
                 }
-                if (victory)
+                if (victory2)
                 {
-                    return victory;
+                    for (int i = r; i < r + boardWidthHeight * boardWidthHeight; i += boardWidthHeight)
+                    {
+                        PlayerTiles[i].SetWinningRow(Highlight);
+                    }
                 }
             }
 
             //Check for diagonal victory
-            victory = true;
             for (int c = 0; c < boardWidthHeight; c++)
             {
                 if (!AnsweredTiles[(boardWidthHeight * c) + c])
                 {
-                    victory = false;
+                    victory3 = false;
                 }
             }
-            if (victory)
+            if (victory3)
             {
-                return victory;
+                for (int c = 0; c < boardWidthHeight; c++)
+                {
+                    PlayerTiles[(boardWidthHeight * c) + c].SetWinningRow(Highlight);
+                }
             }
 
-            victory = true;
             for (int c = 0; c < boardWidthHeight; c++)
             {
                 if (!AnsweredTiles[(boardWidthHeight * c) + (boardWidthHeight - (c + 1))])
                 {
-                    victory = false;
+                    victory4 = false;
                 }
             }
-            return victory;
+            if (victory4)
+            {
+                for (int c = 0; c < boardWidthHeight; c++)
+                {
+                    PlayerTiles[(boardWidthHeight * c) + (boardWidthHeight - (c + 1))].SetWinningRow(Highlight);
+                }
+            }
+            return (victory1 || victory2 || victory3 || victory4);
         }
 
         /// <summary>
@@ -197,7 +215,7 @@ namespace ECE_700_BoardGame.Engine
                 scale = 1.2f;
 #endif
 
-                spriteBatch.DrawString(WinnerMessage, "BINGO!!!", pos, Color.White, rotation, new Vector2(0, 0), scale, SpriteEffects.None, 0);
+                //spriteBatch.DrawString(WinnerMessage, "BINGO!!!", pos, Color.White, rotation, new Vector2(0, 0), scale, SpriteEffects.None, 0);
             }
         }
     }

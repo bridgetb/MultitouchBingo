@@ -69,6 +69,7 @@ Content\MountainBackground.xnb
 Content\Domino5.xnb
 Content\QuestionAnswerImages\Question.xnb
 Content\Strawberries.xnb
+Content\BingoEnvironment\BingoBoard4x4.xnb
 Content\BingoEnvironment\Bingo_BlueBack.xnb
 Content\BingoEnvironment\Bingo_PlayerColours.xnb
 Content\BingoEnvironment\CloudLarge.xnb
@@ -151,8 +152,6 @@ Content\QuestionAnswerImages\Number\ducksGoose.xnb
 Content\QuestionAnswerImages\Number\giraffe.xnb
 Content\BingoEnvironment\GrinStrip.xnb
 Content\BingoEnvironment\SurpriseStrip.xnb
-Content\Comic.xnb
-Content\BingoEnvironment\BingoBoard4x4.xnb
 Content\BingoEnvironment\BingoBoard3x3.xnb
 Content\QuestionAnswerImages\Number\dolphin.xnb
 Content\QuestionAnswerImages\Number\penguin.xnb
@@ -162,6 +161,9 @@ Content\QuestionAnswerImages\Number\camel2humps.xnb
 Content\QuestionAnswerImages\Number\camels.xnb
 Content\QuestionAnswerImages\Measurement\Juice_Comparison.xnb
 Content\QuestionAnswerImages\Measurement\Juice_Filled.xnb
+Content\BingoEnvironment\Highlight.xnb
+Content\Comic.xnb
+Content\QuestionAnswerImages\Measurement\pieCloseup.xnb
 ExerciseMaterial.sdf
 Resources\icon.png
 ECE_700_BoardGame.xml

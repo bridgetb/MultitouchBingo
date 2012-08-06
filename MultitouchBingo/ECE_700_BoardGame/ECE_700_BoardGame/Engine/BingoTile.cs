@@ -34,6 +34,9 @@ namespace ECE_700_BoardGame.Engine
         public bool AttemptAnswer;
         bool Locked;
 
+        bool InWinningRow = false;
+        Texture2D Highlight;
+
         Animation CorrectAnswer;
         Animation IncorrectAnswer;
 
@@ -71,6 +74,7 @@ namespace ECE_700_BoardGame.Engine
             IncorrectAnswer = new Animation();
             IncorrectAnswer.Initialize(errorSprite, new Vector2(pos.X, pos.Y), new Vector2(pos.X, pos.Y), INCORRECT_IMAGE_W, INCORRECT_IMAGE_H, 7, 50, Color.White, (float)pos.Width / INCORRECT_IMAGE_W, false, false);
             IncorrectAnswer.Active = false;
+
         }
 
         public BingoTile(Game game, Texture2D tileSprite, Texture2D daubSprite, Texture2D errorSprite, Rectangle pos, 
@@ -111,6 +115,11 @@ namespace ECE_700_BoardGame.Engine
             this.ImageID = ansImgId;
         }
 
+        public void SetWinningRow(Texture2D highlight)
+        {
+            this.InWinningRow = true;
+            Highlight = highlight;
+        }
 
         /// <summary>
         /// This is called when the touch target receives a tap.
@@ -303,6 +312,13 @@ namespace ECE_700_BoardGame.Engine
                 {
                     IncorrectAnswer.Draw(spriteBatch, false);
                 }
+            }
+
+            if (this.InWinningRow)
+            {
+                // Highlight cell
+                spriteBatch.Draw(Highlight, new Rectangle((int)(this.Position.X - this.Position.Width * 0.25), (int)(this.Position.Y - this.Position.Width * 0.25), 
+                    (int)(this.Position.Width * 1.5), (int)(this.Position.Height * 1.5)), Color.White);
             }
         }
     }

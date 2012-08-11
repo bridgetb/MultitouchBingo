@@ -248,11 +248,6 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="QuestionAnswerImages\Number\stockvault-snake100454.jpg">
-      <Name>stockvault-snake100454</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="QuestionAnswerImages\Number\swan.png">
       <Name>swan</Name>
       <Importer>TextureImporter</Importer>
@@ -360,11 +355,6 @@
     </Compile>
     <Compile Include="QuestionAnswerImages\Shape\natureStairway.png">
       <Name>natureStairway</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="QuestionAnswerImages\Shape\pie.png">
-      <Name>pie</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -969,8 +959,36 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="QuestionAnswerImages\Measurement\pieCloseup.png">
-      <Name>pieCloseup</Name>
+    <Compile Include="QuestionAnswerImages\Measurement\pie.png">
+      <Name>pie</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="QuestionAnswerImages\Measurement\smallPie.png">
+      <Name>smallPie</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="QuestionAnswerImages\Number\3owls.png">
+      <Name>3owls</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="QuestionAnswerImages\Number\3horses.png">
+      <Name>3horses</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="QuestionAnswerImages\Number\2horses.png">
+      <Name>2horses</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

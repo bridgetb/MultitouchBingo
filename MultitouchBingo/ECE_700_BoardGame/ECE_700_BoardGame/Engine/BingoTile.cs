@@ -317,7 +317,9 @@ namespace ECE_700_BoardGame.Engine
             if (this.InWinningRow)
             {
                 // Highlight cell
-                spriteBatch.Draw(Highlight, new Rectangle((int)(this.Position.X - this.Position.Width * 0.25), (int)(this.Position.Y - this.Position.Width * 0.25), 
+                //spriteBatch.Draw(Highlight, new Rectangle((int)(this.Position.X - this.Position.Width * 0.25), (int)(this.Position.Y - this.Position.Width * 0.25), 
+                //    (int)(this.Position.Width * 1.5), (int)(this.Position.Height * 1.5)), Color.White);
+                spriteBatch.Draw(Highlight, new Rectangle((int)(this.Position.X - this.Position.Width / 5), (int)(this.Position.Y - this.Position.Width / 5),
                     (int)(this.Position.Width * 1.5), (int)(this.Position.Height * 1.5)), Color.White);
             }
         }

@@ -112,14 +112,21 @@ namespace ECE_700_BoardGame.Engine
                 completedQuestions.Clear();
             }
 
+            // Check that game has not finished (i.e. no more questions to ask)
+            if (PossibleQuestions.Count == 0)
+            {
+                // Don't change the question
+                return;
+            }
+
             // Get new question from question set
             int rand = new Random().Next(PossibleQuestions.Count);
             questionID = PossibleQuestions.ElementAt(rand);
-            while (completedQuestions.Contains(questionID))
-            {
-                rand = (rand + 1) % PossibleQuestions.Count;
-                questionID = PossibleQuestions.ElementAt(rand);
-            }
+            //while (completedQuestions.Contains(questionID))
+            //{
+            //    rand = (rand + 1) % PossibleQuestions.Count;
+            //    questionID = PossibleQuestions.ElementAt(rand);
+            //}
             // Get question text from database
             currentQuestion = databaseHelper.stringQueryDB("select Question from Questions where QuestionID = " + questionID.ToString());
             

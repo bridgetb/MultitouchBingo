@@ -39,7 +39,6 @@ Content\QuestionAnswerImages\Number\penguin.xnb
 Content\QuestionAnswerImages\Number\puppy.xnb
 Content\QuestionAnswerImages\Number\SnakeManyStripes.xnb
 Content\QuestionAnswerImages\Number\spider.xnb
-Content\QuestionAnswerImages\Number\stockvault-snake100454.xnb
 Content\QuestionAnswerImages\Number\swan.xnb
 Content\QuestionAnswerImages\Number\YellowBird.xnb
 Content\QuestionAnswerImages\Number\YellowBirdNoStraw.xnb
@@ -62,7 +61,6 @@ Content\QuestionAnswerImages\Shape\haulGoldMine_truck.xnb
 Content\QuestionAnswerImages\Shape\hotAirBalloon.xnb
 Content\QuestionAnswerImages\Shape\louvre.xnb
 Content\QuestionAnswerImages\Shape\natureStairway.xnb
-Content\QuestionAnswerImages\Shape\pie.xnb
 Content\QuestionAnswerImages\Shape\railRoad.xnb
 Content\QuestionAnswerImages\Shape\rainbow.xnb
 Content\QuestionAnswerImages\Shape\sailBoat.xnb
@@ -163,9 +161,14 @@ Content\BingoEnvironment\SurpriseStrip.xnb
 Content\BingoEnvironment\BingoBoard3x3.xnb
 Content\QuestionAnswerImages\Measurement\Juice_Comparison.xnb
 Content\QuestionAnswerImages\Measurement\Juice_Filled.xnb
+Content\QuestionAnswerImages\Measurement\fruitsWatermelon.xnb
 Content\BingoEnvironment\Highlight.xnb
 Content\Comic.xnb
-Content\QuestionAnswerImages\Measurement\pieCloseup.xnb
+Content\QuestionAnswerImages\Measurement\pie.xnb
+Content\QuestionAnswerImages\Measurement\smallPie.xnb
+Content\QuestionAnswerImages\Number\3owls.xnb
+Content\QuestionAnswerImages\Number\3horses.xnb
+Content\QuestionAnswerImages\Number\2horses.xnb
 ExerciseMaterial.sdf
 Resources\icon.png
 ECE_700_BoardGame.xml

@@ -112,7 +112,6 @@ namespace ECE_700_BoardGame.Engine
                 }
                 if (victory1)
                 {
-                    //TODO: highlight victory row
                     for (int i = r * boardWidthHeight; i < (r + 1) * boardWidthHeight; i++)
                     {
                         PlayerTiles[i].SetWinningRow(Highlight);

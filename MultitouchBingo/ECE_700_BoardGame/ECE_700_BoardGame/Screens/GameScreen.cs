@@ -194,7 +194,7 @@ namespace ECE_700_BoardGame.Screens
 
             //Initialize to top left tile position for player 1
             int ansTileLength = (int)(boardWidth / (BOARD_TILE_WIDTH * 1.5));
-            int gapInTile = (int)(boardWidth / BOARD_TILE_WIDTH * 0.25 * 0.75);
+            int gapInTile = (int)((boardWidth / BOARD_TILE_WIDTH - boardWidth / (BOARD_TILE_WIDTH * 1.5)) / 2);// (int)(boardWidth / BOARD_TILE_WIDTH * 0.25 * 0.75);
             Rectangle posRectAns = new Rectangle((ScreenWidth / 4) - (boardWidth / 2) + gapInTile,
                                                     (ScreenHeight / 4) - (boardWidth / 2) + gapInTile,
                                                     ansTileLength, ansTileLength);
@@ -255,12 +255,13 @@ namespace ECE_700_BoardGame.Screens
                 }
 
                 int i = 0;
+                int origX = posRectAns.X;
                 foreach (var tileAnswer in answerTileImages)
                 {
                     string filename = DBhelper.stringQueryDB("select Path from Answers, Images where Answers.ImageID = " + tileAnswer.ToString() +
                         " and Answers.ImageID = Images.ImageID");
                     Texture2D tileAnsTex = Content.Load<Texture2D>("QuestionAnswerImages/" + filename);
-
+                    
                     //Shift Tile Position
                     if (i != 0)
                     {
@@ -269,10 +270,16 @@ namespace ECE_700_BoardGame.Screens
                         if ((i % BOARD_TILE_WIDTH) == 0)
                         {
                             //posRectAns.X -= BOARD_TILE_WIDTH * (boardWidth / 4);
-                            posRectAns.X -= boardWidth;
+                            posRectAns.X = origX;
                             posRectAns.Y += boardWidth / BOARD_TILE_WIDTH;
                         }
                     }
+                    //else
+                    //{
+                    //    posRectAns.X += boardWidth / BOARD_TILE_WIDTH / 9*2;
+                    //    posRectAns.Y += boardWidth / BOARD_TILE_WIDTH / 9*2;
+
+                    //}
 
                     BingoTile bt;
                     if (playerIndex < (PLAYER_COUNT / 2))

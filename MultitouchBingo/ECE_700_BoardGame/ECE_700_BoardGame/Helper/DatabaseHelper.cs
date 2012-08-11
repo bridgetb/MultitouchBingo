@@ -112,7 +112,7 @@ namespace ECE_700_BoardGame.Helper
                 }
                 else
                 {
-                    clause += ")";
+                    clause += ") ";
                 }
             }
             return clause;

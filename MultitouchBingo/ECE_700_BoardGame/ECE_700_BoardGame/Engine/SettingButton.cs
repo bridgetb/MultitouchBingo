@@ -88,9 +88,12 @@ namespace ECE_700_BoardGame.Engine
             // Show indication of whether selected
             if (Selected)
             {
+                /* // Check box
                 Texture2D tex = Game.Content.Load<Texture2D>("daub");
                 Rectangle pos = new Rectangle(Position.Left - Position.Height / 2, Position.Bottom - Position.Height, Position.Height, Position.Height);
-                spriteBatch.Draw(tex, pos, Color.White);
+                spriteBatch.Draw(tex, pos, Color.White);*/
+                Texture2D tex = Game.Content.Load<Texture2D>("BingoEnvironment/Highlight");
+                spriteBatch.Draw(tex, this.Position, Color.White);
             }
         }
 

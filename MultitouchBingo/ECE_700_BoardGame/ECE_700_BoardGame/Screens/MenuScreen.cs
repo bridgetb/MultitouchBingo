@@ -29,6 +29,7 @@ namespace ECE_700_BoardGame.Screens
         List<Animation> MovingTopics;
 
         GameDifficulty Difficulty = GameDifficulty.Easy;
+        Texture2D BingoTitle;
 
         ReadOnlyTouchPointCollection TouchesPrevState;
 
@@ -50,11 +51,14 @@ namespace ECE_700_BoardGame.Screens
 
             // Set state to first state where user can choose topics
             ScreenState = State.ChooseTopic;
+
         }
 
         public void Draw(GameTime gameTime)
         {
-            // TODO: Draw BINGO title!
+            // Draw BINGO title!
+            SpriteBatch.Draw(BingoTitle, new Rectangle(ScreenWidth / 2 - BingoTitle.Width / 2, ScreenHeight / 10, 
+                BingoTitle.Width, BingoTitle.Height), Color.White);
             // Display all enabled options                    
             foreach (MenuButton b in EnabledButtons)
             {
@@ -65,6 +69,8 @@ namespace ECE_700_BoardGame.Screens
         public void LoadContent(ContentManager content)
         {
             Content = content;
+
+            BingoTitle = Content.Load<Texture2D>("BingoEnvironment/BingoTitle");
 
             #region Topic Buttons
             // Display topics
@@ -97,25 +103,29 @@ namespace ECE_700_BoardGame.Screens
             #region Difficulty Buttons
             // Display difficulties
             dt = this.DBhelper.queryDBRows("select Difficulty from DifficultyLevels");
-            y = ScreenHeight / 2 - dt.Rows.Count * 50;
+            y = ScreenHeight / 3;
+            x = ScreenWidth * 5 / 8;
             foreach (DataRow row in dt.Rows)
             {
                 String diff = row.ItemArray[0].ToString();
                 tex = Content.Load<Texture2D>("BingoEnvironment/" + diff);
-                pos = new Rectangle(ScreenWidth * 5 / 8, y, tex.Width, tex.Height);
-                SettingButton sb = new SettingButton(Game, tex, pos, pos, "DIFFICULTY", diff);
+                x -= tex.Width / 2;
+                pos = new Rectangle(x, ScreenHeight / 2, tex.Width, tex.Height);
+                Rectangle target = new Rectangle(ScreenWidth * 3 / 4 - tex.Width / 2, y, tex.Width, tex.Height);
+                SettingButton sb = new SettingButton(Game, tex, pos, target, frames, "DIFFICULTY", diff);
                 if (diff.Equals("Easy"))
                 {
                     sb.Selected = true;
                 }
                 SettingButtons.Add(sb);
-                y += 100;
+                y += (int)(tex.Height * 1.5);
+                x += tex.Width / 2 + ScreenWidth / 4;
             }
             #endregion
 
             #region Play Button
             tex = Content.Load<Texture2D>("BingoEnvironment/Play");
-            pos = new Rectangle(ScreenWidth / 2, y, tex.Width, tex.Height);
+            pos = new Rectangle(ScreenWidth * 3 / 4 - tex.Width / 2, ScreenHeight * 3 / 4, tex.Width, tex.Height);
             PlayButton = new PlayButton(Game, tex, pos, pos);
             #endregion
 
@@ -159,8 +169,8 @@ namespace ECE_700_BoardGame.Screens
                     PlayButton.OnTouchTapGesture(touch);
                 if (after > initial)
                 {
-                    if (after == State.ChooseDifficulty)
-                    {
+                    //if (after == State.ChooseDifficulty)
+                    //{
                         // Activate animations
                         foreach (MenuButton b in EnabledButtons)
                         {
@@ -169,7 +179,7 @@ namespace ECE_700_BoardGame.Screens
                                 b.IsTranslating = true;
                             }
                         }
-                    }
+                    //}
                     this.SetState(after);
                 }
             }
@@ -198,8 +208,8 @@ namespace ECE_700_BoardGame.Screens
                 PlayButton.OnClickGesture(ms);
             if (after > initial)
             {
-                if (after == State.ChooseDifficulty)
-                {
+                //if (after == State.ChooseDifficulty)
+                //{
                     // Activate animations
                     foreach (MenuButton b in EnabledButtons)
                     {
@@ -208,7 +218,7 @@ namespace ECE_700_BoardGame.Screens
                             b.IsTranslating = true;
                         }
                     }
-                }
+                //}
                 this.SetState(after);
             } 
             foreach (MenuButton b in EnabledButtons)
@@ -238,6 +248,10 @@ namespace ECE_700_BoardGame.Screens
                             where newButton.Setting.Equals("DIFFICULTY")
                             && newButton is SettingButton
                             select newButton;
+                    foreach (SettingButton b in e)
+                    {
+                        b.Initialize();
+                    }
                     EnabledButtons.AddRange(e);
                     break;
                 case State.ConfirmOptions:

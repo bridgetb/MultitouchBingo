@@ -71,32 +71,32 @@ namespace ECE_700_BoardGame.Engine
         {
             if (Game is BingoApp)
             {
-                if (Selected)
+                // If an alternate image exists, swap alternate image with currently displaying image
+                if (this.texAlt != null)
                 {
-                    Selected = false;
-                    Screen s = ((BingoApp)Game).GetGameState();
-                    if (s is MenuScreen)
+                    Texture2D old = this.Texture;
+                    this.Texture = this.texAlt;
+                    this.texAlt = old;
+                }
+                Selected = !Selected;
+                Screen s = ((BingoApp)Game).GetGameState();
+                if (s is MenuScreen)
+                {
+                    if (!Selected)
                     {
                         ((MenuScreen)s).RemoveSetting(Setting, Value);
                     }
-                }
-                else
-                {
-                    Selected = true;
-                    Screen s = ((BingoApp)Game).GetGameState();
-                    if (s is MenuScreen)
+                    else
                     {
                         ((MenuScreen)s).AddSetting(Setting, Value);
                     }
                 }
-
             }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if ((texAlt != null && !Selected) || texAlt == null)
-                base.Draw(spriteBatch);
+            base.Draw(spriteBatch);
             // Show indication of whether selected
             if (Selected)
             {
@@ -109,11 +109,6 @@ namespace ECE_700_BoardGame.Engine
                     Texture2D tex = Game.Content.Load<Texture2D>("BingoEnvironment/Highlight");
                     spriteBatch.Draw(tex, this.Position, Color.White);
                 }
-                else
-                {
-                    spriteBatch.Draw(texAlt, this.Position, Color.White);
-                }
-                
             }
         }
 

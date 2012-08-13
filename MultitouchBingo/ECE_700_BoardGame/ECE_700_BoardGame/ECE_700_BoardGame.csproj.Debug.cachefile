@@ -170,6 +170,9 @@ Content\QuestionAnswerImages\Number\3horses.xnb
 Content\QuestionAnswerImages\Number\2horses.xnb
 Content\BingoEnvironment\BingoTitle.xnb
 Content\Comic.xnb
+Content\BingoEnvironment\MeasurementActive.xnb
+Content\BingoEnvironment\NumberActive.xnb
+Content\BingoEnvironment\ShapeActive.xnb
 ExerciseMaterial.sdf
 Resources\icon.png
 ECE_700_BoardGame.xml

@@ -20,10 +20,10 @@ namespace ECE_700_BoardGame.Engine
     /// </summary>
     public abstract class Button : DrawableGameComponent
     {
-        public Texture2D Texture;
-        public Rectangle Position;
-        public Rectangle Target;
-        public Vector2 OriginOffset;
+        protected Texture2D Texture;
+        protected Rectangle Position;
+        protected Rectangle Target;
+        protected Vector2 OriginOffset;
         int XChange = 0;
         int YChange = 0;
         int Frames = -1;

@@ -393,7 +393,8 @@ namespace ECE_700_BoardGame.Screens
                     continue;
                 }
                 TagData td = touch.Tag;
-                if ((td.Value == 0xC0 || td.Value == 8) && !this.QuestionChanged)
+                //if ((td.Value == 0xC0 || td.Value == 8) && !this.QuestionChanged)
+                if (!this.QuestionChanged)
                 {
                     // Enable question changing
                     Question.Enabled = true;

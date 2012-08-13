@@ -76,11 +76,12 @@ namespace ECE_700_BoardGame.Screens
             // Display topics
             DataTable dt = this.DBhelper.queryDBRows("select Topic from Topics");
 
-            int x = ScreenWidth / (dt.Rows.Count + 1);
-            int xSpacing = x;
-            int y = ScreenHeight / 2;
+            int x = (ScreenWidth / (dt.Rows.Count + 1)) - ScreenWidth/10;
+            int xSpacing = x + ScreenWidth/5;
+            int y = (ScreenHeight / 5)*2;
 
             Texture2D tex;
+            Texture2D texAlt;
             Rectangle pos;
             //int frames = (int) (Math.Pow((Math.Pow((ScreenWidth * 0.5), 2.0) + Math.Pow(ScreenHeight / 4, 2.0)), 0.5) / 100);
             int frames = ScreenWidth / 100; ;
@@ -89,12 +90,13 @@ namespace ECE_700_BoardGame.Screens
             {
                 String topic = row.ItemArray[0].ToString();
                 tex = Content.Load<Texture2D>("BingoEnvironment/" + topic);
-                pos = new Rectangle(x - tex.Width / 2, y, tex.Width, tex.Height);
+                texAlt = Content.Load<Texture2D>("BingoEnvironment/" + topic + "Active");
+                pos = new Rectangle(x - ScreenWidth / 8, y, ScreenWidth/4, ScreenHeight/4);
 #if DEBUG
                 System.Diagnostics.Debug.WriteLine("width " + tex.Width.ToString() + "; height " + tex.Height.ToString());
 #endif
-                Rectangle target = new Rectangle(ScreenWidth / 4 - tex.Width / 2, y + (i - 1) * ScreenHeight / 4, tex.Width, tex.Height);
-                SettingButtons.Add(new SettingButton(Game, tex, pos, target, frames, "TOPIC", topic));
+                Rectangle target = new Rectangle(ScreenWidth / 4 - ScreenWidth / 8, y + (i - 1) * ScreenHeight / 4, ScreenWidth / 4, ScreenHeight / 4);
+                SettingButtons.Add(new SettingButton(Game, tex, texAlt, pos, target, frames, "TOPIC", topic));
                 x += xSpacing;
                 i++;
             }
@@ -142,9 +144,8 @@ namespace ECE_700_BoardGame.Screens
             foreach (TouchPoint touch in touches)
             {
                 var result = from oldtouch in TouchesPrevState
-                             from newtouch in touches
-                             where Helper.Geometry.Contains(newtouch.Bounds, oldtouch.X, oldtouch.Y) &&
-                             newtouch.Id == oldtouch.Id
+                             where Helper.Geometry.Contains(touch.Bounds, oldtouch.X, oldtouch.Y) &&
+                             touch.Id == oldtouch.Id
                              select oldtouch;
 
                 var sameTouch = result.FirstOrDefault();
@@ -183,6 +184,7 @@ namespace ECE_700_BoardGame.Screens
                     this.SetState(after);
                 }
             }
+            TouchesPrevState = touches;
             foreach (MenuButton b in EnabledButtons)
             {
                 b.Update(gameTime);

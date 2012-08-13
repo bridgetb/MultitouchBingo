@@ -17,6 +17,7 @@ namespace ECE_700_BoardGame.Engine
         public bool Selected { get; set; }
         int FadeInc = 20;
         double FadeInDelay = .035;
+        private Texture2D texAlt;
 
         public SettingButton(Game game, Texture2D tex, Rectangle pos, Rectangle target, String setting, String value)
             : base(game, tex, pos, target)
@@ -34,6 +35,16 @@ namespace ECE_700_BoardGame.Engine
             Value = value;
             Selected = false;
             Alpha = 1;
+        }
+
+        public SettingButton(Game game, Texture2D tex, Texture2D texAlt, Rectangle pos, Rectangle target, int frames, String setting, String value)
+            : base(game, tex, pos, target, frames)
+        {
+            Setting = setting;
+            Value = value;
+            Selected = false;
+            Alpha = 1;
+            this.texAlt = texAlt;
         }
 
         public override bool OnTouchTapGesture(TouchPoint touch)
@@ -84,7 +95,8 @@ namespace ECE_700_BoardGame.Engine
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            base.Draw(spriteBatch);
+            if ((texAlt != null && !Selected) || texAlt == null)
+                base.Draw(spriteBatch);
             // Show indication of whether selected
             if (Selected)
             {
@@ -92,8 +104,16 @@ namespace ECE_700_BoardGame.Engine
                 Texture2D tex = Game.Content.Load<Texture2D>("daub");
                 Rectangle pos = new Rectangle(Position.Left - Position.Height / 2, Position.Bottom - Position.Height, Position.Height, Position.Height);
                 spriteBatch.Draw(tex, pos, Color.White);*/
-                Texture2D tex = Game.Content.Load<Texture2D>("BingoEnvironment/Highlight");
-                spriteBatch.Draw(tex, this.Position, Color.White);
+                if (texAlt == null)
+                {
+                    Texture2D tex = Game.Content.Load<Texture2D>("BingoEnvironment/Highlight");
+                    spriteBatch.Draw(tex, this.Position, Color.White);
+                }
+                else
+                {
+                    spriteBatch.Draw(texAlt, this.Position, Color.White);
+                }
+                
             }
         }
 

@@ -12,8 +12,8 @@ namespace ECE_700_BoardGame.Helper
         public static bool Contains(TouchBounds tb, float posX, float posY)
         {
             //Checks equal to aswell as tag points have a touch bound of 0 width and height
-            if((tb.Left <= posX) && (tb.Right >= posX)){
-                if((tb.Top <= posY) && (tb.Bottom >= posY)){
+            if(( (tb.Left-(tb.Width/2))  <= posX) && ( (tb.Right+(tb.Width/2)) >= posX)){
+                if(( (tb.Top-(tb.Height/2)) <= posY) && ( (tb.Bottom+(tb.Height/2)) >= posY)){
                     return true;
                 }
             }

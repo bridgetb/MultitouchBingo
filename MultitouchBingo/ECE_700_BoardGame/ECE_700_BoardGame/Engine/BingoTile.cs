@@ -50,7 +50,6 @@ namespace ECE_700_BoardGame.Engine
         Vector2 errSpriteOffset;
         float TileOrient;
         Boolean Rotated;
-
         #endregion
 
         public BingoTile(Game game, Texture2D tileSprite, Texture2D daubSprite, Texture2D errorSprite, Rectangle pos, Rectangle target)
@@ -74,36 +73,17 @@ namespace ECE_700_BoardGame.Engine
             IncorrectAnswer = new Animation();
             IncorrectAnswer.Initialize(errorSprite, new Vector2(pos.X, pos.Y), new Vector2(pos.X, pos.Y), INCORRECT_IMAGE_W, INCORRECT_IMAGE_H, 7, 50, Color.White, (float)pos.Width / INCORRECT_IMAGE_W, false, false);
             IncorrectAnswer.Active = false;
-
         }
 
         public BingoTile(Game game, Texture2D tileSprite, Texture2D daubSprite, Texture2D errorSprite, Rectangle pos, 
             Rectangle target, float tileOrientation, Vector2 originOffset)
-            : base(game, tileSprite, pos, target)
+            : this(game, tileSprite, daubSprite, errorSprite, pos, target)
         {
-            this.Answered = false;
-            this.AttemptAnswer = false;
-            this.Locked = false;
-
-            this.ImageID = -1;
-            this.AnswersToCurrentQuestion = new List<int>();
-
-            this.AnsweredSprite = daubSprite;
-            this.ErrorSprite = errorSprite;
-
             this.Rotated = true;
             this.TileOrient = tileOrientation;
             this.OriginOffset = originOffset;
             this.ansSpriteOffset = new Vector2(daubSprite.Width, daubSprite.Height);
             this.errSpriteOffset = new Vector2(errorSprite.Width, errorSprite.Height);
-
-            CorrectAnswer = new Animation();
-            CorrectAnswer.Initialize(daubSprite, new Vector2(pos.X, pos.Y), new Vector2(pos.X, pos.Y), CORRECT_IMAGE_W, CORRECT_IMAGE_H, 15, 50, Color.White, (float)pos.Width / CORRECT_IMAGE_W, false, true);
-            CorrectAnswer.Active = false;
-
-            IncorrectAnswer = new Animation();
-            IncorrectAnswer.Initialize(errorSprite, new Vector2(pos.X, pos.Y), new Vector2(pos.X, pos.Y), INCORRECT_IMAGE_W, INCORRECT_IMAGE_H, 7, 50, Color.White, (float)pos.Width / INCORRECT_IMAGE_W, false, false);
-            IncorrectAnswer.Active = false;
         }
 
         /// <summary>
@@ -115,42 +95,25 @@ namespace ECE_700_BoardGame.Engine
             this.ImageID = ansImgId;
         }
 
-        public void SetWinningRow(Texture2D highlight)
-        {
-            this.InWinningRow = true;
-            Highlight = highlight;
-        }
-
         /// <summary>
-        /// This is called when the touch target receives a tap.
+        /// Sets the tile as a winning tile
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="args"></param>
-        //public void OnTouchTapGesture(object sender, TouchEventArgs args)
-
-        //{
-        //    if (IsPressed(args.TouchPoint) && !this.Answered)
-
-        //    {
-        //        if (IsCorrectAnswer())
-
-        //        {
-        //            this.Answered = true;
-
-
-
-        //            CorrectAnswer.Active = true;
-        //        }
-        //        else
-        //        {
-        //            this.AttemptAnswer = true;
-
-
-
-        //        }
-        //    }
-        //}
-
+        /// <param name="highlight"></param>
+        /// <returns>bool NewlySet: true if the tile was set to a winning tile in this call</returns>
+        public bool SetWinningRow(Texture2D highlight)
+        {
+            if (this.InWinningRow)
+            {
+                return false;
+            }
+            else
+            {
+                this.InWinningRow = true;
+                Highlight = highlight;
+                return true;
+            }
+        }
+        
         public void OnTouchTapGesture(TouchPoint touch)
         {
             if (IsPressed(touch) && !this.Answered && !this.Locked)
@@ -173,6 +136,14 @@ namespace ECE_700_BoardGame.Engine
                     this.AttemptAnswer = true;
                     IncorrectAnswer.Active = true;
                 }
+            }
+        }
+
+        public void OnTouchReveal(TouchPoint touch)
+        {
+            if (IsPressed(touch) && this.Answered)
+            {
+                CorrectAnswer.ClearAnim = true;
             }
         }
 
@@ -200,8 +171,19 @@ namespace ECE_700_BoardGame.Engine
                     IncorrectAnswer.Active = true;
                 }
             }
+            else if (IsPressed(mouseState) && this.Answered)
+            {
+                CorrectAnswer.ClearAnim = true;
+            }
         }
 
+        public void OnClickReveal(MouseState mouseState)
+        {
+            if (IsPressed(mouseState) && this.Answered)
+            {
+                CorrectAnswer.ClearAnim = true;
+            }
+        }
 
         /// <summary>
         /// Allows the game component to update itself.
@@ -277,14 +259,22 @@ namespace ECE_700_BoardGame.Engine
             {
                 if (Rotated)
                 {
-                    //spriteBatch.Draw(AnsweredSprite, position, null, Color.White, TileOrient, ansSpriteOffset, SpriteEffects.None, 0f);
                     CorrectAnswer.Draw(spriteBatch, true);
+                    if (CorrectAnswer.ClearAnim)
+                    {
+                        //spriteBatch.Draw(AnsweredSprite, position, null, Color.White, TileOrient, ansSpriteOffset, SpriteEffects.None, 0f
+                        CorrectAnswer.ClearAnim = false;
+                    }
                 }
                 else
                 {
-                    //base.Draw(spriteBatch);
-                    //spriteBatch.Draw(AnsweredSprite, position, Color.White);
                     CorrectAnswer.Draw(spriteBatch, false);
+                    if (CorrectAnswer.ClearAnim)
+                    {
+                        //base.Draw(spriteBatch);
+                        //spriteBatch.Draw(AnsweredSprite, position, Color.White);
+                        CorrectAnswer.ClearAnim = false;
+                    }
                 }
             }
             else if (AttemptAnswer)

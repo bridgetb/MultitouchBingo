@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Input;
 using ECE_700_BoardGame.Layout;
 using Microsoft.Xna.Framework.GamerServices;
 using System.Diagnostics;
+using Microsoft.Xna.Framework.Audio;
 
 namespace ECE_700_BoardGame.Screens
 {
@@ -56,6 +57,7 @@ namespace ECE_700_BoardGame.Screens
 
         Player[] PlayerData;
 
+
         private const int PLAYER_COUNT = 4;
         private int BOARD_TILE_WIDTH;
         private const int DIVIDER_THICKNESS = 60;
@@ -91,6 +93,7 @@ namespace ECE_700_BoardGame.Screens
 
             CorrectSpriteStrip = Content.Load<Texture2D>("BingoEnvironment/GrinStrip");
             IncorrectSpriteStrip = Content.Load<Texture2D>("BingoEnvironment/SurpriseStrip");
+
 
             #region Position Bingo Boards
             Texture2D boardTex;
@@ -373,6 +376,7 @@ namespace ECE_700_BoardGame.Screens
             }
         }
 
+        //Touch Update Method
         public void Update(GameTime gameTime, ReadOnlyTouchPointCollection touches)
         {
             if (TouchesPrevState == null)
@@ -382,6 +386,13 @@ namespace ECE_700_BoardGame.Screens
                 
             foreach (TouchPoint touch in touches)
             {
+                for (int playerIndex = 0; playerIndex < PLAYER_COUNT; playerIndex++)
+                {
+                    foreach (BingoTile bt in PlayerTiles[playerIndex])
+                    {
+                        bt.OnTouchReveal(touch);
+                    }
+                }
                 var result = from oldtouch in TouchesPrevState
                              where Helper.Geometry.Contains(touch.Bounds, oldtouch.X, oldtouch.Y) &&
                              touch.Id == oldtouch.Id
@@ -393,8 +404,7 @@ namespace ECE_700_BoardGame.Screens
                     continue;
                 }
                 TagData td = touch.Tag;
-                //if ((td.Value == 0xC0 || td.Value == 8) && !this.QuestionChanged)
-                if (!this.QuestionChanged)
+                if ((td.Value == 0xC0 || td.Value == 8 || td.Value == 9 || td.Value == 0x0B || td.Value == 0x0A) && !this.QuestionChanged)
                 {
                     // Enable question changing
                     Question.Enabled = true;
@@ -454,6 +464,7 @@ namespace ECE_700_BoardGame.Screens
                 Question.Update(gameTime);
         }
 
+        //Click Update Method (For Debug)
         public void Update(GameTime gameTime, MouseState ms)
         {
             //Check for tile clicked
@@ -462,6 +473,7 @@ namespace ECE_700_BoardGame.Screens
                 int tileNum = 0;
                 foreach (BingoTile bt in PlayerTiles[playerIndex])
                 {
+                    bt.OnClickReveal(ms);
                     bt.ClickEvent(ms);
                     PlayerData[playerIndex].tileAnswered(bt.Answered, tileNum);
                     tileNum++;
@@ -504,7 +516,6 @@ namespace ECE_700_BoardGame.Screens
             if (Question != null)
                 Question.Update(gameTime);
         }
-
 
         public void UpdateQuestions(int AnswerImage)
         {

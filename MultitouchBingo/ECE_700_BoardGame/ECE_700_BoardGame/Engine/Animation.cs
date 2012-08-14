@@ -56,6 +56,9 @@ namespace ECE_700_BoardGame.Engine
         bool hold;
         bool holdReady;
 
+        // State whether animation should be translucent
+        public bool ClearAnim;
+
         // Width of a given frame
         public Vector2 Position;
         public Vector2 TargetPosition;
@@ -84,6 +87,7 @@ namespace ECE_700_BoardGame.Engine
             this.frameTime = frameTime;
             this.scale = scale;
             this.hold = hold;
+            this.ClearAnim = false;
 
             Looping = looping;
             Position = position;
@@ -183,14 +187,20 @@ namespace ECE_700_BoardGame.Engine
             // Only draw the animation when we are active
             if (Active)
             {
+                float transparency = 1.0f;
+                if (ClearAnim)
+                {
+                    transparency = 0.2f;
+                }
+
                 if (rotated)
                 {
-                    spriteBatch.Draw(spriteStrip, destinationRect, sourceRect, color, (float)Math.PI, offset, SpriteEffects.None, 0f);
+                    spriteBatch.Draw(spriteStrip, destinationRect, sourceRect, color*transparency, (float)Math.PI, offset, SpriteEffects.None, 0f);
                     //spriteBatch.Draw(AnsweredSprite, position, null, Color.White, TileOrient, ansSpriteOffset, SpriteEffects.None, 0f);
                 }
                 else
                 {
-                    spriteBatch.Draw(spriteStrip, destinationRect, sourceRect, color);
+                    spriteBatch.Draw(spriteStrip, destinationRect, sourceRect, color*transparency);
                 }
             }
         }

@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework.GamerServices;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace ECE_700_BoardGame.Engine
 {
@@ -26,6 +28,8 @@ namespace ECE_700_BoardGame.Engine
         Texture2D Highlight;
         GameDifficulty DifficultyLevel {get; set;}
 
+        Microsoft.Xna.Framework.Media.Song BingoSound;
+
         #endregion
 
         public Player(List<BingoTile> playerTiles, int playerID, Game game)
@@ -36,6 +40,7 @@ namespace ECE_700_BoardGame.Engine
             this.PlayerID = playerID;
             WinnerMessage = game.Content.Load<SpriteFont>("Comic");
             Highlight = game.Content.Load<Texture2D>("BingoEnvironment/Highlight");
+            BingoSound = game.Content.Load<Microsoft.Xna.Framework.Media.Song>("BingoEnvironment/BingoSound");
         }
 
         /// <summary>
@@ -67,9 +72,9 @@ namespace ECE_700_BoardGame.Engine
                 }
                 previousAnsCorrect = true;
 
-                //TODO check if won
                 if (Bingo())
                 {
+                    MediaPlayer.Play(BingoSound);
                     HasWon = true;
 
 #if DEBUG
@@ -92,85 +97,121 @@ namespace ECE_700_BoardGame.Engine
 
         }
 
-        //TODO: Check correctly for all winning conditions for the game
         bool Bingo()
         {
-            bool victory1 = true, victory2 = true, victory3 = true, victory4 = true;
+            bool victoryHoriz = false, victoryVert = false, victoryDiag = false, temp;
+            bool highlighted = false;
             int boardWidthHeight = (int)Math.Sqrt(AnsweredTiles.Length);
 
             //Check for horizontal victory
             for (int r = 0; r < boardWidthHeight; r++)
             {
-                victory1 = true;
+                temp = true;
                 for (int c = 0; c < boardWidthHeight; c++)
                 {
                     if (!AnsweredTiles[(boardWidthHeight * r) + c])
                     {
-                        victory1 = false;
+                        temp = false;
                         break;
                     }
                 }
-                if (victory1)
+                if (temp)
                 {
                     for (int i = r * boardWidthHeight; i < (r + 1) * boardWidthHeight; i++)
                     {
-                        PlayerTiles[i].SetWinningRow(Highlight);
+                        // Check if this is a recent victory
+                        if (!PlayerTiles[i].SetWinningRow(Highlight))
+                        {
+                            temp = false;
+                        }
+                        else
+                        {
+                            highlighted = true;
+                        }
                     }
                 }
+                victoryHoriz = (victoryHoriz || temp);
             }
-
 
             //Check for vertical victory
             for (int r = 0; r < boardWidthHeight; r++)
             {
-                victory2 = true;
+                temp = true;
                 for (int c = 0; c < boardWidthHeight; c++)
                 {
                     if (!AnsweredTiles[(boardWidthHeight * c) + r])
                     {
-                        victory2 = false;
+                        temp = false;
                     }
                 }
-                if (victory2)
+                if (temp)
                 {
                     for (int i = r; i < r + boardWidthHeight * boardWidthHeight; i += boardWidthHeight)
                     {
-                        PlayerTiles[i].SetWinningRow(Highlight);
+                        // Check if this is a recent victory
+                        if (!PlayerTiles[i].SetWinningRow(Highlight))
+                        {
+                            temp = false;
+                        }
+                        else
+                        {
+                            highlighted = true;
+                        }
                     }
                 }
+                victoryVert = (victoryVert || temp);
             }
 
             //Check for diagonal victory
+            temp = true;
             for (int c = 0; c < boardWidthHeight; c++)
             {
                 if (!AnsweredTiles[(boardWidthHeight * c) + c])
                 {
-                    victory3 = false;
+                    temp = false;
                 }
             }
-            if (victory3)
+            if (temp)
             {
                 for (int c = 0; c < boardWidthHeight; c++)
                 {
-                    PlayerTiles[(boardWidthHeight * c) + c].SetWinningRow(Highlight);
+                    if (!PlayerTiles[(boardWidthHeight * c) + c].SetWinningRow(Highlight))
+                    {
+                        temp = false;
+                    }
+                    else
+                    {
+                        highlighted = true;
+                    }
                 }
             }
-
+            victoryDiag = (victoryDiag || temp);
+            temp = true;
             for (int c = 0; c < boardWidthHeight; c++)
             {
                 if (!AnsweredTiles[(boardWidthHeight * c) + (boardWidthHeight - (c + 1))])
                 {
-                    victory4 = false;
+                    temp = false;
                 }
             }
-            if (victory4)
+            if (temp)
             {
                 for (int c = 0; c < boardWidthHeight; c++)
                 {
-                    PlayerTiles[(boardWidthHeight * c) + (boardWidthHeight - (c + 1))].SetWinningRow(Highlight);
+                    if (!PlayerTiles[(boardWidthHeight * c) + (boardWidthHeight - (c + 1))].SetWinningRow(Highlight))
+                    {
+                        temp = false;
+                    }
+                    else
+                    {
+                        highlighted = true;
+                    }
                 }
             }
-            return (victory1 || victory2 || victory3 || victory4);
+            victoryDiag = (victoryDiag || temp);
+
+            //return (victoryHoriz || victoryVert || victoryDiag);
+            return highlighted;
         }
 
         /// <summary>

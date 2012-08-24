@@ -123,7 +123,6 @@ namespace ECE_700_BoardGame
         List<ParallaxingBackground> ParallaxingBacking;
 
         ECE_700_BoardGame.Screens.Screen CurrentScreen;
-        bool QuestionChanged = false;
 
         DatabaseHelper dbhelper = DatabaseHelper.Instance;
 

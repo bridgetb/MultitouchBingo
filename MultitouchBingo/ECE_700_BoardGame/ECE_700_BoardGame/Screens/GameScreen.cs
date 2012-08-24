@@ -403,13 +403,6 @@ namespace ECE_700_BoardGame.Screens
                 {
                     continue;
                 }
-                TagData td = touch.Tag;
-                if ((td.Value == 0xC0 || td.Value == 8 || td.Value == 9 || td.Value == 0x0B || td.Value == 0x0A) && !this.QuestionChanged)
-                {
-                    // Enable question changing
-                    Question.Enabled = true;
-                    //this.QuestionChanged = true;
-                }
 
                 //Check for tile touched
                 for (int playerIndex = 0; playerIndex < PLAYER_COUNT; playerIndex++)
@@ -424,7 +417,7 @@ namespace ECE_700_BoardGame.Screens
                 }
 
                 //Check for question touched
-                if (Question.Enabled && Question.OnTouchTapGesture(touch))
+                if (Question.OnTouchTapGesture(touch))
                 {
                     int questionID = Question.getID();
                     this.QuestionChanged = true;
@@ -481,7 +474,7 @@ namespace ECE_700_BoardGame.Screens
             }
 
             //Check for question clicked
-            if (Question.Enabled && Question.OnClickGesture(ms))
+            if (Question.OnClickGesture(ms))
             {
                 int questionID = Question.getID();
 

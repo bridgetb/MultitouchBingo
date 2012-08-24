@@ -55,7 +55,8 @@ namespace ECE_700_BoardGame.Engine
 
         override public bool OnTouchTapGesture(TouchPoint touch)
         {
-            if (IsPressed(touch))
+            TagData td = touch.Tag;
+            if (IsPressed(touch) && (td.Value == 0xC0 || td.Value == 8 || td.Value == 9 || td.Value == 0x0B || td.Value == 0x0A))
             {
                 RandomiseQuestion();
                 return true;
@@ -65,7 +66,7 @@ namespace ECE_700_BoardGame.Engine
 
         override public bool OnClickGesture(MouseState mouseState)
         {
-            if (IsPressed(mouseState))
+            if (IsPressed(mouseState)) // No tags in debug mode - mouse cannot simulate a tag
             {
                 RandomiseQuestion();
                 return true;
@@ -141,7 +142,6 @@ namespace ECE_700_BoardGame.Engine
             OriginOffset.Y = Texture.Height / 2;
 
             completedQuestions.Add(questionID);
-            this.Enabled = false;
         }
         /*
         /// <summary>

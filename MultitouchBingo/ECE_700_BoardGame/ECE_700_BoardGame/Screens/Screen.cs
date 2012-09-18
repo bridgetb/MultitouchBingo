@@ -10,6 +10,10 @@ using Microsoft.Xna.Framework.Input;
 
 namespace ECE_700_BoardGame.Screens
 {
+    /// <summary>
+    /// Interface to be implemented by menu screen and gameplay screen.
+    /// Can be implemented by break-out session screen in future.
+    /// </summary>
     public interface Screen
     {
         void Draw(GameTime gameTime);

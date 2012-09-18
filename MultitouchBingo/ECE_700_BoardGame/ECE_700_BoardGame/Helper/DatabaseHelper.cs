@@ -10,10 +10,13 @@ using System.Data.SqlServerCe;
 
 namespace ECE_700_BoardGame.Helper
 {
+    /// <summary>
+    /// Singleton class used for any communication with the SQL Server CE database "ExerciseMaterial.sdf".
+    /// </summary>
     class DatabaseHelper
     {
-
         private static DatabaseHelper instance;
+        private SqlCeConnection conn;
 
         private DatabaseHelper() {
             connectDB();
@@ -31,9 +34,9 @@ namespace ECE_700_BoardGame.Helper
             }
         }
 
-        private SqlCeConnection conn;
-
-
+        /// <summary>
+        /// Connects to the database named "ExerciseMaterial" containing question and answer material for the game.
+        /// </summary>
         private void connectDB()
         {
             conn = new SqlCeConnection();
@@ -41,11 +44,19 @@ namespace ECE_700_BoardGame.Helper
             conn.Open();
         }
 
+        /// <summary>
+        /// Closes connection to the database.
+        /// </summary>
         public void disconnectDB()
         {
             conn.Close();
         }
 
+        /// <summary>
+        /// Queries database for multiple-column results.
+        /// </summary>
+        /// <param name="query">SQL query in string form</param>
+        /// <returns>DataTable containing results of query</returns>
         public DataTable queryDBRows(string query)
         {
             SqlCeCommand cmd = conn.CreateCommand();
@@ -78,6 +89,11 @@ namespace ECE_700_BoardGame.Helper
             }
         }
 
+        /// <summary>
+        /// Queries database for a string value.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         public string stringQueryDB(string query)
         {
             SqlCeCommand cmd = conn.CreateCommand();
@@ -100,6 +116,12 @@ namespace ECE_700_BoardGame.Helper
             }
         }
 
+        /// <summary>
+        /// Helps with combining query constraints (i.e. the WHERE clause).
+        /// </summary>
+        /// <param name="attribute"></param>
+        /// <param name="constraints"></param>
+        /// <returns></returns>
         public string getQueryClause(String attribute, List<String> constraints)
         {
             string clause = "(" + attribute + " = ";

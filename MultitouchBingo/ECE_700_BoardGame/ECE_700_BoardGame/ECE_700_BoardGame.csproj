@@ -145,8 +145,8 @@
     <Compile Include="Engine\Animation.cs" />
     <Compile Include="Engine\BingoTile.cs" />
     <Compile Include="Engine\Button.cs" />
-    <Compile Include="Engine\MenuButton.cs" />
     <Compile Include="Engine\ParallaxingBackground.cs" />
+    <Compile Include="Engine\PlayButton.cs" />
     <Compile Include="Engine\Player.cs" />
     <Compile Include="Engine\QuestionButton.cs" />
     <Compile Include="Engine\SettingButton.cs" />

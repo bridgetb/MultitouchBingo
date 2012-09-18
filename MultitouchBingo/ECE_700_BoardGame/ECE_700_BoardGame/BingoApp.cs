@@ -328,11 +328,13 @@ namespace ECE_700_BoardGame
 
         #endregion
 
+        #region Game Launch
         public void StartGame(List<String> topics, GameDifficulty difficulty)
         {
             CurrentScreen = new GameScreen(this, spriteBatch, screenHeight, screenWidth, topics, difficulty);
             CurrentScreen.LoadContent(Content);
         }
+        #endregion
 
         #region Application Event Handlers
 

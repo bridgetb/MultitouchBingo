@@ -17,6 +17,9 @@ using Microsoft.Xna.Framework.Audio;
 
 namespace ECE_700_BoardGame.Screens
 {
+    /// <summary>
+    /// Represents the gameplay screen.
+    /// </summary>
     public class GameScreen : Screen
     {
         Game Game;
@@ -50,8 +53,6 @@ namespace ECE_700_BoardGame.Screens
         //Player answer tiles
         List<BingoTile>[] PlayerTiles;
 
-        //List<Animation> IncorrectAnswerDaub;
-        //List<Animation> CorrectAnswerDaub;
         Texture2D IncorrectSpriteStrip;
         Texture2D CorrectSpriteStrip;
 
@@ -341,7 +342,6 @@ namespace ECE_700_BoardGame.Screens
             }
 
             #endregion
-            //Question.SelectQuestions(this.Topics);
         }
 
         public void Draw(GameTime gameTime)
@@ -376,7 +376,11 @@ namespace ECE_700_BoardGame.Screens
             }
         }
 
-        //Touch Update Method
+        /// <summary>
+        /// Touch Update Method
+        /// </summary>
+        /// <param name="gameTime"></param>
+        /// <param name="touches"></param>
         public void Update(GameTime gameTime, ReadOnlyTouchPointCollection touches)
         {
             if (TouchesPrevState == null)
@@ -439,8 +443,6 @@ namespace ECE_700_BoardGame.Screens
                         }
                     }
                 }
-                //TouchesPrevState = touches;
-                //QuestionChanged = false;
             }
             TouchesPrevState = touches;
             QuestionChanged = false;
@@ -457,7 +459,11 @@ namespace ECE_700_BoardGame.Screens
                 Question.Update(gameTime);
         }
 
-        //Click Update Method (For Debug)
+        /// <summary>
+        /// Click Update Method (For Debug)
+        /// </summary>
+        /// <param name="gameTime"></param>
+        /// <param name="ms"></param>
         public void Update(GameTime gameTime, MouseState ms)
         {
             //Check for tile clicked
@@ -497,7 +503,6 @@ namespace ECE_700_BoardGame.Screens
                 }
             }
 
-
             for (int playerIndex = 0; playerIndex < PLAYER_COUNT; playerIndex++)
             {
                 foreach (BingoTile bt in PlayerTiles[playerIndex])
@@ -510,6 +515,10 @@ namespace ECE_700_BoardGame.Screens
                 Question.Update(gameTime);
         }
 
+        /// <summary>
+        /// Removes questions to the answer selected from possible question pool.
+        /// </summary>
+        /// <param name="AnswerImage">ID of answer image tile</param>
         public void UpdateQuestions(int AnswerImage)
         {
             this.Question.RemoveQuestions(AnswerImage);

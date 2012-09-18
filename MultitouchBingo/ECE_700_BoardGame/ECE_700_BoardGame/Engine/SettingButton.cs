@@ -10,7 +10,10 @@ using ECE_700_BoardGame.Screens;
 
 namespace ECE_700_BoardGame.Engine
 {
-    class SettingButton : MenuButton
+    /// <summary>
+    /// Represents the setting buttons for topics and difficulty on the menu screen.
+    /// </summary>
+    class SettingButton : Button
     {
         public String Setting { get; set; }
         public String Value { get; set; }
@@ -47,6 +50,11 @@ namespace ECE_700_BoardGame.Engine
             this.texAlt = texAlt;
         }
 
+        /// <summary>
+        /// Switches button state when tapped.
+        /// </summary>
+        /// <param name="touch"></param>
+        /// <returns></returns>
         public override bool OnTouchTapGesture(TouchPoint touch)
         {
             if (IsPressed(touch))
@@ -67,6 +75,9 @@ namespace ECE_700_BoardGame.Engine
             return false;
         }
 
+        /// <summary>
+        /// Switches state and records settings selected.
+        /// </summary>
         public void Toggle()
         {
             if (Game is BingoApp)
@@ -112,6 +123,10 @@ namespace ECE_700_BoardGame.Engine
             }
         }
 
+        /// <summary>
+        /// Fades the button in on initialisation.
+        /// </summary>
+        /// <param name="gametime"></param>
         public override void Update(GameTime gametime)
         {
             FadeInDelay -= gametime.ElapsedGameTime.TotalSeconds;
@@ -126,50 +141,5 @@ namespace ECE_700_BoardGame.Engine
             }
             base.Update(gametime);
         }
-    }
-
-    class PlayButton : MenuButton
-    {
-        public PlayButton(Game game, Texture2D tex, Rectangle pos, Rectangle target)
-            : base(game, tex, pos, target)
-        {
-            Alpha = 255;
-        }
-
-        public override bool OnTouchTapGesture(TouchPoint touch)
-        {
-            TagData td = touch.Tag;
-            if (IsPressed(touch) && (td.Value == 0xC0 || td.Value == 8 || td.Value == 9 || td.Value == 0x0B || td.Value == 0x0A)) 
-            {
-                if (Game is BingoApp)
-                {
-                    Screen s = ((BingoApp)Game).GetGameState();
-                    if (s is MenuScreen)
-                    {
-                        ((MenuScreen)s).FinishedSettingOptions();
-                    }
-                }
-                return true;
-            }
-            return false;
-        }
-
-        public override bool OnClickGesture(MouseState mouseState)
-        {
-            if (IsPressed(mouseState))
-            {
-                if (Game is BingoApp)
-                {
-                    Screen s = ((BingoApp)Game).GetGameState();
-                    if (s is MenuScreen)
-                    {
-                        ((MenuScreen)s).FinishedSettingOptions();
-                    }
-                }
-                return true;
-            }
-            return false;
-        }
-
     }
 }

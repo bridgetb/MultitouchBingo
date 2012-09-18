@@ -14,6 +14,9 @@ using Microsoft.Xna.Framework.GamerServices;
 
 namespace ECE_700_BoardGame.Screens
 {
+    /// <summary>
+    /// Represents the menu screen.
+    /// </summary>
     public class MenuScreen : Screen
     {
         Game Game;
@@ -25,7 +28,7 @@ namespace ECE_700_BoardGame.Screens
         DatabaseHelper DBhelper;
         List<String> Topics;
         List<SettingButton> SettingButtons;
-        List<MenuButton> EnabledButtons;
+        List<Button> EnabledButtons;
         List<Animation> MovingTopics;
 
         GameDifficulty Difficulty = GameDifficulty.Easy;
@@ -45,7 +48,7 @@ namespace ECE_700_BoardGame.Screens
             ScreenWidth = screenWidth;
             Topics = new List<String>();
             SettingButtons = new List<SettingButton>();
-            EnabledButtons = new List<MenuButton>();
+            EnabledButtons = new List<Button>();
             MovingTopics = new List<Animation>();
             DBhelper = DatabaseHelper.Instance;
 
@@ -60,7 +63,7 @@ namespace ECE_700_BoardGame.Screens
             SpriteBatch.Draw(BingoTitle, new Rectangle(ScreenWidth / 2 - BingoTitle.Width / 2, ScreenHeight / 10, 
                 BingoTitle.Width, BingoTitle.Height), Color.White);
             // Display all enabled options                    
-            foreach (MenuButton b in EnabledButtons)
+            foreach (Button b in EnabledButtons)
             {
                 b.Draw(SpriteBatch);
             }                    
@@ -83,7 +86,6 @@ namespace ECE_700_BoardGame.Screens
             Texture2D tex;
             Texture2D texAlt;
             Rectangle pos;
-            //int frames = (int) (Math.Pow((Math.Pow((ScreenWidth * 0.5), 2.0) + Math.Pow(ScreenHeight / 4, 2.0)), 0.5) / 100);
             int frames = ScreenWidth / 100; ;
             int i = 0;
             foreach (DataRow row in dt.Rows)
@@ -134,6 +136,11 @@ namespace ECE_700_BoardGame.Screens
             this.SetState(State.ChooseTopic);
         }
 
+        /// <summary>
+        /// Update for touches.
+        /// </summary>
+        /// <param name="gameTime"></param>
+        /// <param name="touches"></param>
         public void Update(GameTime gameTime, ReadOnlyTouchPointCollection touches)
         {
             if (TouchesPrevState == null)
@@ -156,7 +163,7 @@ namespace ECE_700_BoardGame.Screens
                 // Check for settings changed
                 State initial = this.ScreenState;
                 State after = this.ScreenState;
-                foreach (MenuButton b in EnabledButtons)
+                foreach (Button b in EnabledButtons)
                 {
                     if (b.OnTouchTapGesture(touch)) // selected >=1 topic
                     {
@@ -170,33 +177,35 @@ namespace ECE_700_BoardGame.Screens
                     PlayButton.OnTouchTapGesture(touch);
                 if (after > initial)
                 {
-                    //if (after == State.ChooseDifficulty)
-                    //{
-                        // Activate animations
-                        foreach (MenuButton b in EnabledButtons)
+                    // Activate animations
+                    foreach (Button b in EnabledButtons)
+                    {
+                        if (b is SettingButton)
                         {
-                            if (b is SettingButton)
-                            {
-                                b.IsTranslating = true;
-                            }
+                            b.IsTranslating = true;
                         }
-                    //}
+                    }
                     this.SetState(after);
                 }
             }
             TouchesPrevState = touches;
-            foreach (MenuButton b in EnabledButtons)
+            foreach (Button b in EnabledButtons)
             {
                 b.Update(gameTime);
             }
         }
 
+        /// <summary>
+        /// Update method for mouse clicks (debug mode)
+        /// </summary>
+        /// <param name="gameTime"></param>
+        /// <param name="ms"></param>
         public void Update(GameTime gameTime, MouseState ms)
         {
             // Check for settings changed
             State initial = this.ScreenState;
             State after = this.ScreenState;
-            foreach (MenuButton b in EnabledButtons)
+            foreach (Button b in EnabledButtons)
             {
                 if (b.OnClickGesture(ms)) // selected >=1 topic
                 {
@@ -210,25 +219,26 @@ namespace ECE_700_BoardGame.Screens
                 PlayButton.OnClickGesture(ms);
             if (after > initial)
             {
-                //if (after == State.ChooseDifficulty)
-                //{
-                    // Activate animations
-                    foreach (MenuButton b in EnabledButtons)
+                // Activate animations
+                foreach (Button b in EnabledButtons)
+                {
+                    if (b is SettingButton)
                     {
-                        if (b is SettingButton)
-                        {
-                            b.IsTranslating = true;
-                        }
+                        b.IsTranslating = true;
                     }
-                //}
+                }
                 this.SetState(after);
-            } 
-            foreach (MenuButton b in EnabledButtons)
+            }
+            foreach (Button b in EnabledButtons)
             {
                 b.Update(gameTime);
             }
         }
 
+        /// <summary>
+        /// Sets the state of the menu screen (i.e. determines which setting buttons to show).
+        /// </summary>
+        /// <param name="screenState"></param>
         public void SetState(State screenState)
         {
             this.ScreenState = screenState;
@@ -354,6 +364,9 @@ namespace ECE_700_BoardGame.Screens
             }
         }
 
+        /// <summary>
+        /// Called when the play button is activated.
+        /// </summary>
         public void FinishedSettingOptions()
         {
             if (Game is BingoApp)

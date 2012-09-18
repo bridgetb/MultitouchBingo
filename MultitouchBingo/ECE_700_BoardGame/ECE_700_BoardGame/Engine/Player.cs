@@ -209,8 +209,6 @@ namespace ECE_700_BoardGame.Engine
                 }
             }
             victoryDiag = (victoryDiag || temp);
-
-            //return (victoryHoriz || victoryVert || victoryDiag);
             return highlighted;
         }
 
@@ -247,15 +245,11 @@ namespace ECE_700_BoardGame.Engine
                         break;
                 }
                 
-               
-                //TODO possibly change scaling
                 float scale = 2f;
 
 #if DEBUG
                 scale = 1.2f;
 #endif
-
-                //spriteBatch.DrawString(WinnerMessage, "BINGO!!!", pos, Color.White, rotation, new Vector2(0, 0), scale, SpriteEffects.None, 0);
             }
         }
     }

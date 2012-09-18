@@ -224,8 +224,6 @@ namespace ECE_700_BoardGame.Engine
                     }
                 }
 
-                // Check for other possible questions with the same answer
-
                 return false;
             }
             catch (Exception e)
@@ -244,8 +242,6 @@ namespace ECE_700_BoardGame.Engine
         /// <param name="spriteBatch"></param>
         override public void Draw(SpriteBatch spriteBatch)
         {
-            //if (!Answered && !AttemptAnswer)
-            //{
             if (Rotated)
             {
                 base.Draw(spriteBatch, (float)Math.PI);
@@ -262,7 +258,6 @@ namespace ECE_700_BoardGame.Engine
                     CorrectAnswer.Draw(spriteBatch, true);
                     if (CorrectAnswer.ClearAnim)
                     {
-                        //spriteBatch.Draw(AnsweredSprite, position, null, Color.White, TileOrient, ansSpriteOffset, SpriteEffects.None, 0f
                         CorrectAnswer.ClearAnim = false;
                     }
                 }
@@ -271,8 +266,6 @@ namespace ECE_700_BoardGame.Engine
                     CorrectAnswer.Draw(spriteBatch, false);
                     if (CorrectAnswer.ClearAnim)
                     {
-                        //base.Draw(spriteBatch);
-                        //spriteBatch.Draw(AnsweredSprite, position, Color.White);
                         CorrectAnswer.ClearAnim = false;
                     }
                 }
@@ -283,13 +276,10 @@ namespace ECE_700_BoardGame.Engine
                 if (Rotated)
                 {
                     IncorrectAnswer.Draw(spriteBatch, true);
-                    //spriteBatch.Draw(ErrorSprite, position, null, Color.White, TileOrient, errSpriteOffset, SpriteEffects.None, 0f);
                 }
                 else
                 {
                     IncorrectAnswer.Draw(spriteBatch, false);
-                    //base.Draw(spriteBatch);
-                    //spriteBatch.Draw(ErrorSprite, position, Color.White);
                 }
             }
             if (IncorrectAnswer.Active)
@@ -307,8 +297,6 @@ namespace ECE_700_BoardGame.Engine
             if (this.InWinningRow)
             {
                 // Highlight cell
-                //spriteBatch.Draw(Highlight, new Rectangle((int)(this.Position.X - this.Position.Width * 0.25), (int)(this.Position.Y - this.Position.Width * 0.25), 
-                //    (int)(this.Position.Width * 1.5), (int)(this.Position.Height * 1.5)), Color.White);
                 spriteBatch.Draw(Highlight, new Rectangle((int)(this.Position.X - this.Position.Width / 5), (int)(this.Position.Y - this.Position.Width / 5),
                     (int)(this.Position.Width * 1.5), (int)(this.Position.Height * 1.5)), Color.White);
             }

@@ -174,11 +174,6 @@ namespace ECE_700_BoardGame.Engine
                                             (int)Position.Y,
                                             (int)(FrameWidth * scale),
                                             (int)(FrameHeight * scale));
-
-            //destinationRect = new Rectangle((int)Position.X - (int)(FrameWidth * scale) / 2,
-            //                                (int)Position.Y - (int)(FrameHeight * scale) / 2,
-            //                                (int)(FrameWidth * scale),
-            //                                (int)(FrameHeight * scale));
         }
 
 
@@ -196,7 +191,6 @@ namespace ECE_700_BoardGame.Engine
                 if (rotated)
                 {
                     spriteBatch.Draw(spriteStrip, destinationRect, sourceRect, color*transparency, (float)Math.PI, offset, SpriteEffects.None, 0f);
-                    //spriteBatch.Draw(AnsweredSprite, position, null, Color.White, TileOrient, ansSpriteOffset, SpriteEffects.None, 0f);
                 }
                 else
                 {

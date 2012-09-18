@@ -1,14 +1,23 @@
-Early Childhood Education - Multi-touch  table top game
+Multi-touch Bingo for Early Childhood Education
 
-This project is a project based around research into effective ways to teach pre-school aged children,
-through the use of multi-touch technology such as currenly Microsoft Surface 2.0
+Prerequisite Software:
+- Microsoft .NET Framework 4 -  http://www.microsoft.com/en-us/download/details.aspx?id=17851
+- Microsoft Surface 2.0 SDK (for development) & Runtime -  http://www.microsoft.com/download/en/details.aspx?id=26716
+- Microsoft XNA Game Studio 4.0 -  http://www.microsoft.com/download/en/details.aspx?id=23714
+- Microsoft SQL Server Compact 4.0 - http://www.microsoft.com/en-us/download/details.aspx?id=17876
+- Microsoft Visual Studio 2010 (for development)
+- Input Simulator (for machines other than the Microsoft PixelSense)
 
-The application is to be a Bingo styled game with four players guided by a teacher.
-The players will then be able to combine the power of a computer to enhance the experience, whilst
-having an experience with very low cognitive friction when interacting with the software, due the intuitive 
-nature of touch interaction.
-This cognitive friction is a barrier that we observed within pre-school settings when children interacted with
-conventional desktops and basic interfaces such as MS Paint.
+Instructions:
+To run the program on a PC, open the solution in Visual Studio, build the solution (Ctrl+Shift+B) and run the executable.
+If running in "Debug" mode, buttons can be pressed by hovering the mouse over the button.
+If running in "Release" mode, the Input Simulator is required to simulate button presses and byte tags.
 
-This Bingo game is targeted at teaching young children a variety of skills such as 
-basic numeracy, literacy and geometry whilst engaging in an enjoyable way that can provide a variety of challenges.
+Byte Tags:
+The following buttons are activated only by byte tags - 
+- Play button on menu screen
+- Question tile (rotating image) on gameplay screen
+The above buttons will be activated when the byte tag has a value of C0, 08, 09, 0B or 0A. Note that only one value is 
+required.
+Tags can be printed from here: http://www.microsoft.com/en-us/download/details.aspx?id=11029
+Simply print the desired tag(s), glue to a physical object such as a die and press the tagged side to the table surface.

@@ -23,9 +23,8 @@ namespace ECE_700_BoardGame.Engine
     /// <summary>
     /// This class represents the centre button containing the question or item called out in each Bingo iteration.
     /// </summary>
-    class QuestionButton : MenuButton
+    class QuestionButton : Button
     {
-        private DataTable questions;
         private List<String> currentTopics {get; set;}
         private string currentQuestion;
         private int questionID;
@@ -53,6 +52,11 @@ namespace ECE_700_BoardGame.Engine
             currentTopics = topics;
         }
 
+        /// <summary>
+        /// Checks whether to change the question based on the tag value.
+        /// </summary>
+        /// <param name="touch"></param>
+        /// <returns></returns>
         override public bool OnTouchTapGesture(TouchPoint touch)
         {
             TagData td = touch.Tag;
@@ -123,11 +127,6 @@ namespace ECE_700_BoardGame.Engine
             // Get new question from question set
             int rand = new Random().Next(PossibleQuestions.Count);
             questionID = PossibleQuestions.ElementAt(rand);
-            //while (completedQuestions.Contains(questionID))
-            //{
-            //    rand = (rand + 1) % PossibleQuestions.Count;
-            //    questionID = PossibleQuestions.ElementAt(rand);
-            //}
             // Get question text from database
             currentQuestion = databaseHelper.stringQueryDB("select Question from Questions where QuestionID = " + questionID.ToString());
             
@@ -143,30 +142,7 @@ namespace ECE_700_BoardGame.Engine
 
             completedQuestions.Add(questionID);
         }
-        /*
-        /// <summary>
-        /// Finds all questions associated with a topic in the database
-        /// </summary>
-        /// <param name="topic"></param>
-        /// <returns>DataTable with each row containing the question ID, question and a boolean to indicate whether there is an image associated with it</returns>
-        public DataTable SelectQuestions(List<String> topic)
-        {
-            currentTopics = topic;
-            string query;
-            if (topic.Count == 3 || topic.Count == 0)
-            {
-                query = "select QuestionID, Question, ImageID from Questions";
-            }
-            else
-            {                
-                query = "select QuestionID, Question, ImageID from Questions, Topics where Topics.TopicID = Questions.TopicID and " 
-                    + databaseHelper.getQueryClause("Topic", currentTopics);
-            }
-            DataTable dt = databaseHelper.queryDBRows(query);
-            questions = dt;
-            return dt;
-        }*/
-
+       
         public int getID()
         {
             return questionID;
@@ -182,6 +158,11 @@ namespace ECE_700_BoardGame.Engine
             Rotation = (Rotation >= (Math.PI * 2)) ? 0 : Rotation;
         }
 
+        /// <summary>
+        /// Removes questions from the question pool (of remaining questions to be asked) based on the correct answer selected
+        /// on the board.
+        /// </summary>
+        /// <param name="answerImage"></param>
         public void RemoveQuestions(int answerImage)
         {
             // Remove questions to answer image from pool
@@ -208,6 +189,10 @@ namespace ECE_700_BoardGame.Engine
             }
         }
 
+        /// <summary>
+        /// Adds questions to the question pool.
+        /// </summary>
+        /// <param name="answerImage"></param>
         public void AddQuestions(int answerImage)
         {
             // Add potential questions to answer image from pool
@@ -232,6 +217,11 @@ namespace ECE_700_BoardGame.Engine
             }
         }
 
+        /// <summary>
+        /// Draws rotating question image and question text.
+        /// </summary>
+        /// <param name="batch"></param>
+        /// <param name="gameTime"></param>
         public void Draw(SpriteBatch batch, GameTime gameTime)
         {
             base.Draw(batch, Rotation);
@@ -262,8 +252,6 @@ namespace ECE_700_BoardGame.Engine
                 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
             batch.DrawString(font, part2, new Vector2(Position.X + vec.X * scale / 2, Position.Y - Position.Height/2 - 50 - vec.Y * scale), Color.Black,
                 Single.Parse(Math.PI.ToString()), new Vector2(0, 0), scale, SpriteEffects.None, 0);
-
-
         }
     }   
 }

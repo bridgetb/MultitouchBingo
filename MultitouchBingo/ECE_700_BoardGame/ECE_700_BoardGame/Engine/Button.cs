@@ -140,12 +140,29 @@ namespace ECE_700_BoardGame.Engine
         }
 
         protected virtual bool IsPressed(MouseState clickPoint)
-        {
-            //Rectangle largerArea = new Rectangle(position.X, position.Y, position.Width + 200, position.Height + 200);            
+        {           
 #if DEBUG
             Debug.WriteLine(Position.Contains((int)clickPoint.X, (int)clickPoint.Y).ToString(), "Is Within Item Hit Detection (CLICK)");
 #endif
             if (Position.Contains((int)clickPoint.X, (int)clickPoint.Y))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public virtual bool OnTouchTapGesture(TouchPoint touch)
+        {
+            if (IsPressed(touch))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public virtual bool OnClickGesture(MouseState mouseState)
+        {
+            if (IsPressed(mouseState))
             {
                 return true;
             }

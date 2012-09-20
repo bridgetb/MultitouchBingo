@@ -31,6 +31,13 @@ namespace ECE_700_BoardGame.Engine
 
         protected int Alpha = 255;
         
+        /// <summary>
+        /// Base Button Initialization type
+        /// </summary>
+        /// <param name="game">game instance</param>
+        /// <param name="tex">Texture of rendered at the button position</param>
+        /// <param name="pos">Position of the button</param>
+        /// <param name="target">Target, if not == pos then moving</param>
         public Button(Game game, Texture2D tex, Rectangle pos, Rectangle target) : base(game)
         {
             this.Texture = tex;
@@ -38,6 +45,14 @@ namespace ECE_700_BoardGame.Engine
             this.Target = target;
         }
 
+        /// <summary>
+        /// Base Button Initialization type
+        /// </summary>
+        /// <param name="game">game instance</param>
+        /// <param name="tex">Texture of rendered at the button position</param>
+        /// <param name="pos">Position of the button</param>
+        /// <param name="target">Target, if not == pos then moving</param>
+        /// <param name="frames">Frames required for animated buttons</param>
         public Button(Game game, Texture2D tex, Rectangle pos, Rectangle target, int frames)
             : base(game)
         {

@@ -59,6 +59,7 @@ namespace ECE_700_BoardGame.Engine
             }
         }
 
+        //Store in array the set of correctly answered tiles for each player (1 array per player)
         public void tileAnswered(bool ansCorrect, int tileNum)
         {
             if(ansCorrect){
@@ -91,7 +92,6 @@ namespace ECE_700_BoardGame.Engine
         /// <summary>
         /// Allows the game component to update itself.
         /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public void Update()
         {
 

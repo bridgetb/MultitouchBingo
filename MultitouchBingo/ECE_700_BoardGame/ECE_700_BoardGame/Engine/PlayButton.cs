@@ -21,6 +21,7 @@ namespace ECE_700_BoardGame.Engine
         public override bool OnTouchTapGesture(TouchPoint touch)
         {
             TagData td = touch.Tag;
+            //Recognized tag id values
             if (IsPressed(touch) && (td.Value == 0xC0 || td.Value == 8 || td.Value == 9 || td.Value == 0x0B || td.Value == 0x0A))
             {
                 if (Game is BingoApp)

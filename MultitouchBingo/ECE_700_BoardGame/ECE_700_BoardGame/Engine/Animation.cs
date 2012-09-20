@@ -7,6 +7,7 @@ namespace ECE_700_BoardGame.Engine
 {
     /// <summary>
     /// This is a game component that implements IUpdateable.
+    /// Code extended from a Microsoft XNA Tutorial
     /// </summary>
     public class Animation //: Microsoft.Xna.Framework.GameComponent
     {
@@ -65,10 +66,9 @@ namespace ECE_700_BoardGame.Engine
         int XInc;
         int YInc;
 
-        public Animation()//Game game)
-        //: base(game)
+        public Animation()
         {
-            // TODO: Construct any child components here
+            // Construct any child components here
         }
 
         /// <summary>

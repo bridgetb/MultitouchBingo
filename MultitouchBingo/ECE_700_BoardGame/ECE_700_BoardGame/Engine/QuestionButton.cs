@@ -242,6 +242,7 @@ namespace ECE_700_BoardGame.Engine
             }
             
             
+            // Rendering of text component to questions retrieved from database
             // Line 1
             batch.DrawString(font, part1, new Vector2(Position.X - vec.X*scale / 2, Position.Y + Position.Height/2 + 50), Color.Black,
                 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);

@@ -7,6 +7,7 @@ namespace ECE_700_BoardGame.Helper
 {
     public static class EnumSettings
     {
+        //An orientation setter for reflection rather than rotation
         public enum ItemOrientation
         {
             UP,

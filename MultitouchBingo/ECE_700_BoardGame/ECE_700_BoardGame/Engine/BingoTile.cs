@@ -52,6 +52,15 @@ namespace ECE_700_BoardGame.Engine
         Boolean Rotated;
         #endregion
 
+        /// <summary>
+        /// Initialize Bingo Tile Object (Answer Tiles)
+        /// </summary>
+        /// <param name="game">Game Instance</param>
+        /// <param name="tileSprite">The Answer Sprite</param>
+        /// <param name="daubSprite">The Answered Tile Sprite</param>
+        /// <param name="errorSprite">The Incorrectly Answered Sprite</param>
+        /// <param name="pos">Position of Tile</param>
+        /// <param name="target">Used when interaction changes tile location</param>
         public BingoTile(Game game, Texture2D tileSprite, Texture2D daubSprite, Texture2D errorSprite, Rectangle pos, Rectangle target)
             : base(game, tileSprite, pos, target)
         {
@@ -75,6 +84,17 @@ namespace ECE_700_BoardGame.Engine
             IncorrectAnswer.Active = false;
         }
 
+        /// <summary>
+        /// Initialize Bingo Tile Object (Answer Tiles)
+        /// </summary>
+        /// <param name="game">Game Instance</param>
+        /// <param name="tileSprite">The Answer Sprite</param>
+        /// <param name="daubSprite">The Answered Tile Sprite</param>
+        /// <param name="errorSprite">The Incorrectly Answered Sprite</param>
+        /// <param name="pos">Position of Tile</param>
+        /// <param name="target">Used when interaction changes tile location</param>
+        /// <param name="tileOrientation">Orientation of tile (rotation by Pi)</param>
+        /// <param name="originOffset">Offset required for rotation as point of rotation may not be sprite centre</param>
         public BingoTile(Game game, Texture2D tileSprite, Texture2D daubSprite, Texture2D errorSprite, Rectangle pos, 
             Rectangle target, float tileOrientation, Vector2 originOffset)
             : this(game, tileSprite, daubSprite, errorSprite, pos, target)
@@ -250,9 +270,9 @@ namespace ECE_700_BoardGame.Engine
             {
                 base.Draw(spriteBatch);
             }
-            //}
             if (Answered)
             {
+                //If rotated then draw will utilize origin offset
                 if (Rotated)
                 {
                     CorrectAnswer.Draw(spriteBatch, true);

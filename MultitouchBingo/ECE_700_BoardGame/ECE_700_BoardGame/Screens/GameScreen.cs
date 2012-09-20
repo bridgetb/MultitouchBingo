@@ -377,7 +377,7 @@ namespace ECE_700_BoardGame.Screens
         }
 
         /// <summary>
-        /// Touch Update Method
+        /// Touch Update Method called at 30fps
         /// </summary>
         /// <param name="gameTime"></param>
         /// <param name="touches"></param>
